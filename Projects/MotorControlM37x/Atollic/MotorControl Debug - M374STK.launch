@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.atollic.hardwaredebug.launch.launchConfigurationType">
+<stringAttribute key="com.atollic.hardwaredebug.jlink_common.cpu_core" value="Cortex-M"/>
+<stringAttribute key="com.atollic.hardwaredebug.jlink_common.endian" value="little"/>
+<stringAttribute key="com.atollic.hardwaredebug.jlink_common.init_speed" value="500"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.analyzeCommands" value="# Default GDB command file (FLASH) for J-LINK and Cortex-M3.&#13;&#10;&#13;&#10;# Set JTAG speed to 30 kHz&#13;&#10;monitor speed 30&#13;&#10;&#13;&#10;# Set GDBServer to little endian&#13;&#10;monitor endian little&#13;&#10;&#13;&#10;# Reset the chip to get to a known state.&#13;&#10;monitor reset&#13;&#10;&#13;&#10;# Set auto JTAG speed&#13;&#10;monitor speed auto&#13;&#10;&#13;&#10;# Setup GDB FOR FASTER DOWNLOADS&#13;&#10;set remote memory-write-packet-size 1024&#13;&#10;set remote memory-write-packet-size fixed&#13;&#10;&#13;&#10;# Enable flash download&#13;&#10;monitor flash download = 1&#13;&#10;&#13;&#10;# Flash device&#13;&#10;monitor flash device = TMPM374FWUG&#13;&#10;&#13;&#10;# Load the program executable&#13;&#10;load&#9;&#13;&#10;&#13;&#10;# Reset the chip to get to a known state.&#13;&#10;monitor reset&#9;&#13;&#10;&#13;&#10;# Load the stack pointer&#13;&#10;set $sp = *0x0&#13;&#10;&#13;&#10;# Start the executable.&#13;&#10;continue"/>
+<booleanAttribute key="com.atollic.hardwaredebug.launch.enable_swv" value="true"/>
+<intAttribute key="com.atollic.hardwaredebug.launch.formatVersion" value="2"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.ipAddress" value="localhost"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.jtagDevice" value="SEGGER J-LINK"/>
+<intAttribute key="com.atollic.hardwaredebug.launch.portNumber" value="2331"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.remoteCommand" value="target extended-remote"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.runCommands" value="# Default GDB command file (FLASH) for J-LINK and Cortex-M3.&#13;&#10;&#13;&#10;# Set JTAG speed to 30 kHz&#13;&#10;monitor speed 30&#13;&#10;&#13;&#10;# Set GDBServer to little endian&#13;&#10;monitor endian little&#13;&#10;&#13;&#10;# Reset the chip to get to a known state.&#13;&#10;monitor reset&#13;&#10;&#13;&#10;# Set auto JTAG speed&#13;&#10;monitor speed auto&#13;&#10;&#13;&#10;# Setup GDB FOR FASTER DOWNLOADS&#13;&#10;set remote memory-write-packet-size 1024&#13;&#10;set remote memory-write-packet-size fixed&#13;&#10;&#13;&#10;# Enable flash download&#13;&#10;monitor flash download = 1&#13;&#10;&#13;&#10;# Flash device&#13;&#10;monitor flash device = TMPM374FWUG&#13;&#10;&#13;&#10;# Load the program executable&#13;&#10;load&#9;&#13;&#10;&#13;&#10;# Reset the chip to get to a known state.&#13;&#10;monitor reset&#9;&#13;&#10;&#13;&#10;# Load the stack pointer&#13;&#10;set $sp = *0x0&#13;&#10;&#13;&#10;# Set a breakpoint at main().&#13;&#10;break main&#13;&#10;&#13;&#10;# Run to the breakpoint.&#13;&#10;continue"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.serverParam" value="-port 2331 -s -CPU Cortex-M -endian little -speed 500 -if swd -swoport 2332"/>
+<booleanAttribute key="com.atollic.hardwaredebug.launch.startServer" value="true"/>
+<booleanAttribute key="com.atollic.hardwaredebug.launch.swd_mode" value="true"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.swv_port" value="2332"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.swv_trace_div" value="160"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.swv_trace_hclk" value="80000000"/>
+<booleanAttribute key="com.atollic.hardwaredebug.launch.useRemoteTarget" value="true"/>
+<stringAttribute key="com.atollic.hardwaredebug.launch.verifyCommands" value="# Default GDB command file (FLASH) for J-LINK and Cortex-M3.&#13;&#10;&#13;&#10;# Set JTAG speed to 30 kHz&#13;&#10;monitor speed 30&#13;&#10;&#13;&#10;# Set GDBServer to little endian&#13;&#10;monitor endian little&#13;&#10;&#13;&#10;# Reset the chip to get to a known state.&#13;&#10;monitor reset&#13;&#10;&#13;&#10;# Set auto JTAG speed&#13;&#10;monitor speed auto&#13;&#10;&#13;&#10;# Setup GDB FOR FASTER DOWNLOADS&#13;&#10;set remote memory-write-packet-size 1024&#13;&#10;set remote memory-write-packet-size fixed&#13;&#10;&#13;&#10;# Enable flash download&#13;&#10;monitor flash download = 1&#13;&#10;&#13;&#10;# Flash device&#13;&#10;monitor flash device = TMPM374FWUG&#13;&#10;&#13;&#10;# Load the program executable&#13;&#10;load&#9;&#13;&#10;&#13;&#10;# Reset the chip to get to a known state.&#13;&#10;monitor reset&#9;&#13;&#10;&#13;&#10;# Load the stack pointer&#13;&#10;set $sp = *0x0&#13;&#10;&#13;&#10;# Set a breakpoint at main().&#13;&#10;tbreak main&#13;&#10;&#13;&#10;# Run to the breakpoint.&#13;&#10;continue"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.datatrace_0" value="Enabled=false:Address=0x0:Access=Read/Write:Size=Word:Function=Data Value"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.datatrace_1" value="Enabled=false:Address=0x0:Access=Read/Write:Size=Word:Function=Data Value"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.datatrace_2" value="Enabled=false:Address=0x0:Access=Read/Write:Size=Word:Function=Data Value"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.datatrace_3" value="Enabled=false:Address=0x0:Access=Read/Write:Size=Word:Function=Data Value"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.itmports" value="1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.itmports_priv" value="1:0:0:0"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.pc_sample" value="0:1024"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.timestamps" value="1:1"/>
+<stringAttribute key="com.atollic.truestudio.swv.core.trace_events" value="Cpi=0:Exc=0:Sleep=0:Lsu=0:Fold=0:Exetrc=0"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.DEBUG_NAME" value="${TOOLCHAIN_PATH}/arm-atollic-eabi-gdb"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.commandFactory" value="Standard (Windows)"/>
+<stringAttribute key="org.eclipse.cdt.debug.mi.core.protocol" value="mi"/>
+<booleanAttribute key="org.eclipse.cdt.debug.mi.core.verboseMode" value="true"/>
+<stringAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_NAME" value="${TOOLCHAIN_PATH}/arm-atollic-eabi-gdb"/>
+<intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="1"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_REGISTER_GROUPS" value=""/>
+<stringAttribute key="org.eclipse.cdt.launch.FORMAT" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&lt;contentList/&gt;"/>
+<stringAttribute key="org.eclipse.cdt.launch.GLOBAL_VARIABLES" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;globalVariableList/&gt;&#13;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList/&gt;&#13;&#10;"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug - M374STK/MotorControl.elf"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="MotorControl"/>
+<booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.atollic.truestudio.exe.debug.590072706.1456349768"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/MotorControl"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;/&gt;&#13;&#10;"/>
+</launchConfiguration>
