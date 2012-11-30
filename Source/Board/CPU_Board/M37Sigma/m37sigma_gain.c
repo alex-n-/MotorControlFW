@@ -17,6 +17,12 @@
  * OTHERWISE. (C)Copyright TOSHIBA CORPORATION 2011 All rights reserved
  */
 
+/*! \brief Setup Gain
+  *
+  * Set up the Gain for the Board
+  *
+  * @retval None
+*/
 void BOARD_SetupGain(void)
 {
   /* Stub */

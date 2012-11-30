@@ -49,7 +49,7 @@ static unsigned char system_load;
 */
 void vApplicationIdleHook( void )
 {
-  idle_counter++;                                                     /* increase the idle counter by 1 */
+  idle_counter++;                                                               /* increase the idle counter by 1 */
 }
 
 /*! \brief  Calculate the system load
@@ -68,12 +68,12 @@ void vApplicationIdleHook( void )
 */
 static unsigned char calculate_system_load(void)
 {
-  unsigned char load = (MAX_IDLE_COUNTER_NO_LOAD-idle_counter)        /* normal percentage calculation */
+  unsigned char load = (MAX_IDLE_COUNTER_NO_LOAD-idle_counter)                  /* normal percentage calculation */
                         * 100
                         / MAX_IDLE_COUNTER_NO_LOAD;
-  if (idle_counter > MAX_IDLE_COUNTER_NO_LOAD)                        /* check for error due to preemtion */
+  if (idle_counter > MAX_IDLE_COUNTER_NO_LOAD)                                  /* check for error due to preemtion */
     load=oldload;
-  oldload=load;                                                       /* remember last valid value */
+  oldload=load;                                                                 /* remember last valid value */
   idle_counter=0;
   return load;
 }
@@ -101,13 +101,13 @@ void SystemLoadTaks(void* pvParameters)
   
   xLastWakeTime = xTaskGetTickCount();
   
-  while (INIT_Done==0)                                                /* wailt until HW setup has finished */
+  while (INIT_Done==0)                                                          /* wailt until HW setup has finished */
     vTaskDelay( 100 / portTICK_RATE_MS );
   
   for(;;)
   {
-    system_load = calculate_system_load();                            /* calculate the system load and remember it for the time it's needed */
-    vTaskDelayUntil( &xLastWakeTime, xPeriod );                       /* wait until 1 second till last calling has completed */
+    system_load = calculate_system_load();                                      /* calculate the system load and remember it for the time it's needed */
+    vTaskDelayUntil( &xLastWakeTime, xPeriod );                                 /* wait until 1 second till last calling has completed */
   }
 }    
 

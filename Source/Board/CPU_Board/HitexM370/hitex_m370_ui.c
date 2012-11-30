@@ -66,25 +66,32 @@
 
 static  uint8_t   motor_nr=1;
 static  uint8_t   cursor_pos=CURSOR_POS_1;
-static  uint32_t  oldstate  =0xff,
+static uint32_t   oldstate  =0xff,
                   oldset    =0xff,
                   oldstatus =0xff,
                   oldtorque =0xff,
                   oldcurrent=0xff,
                   count_difference;
 static  uint8_t   oldmotorid[20];
-static  uint32_t  new_rot;
+static  int32_t   new_rot;
 
+/*! \brief User Interface Task
+  *
+  * @param  pvParameters: Mandatory for FreeRTOS
+  *
+  * @retval None
+*/
 void UITask(void* pvParameters)
 {
-  (void) pvParameters;
-
+	int32_t rot_limit;
+  
   while (INIT_Done==0)
     vTaskDelay( 100 / portTICK_RATE_MS );
   
-  /* Wait until init task has finished */
-  vTaskDelay( 100 / portTICK_RATE_MS );
- 
+  rot_limit =   MotorParameterValues[motor_nr].HzLimit
+              * SECONDS_PER_MINUTE
+              / MotorParameterValues[motor_nr].PolePairs;
+  
   /* Switch off Cursor to prevent anoying blink in the middle of display */
   LCD_DisableCursorBlink();
   
@@ -235,44 +242,36 @@ void UITask(void* pvParameters)
     
     switch(KEYPAD_GetState())
     {
-    case KEYPAD_NO_0:                                                 /* Move cursor one left */
+    case KEYPAD_NO_0:                                                           /* Move cursor one left */
       cursor_pos--;
       break;
-    case KEYPAD_NO_3:                                                 /* Move cursor one right */
+    case KEYPAD_NO_3:                                                           /* Move cursor one right */
       cursor_pos++;
       break;
-    case KEYPAD_NO_1:                                                 /* Increase rotation speed set value */
+    case KEYPAD_NO_1:                                                           /* Increase rotation speed set value */
       new_rot=MotorSetValues[motor_nr].TargetSpeed;
       new_rot +=count_difference;
       /* Limit set value to motor limits */
-      if(new_rot > (  MotorParameterValues[motor_nr].HzLimit
-                    * SECONDS_PER_MINUTE
-                    / MotorParameterValues[motor_nr].PolePairs ))
-        new_rot =  (  MotorParameterValues[motor_nr].HzLimit
-                    * SECONDS_PER_MINUTE 
-                    / MotorParameterValues[motor_nr].PolePairs );
+      if(new_rot > rot_limit)
+        new_rot =  rot_limit;
       
       MotorSetValues[motor_nr].TargetSpeed=new_rot;
       break;
-    case KEYPAD_NO_4:                                                 /* Decrease rotation speed set value */  
+    case KEYPAD_NO_4:                                                           /* Decrease rotation speed set value */  
       new_rot=MotorSetValues[motor_nr].TargetSpeed;
       new_rot -=count_difference;
       /* Limit set value to motor limits */
-      if(new_rot < -( MotorParameterValues[motor_nr].HzLimit
-                    * SECONDS_PER_MINUTE
-                    / MotorParameterValues[motor_nr].PolePairs ))
-        new_rot =  -( MotorParameterValues[motor_nr].HzLimit
-                    * SECONDS_PER_MINUTE
-                    / MotorParameterValues[motor_nr].PolePairs );
+      if(new_rot < -rot_limit)
+        new_rot =  -rot_limit;
       
       MotorSetValues[motor_nr].TargetSpeed=new_rot;
       break;
-    case KEYPAD_NO_2:                                                 /* Change motor number */
+    case KEYPAD_NO_2:                                                           /* Change motor number */
       motor_nr++;
       if (motor_nr>MAX_CHANNEL-1)
         motor_nr=0;
       break;
-    case KEYPAD_NO_5:                                                 /* Toggle motor state */
+    case KEYPAD_NO_5:                                                           /* Toggle motor state */
       /* Send start/stop command internal to action.c */
       if (MotorStateValues[motor_nr].ActualSpeed == 0)
         VE_Start(motor_nr);

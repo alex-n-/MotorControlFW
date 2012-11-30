@@ -23,6 +23,12 @@
 #include BOARD_PGA_HEADER_FILE
 #include "motorctrl.h"
 
+/*! \brief Setup Gain
+  *
+  * Set up the PGAs (Programable Gain Amplifiers) of M374STK Baseboard
+  *
+  * @retval None
+*/
 void BOARD_SetupGain(void)
 {
   PGA_Settings  pga[] =

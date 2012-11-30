@@ -35,7 +35,7 @@ __packed struct x { \
  *  Load data of protocol communication for start of motor (question from host)
  */
 DECLARE(StartMotor_q, 
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Start Motor Answer
@@ -43,7 +43,7 @@ DECLARE(StartMotor_q,
  *  Load data of protocol communication for start of motor (answer to host)
  */
 DECLARE(StartMotor_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Stop Motor Question
@@ -51,7 +51,7 @@ DECLARE(StartMotor_a,
  *  Load data of protocol communication for stop of motor (question from host)
  */
 DECLARE(StopMotor_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Stop Motor Answer
@@ -59,7 +59,7 @@ DECLARE(StopMotor_q,
  *  Load data of protocol communication for stop of motor (answer to host)
  */
 DECLARE(StopMotor_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Set Motor Parameter Question
@@ -67,8 +67,8 @@ DECLARE(StopMotor_a,
  *  Load data of protocol communication for setting the motor parameters (question from host)
  */
 DECLARE(SetMotorParameter_q,
-  uint8_t         motor_nr;                                           /*!< Motor number */
-  MotorParameters Parameters;                                         /*!< Motor parameters */      
+  uint8_t         motor_nr;                                                     /*!< Motor number */
+  MotorParameters Parameters;                                                   /*!< Motor parameters */      
 );
 
 /*! \brief Set Motor Parameter Answer
@@ -76,7 +76,7 @@ DECLARE(SetMotorParameter_q,
  *  Load data of protocol communication for setting the motor parameters (answer to host)
  */
 DECLARE(SetMotorParameter_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get Motor Parameter Question
@@ -84,7 +84,7 @@ DECLARE(SetMotorParameter_a,
  *  Load data of protocol communication for getting the motor parameters (question from host)
  */
 DECLARE(GetMotorParameter_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Get Motor Parameter Answer
@@ -92,7 +92,7 @@ DECLARE(GetMotorParameter_q,
  *  Load data of protocol communication for getting the motor parameters (answer to host)
  */
 DECLARE(GetMotorParameter_a,
-  MotorParameters Parameters;                                         /*!< Motor parameters */
+  MotorParameters Parameters;                                                   /*!< Motor parameters */
 );
 
 /*! \brief Set PI-Control Parameter Question
@@ -100,8 +100,8 @@ DECLARE(GetMotorParameter_a,
  *  Load data of protocol communication for setting the PI parameters (question from host)
  */
 DECLARE(SetPIControl_q,
-  uint8_t           motor_nr;                                         /*!< Motor number */
-  PIControlSettings PISettings;                                       /*!< PI Values */
+  uint8_t           motor_nr;                                                   /*!< Motor number */
+  PIControlSettings PISettings;                                                 /*!< PI Values */
 );
 
 /*! \brief Set PI-Control Parameter Answer
@@ -109,7 +109,7 @@ DECLARE(SetPIControl_q,
  *  Load data of protocol communication for setting the PI parameters (answer to host)
  */
 DECLARE(SetPIControl_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get PI-Control Parameter Question
@@ -117,7 +117,7 @@ DECLARE(SetPIControl_a,
  *  Load data of protocol communication for getting the PI parameters (question from host)
  */
 DECLARE(GetPIControl_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Get PI-Control Parameter Answer
@@ -125,7 +125,7 @@ DECLARE(GetPIControl_q,
  *  Load data of protocol communication for getting the PI parameters (answer to host)
  */
 DECLARE(GetPIControl_a,
-  PIControlSettings PISettings;                                       /*!< PI Values */
+  PIControlSettings PISettings;                                                 /*!< PI Values */
 );
 
 /*! \brief Get Channel Dependand Values Question
@@ -133,7 +133,7 @@ DECLARE(GetPIControl_a,
  *  Load data of protocol communication for getting the Channel Dependand Values (question from host)
  */
 DECLARE(GetChannelDependand_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Get Channel Dependand Values Answer
@@ -141,7 +141,7 @@ DECLARE(GetChannelDependand_q,
  *  Load data of protocol communication for getting the Channel Dependand Values (answer to host)
  */
 DECLARE(GetChannelDependand_a,
-  ChannelDependandValues ChannelSettings;                             /*!< Channel Dependand Values */
+  ChannelDependandValues ChannelSettings;                                       /*!< Channel Dependand Values */
 );
 
 /*! \brief Set Channel Dependand Values Question
@@ -149,8 +149,8 @@ DECLARE(GetChannelDependand_a,
  *  Load data of protocol communication for setting the Channel Dependand Values (question from host)
  */
 DECLARE(SetChannelDependand_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
-  ChannelDependandValues ChannelSettings;                             /*!< Channel Dependand Values */
+  uint8_t motor_nr;                                                             /*!< Motor number */
+  ChannelDependandValues ChannelSettings;                                       /*!< Channel Dependand Values */
 );
 
 /*! \brief Set Channel Dependand Values Answer
@@ -158,7 +158,7 @@ DECLARE(SetChannelDependand_q,
  *  Load data of protocol communication for setting the Channel Dependand Values (answer to host)
  */
 DECLARE(SetChannelDependand_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Set System Dependand Parameter Question
@@ -175,7 +175,7 @@ DECLARE(SetSystemDependand_q,
  *  Load data of protocol communication for setting the System Dependand Parameters (answer to host)
  */
 DECLARE(SetSystemDependand_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get System Dependand Parameter Question
@@ -183,7 +183,7 @@ DECLARE(SetSystemDependand_a,
  *  Load data of protocol communication for getting the System Dependand Parameter (question from host)
  */
 DECLARE(GetSystemDependand_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Get System Dependand Parameter Answer
@@ -199,8 +199,8 @@ DECLARE(GetSystemDependand_a,
  *  Load data of protocol communication for setting the Motor Settings (question from host)
  */
 DECLARE(SetMotorSet_q,
-  uint8_t          motor_nr;                                          /*!< Motor number */
-  MotorSetSettings Set;                                               /*!< Set values   */
+  uint8_t          motor_nr;                                                    /*!< Motor number */
+  MotorSetSettings Set;                                                         /*!< Set values   */
 );
 
 /*! \brief Set the Motor Settings Answer
@@ -208,7 +208,7 @@ DECLARE(SetMotorSet_q,
  *  Load data of protocol communication for setting the Motor Settings (answer to host)
  */
 DECLARE(SetMotorSet_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get actual Motor State Question
@@ -216,7 +216,7 @@ DECLARE(SetMotorSet_a,
  *  Load data of protocol communication for getting the actual Motor State (question from host)
  */
 DECLARE(GetMotorState_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Get actual Motor State Answer
@@ -224,7 +224,7 @@ DECLARE(GetMotorState_q,
  *  Load data of protocol communication for getting the actual Motor State (answer to host)
  */
 DECLARE(GetMotorState_a,
-  MotorStateSettings State;                                           /*!< actual state of Motor */
+  MotorStateSettings State;                                                     /*!< actual state of Motor */
 );
 
 /*! \brief Store Parameters (Motor/PI/System) to EEProm Question
@@ -233,7 +233,7 @@ DECLARE(GetMotorState_a,
  *  to the EEProm (question from host)
  */
 DECLARE(StoreParameters_q,
-  uint8_t motor_nr;                                                   /*!< Motor number */
+  uint8_t motor_nr;                                                             /*!< Motor number */
 );
 
 /*! \brief Store Parameters (Motor/PI/System) to EEProm Answer
@@ -242,7 +242,7 @@ DECLARE(StoreParameters_q,
  *  to the EEProm (answer to host)
  */
 DECLARE(StoreParameters_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Clears EEProm content Question
@@ -250,7 +250,7 @@ DECLARE(StoreParameters_a,
  *  Load data of protocol communication for clearing EEProm content (question from host)
  */
 DECLARE(ClearParameters_q,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Clears EEProm content Answer
@@ -258,7 +258,7 @@ DECLARE(ClearParameters_q,
  *  Load data of protocol communication for clearing EEProm content (answer to host)
  */
 DECLARE(ClearParameters_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Set new UART speed for communication Question
@@ -266,7 +266,7 @@ DECLARE(ClearParameters_a,
  *  Load data of protocol communication for setting new UART speed (question from host)
  */
 DECLARE(ConfigureUARTSpeed_q,
-  uint32_t speed;                                                     /*!< new speed setting in bps */
+  uint32_t speed;                                                               /*!< new speed setting in bps */
 );
 
 /*! \brief Set new UART speed for communication Answer
@@ -274,7 +274,7 @@ DECLARE(ConfigureUARTSpeed_q,
  *  Load data of protocol communication for setting new UART speed (answer to host)
  */
 DECLARE(ConfigureUARTSpeed_a,
-  uint8_t dummy;                                                      /*!< Dummy value - due to protocol specification  */
+  uint8_t dummy;                                                                /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get a snapshot of different Vector Engine Registers Question
@@ -283,7 +283,7 @@ DECLARE(ConfigureUARTSpeed_a,
  *  internal Vector Engine registers (question from host)
  */
 DECLARE(GetDSOSnaphot_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
   uint32_t selected_values;
 );
 
@@ -303,12 +303,12 @@ DECLARE(GetDSOSnaphot_a,
  *  Vector Engine Registers (question from host)
  */
 DECLARE(ConfigDSOLog_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
-  uint32_t selected_values;                                           /*!< Bitfield with DSO_Selection enumerated values for selecting the signals to be logged */
-  uint32_t trigger_on_value;                                          /*!< Bitfield with DSO_Selection enumerated values for selecting the signals to trigger on */
-  uint8_t  trigger_mode;                                              /*!< Bitfield with TriggerMode enumerated values to select the trigger mode of the DSO */
-  uint16_t trigger_level;                                             /*!< Trigger level for the DSO */
-  uint8_t  spread_factor;                                             /*!< Factor of which the logging is spread */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
+  uint32_t selected_values;                                                     /*!< Bitfield with DSO_Selection enumerated values for selecting the signals to be logged */
+  uint32_t trigger_on_value;                                                    /*!< Bitfield with DSO_Selection enumerated values for selecting the signals to trigger on */
+  uint8_t  trigger_mode;                                                        /*!< Bitfield with TriggerMode enumerated values to select the trigger mode of the DSO */
+  uint16_t trigger_level;                                                       /*!< Trigger level for the DSO */
+  uint8_t  spread_factor;                                                       /*!< Factor of which the logging is spread */
 );
 
 /*! \brief Configure DSO Logging facility Answer
@@ -317,7 +317,7 @@ DECLARE(ConfigDSOLog_q,
  *  Vector Engine Registers (answer to host)
  */
 DECLARE(ConfigDSOLog_a,
-  uint16_t logsteps;                                                  /*!< Number of data-sets that will be logged */
+  uint16_t logsteps;                                                            /*!< Number of data-sets that will be logged */
 );
 
 /*! \brief Request the DSO Log Data Question
@@ -326,7 +326,7 @@ DECLARE(ConfigDSOLog_a,
  *  from the DOS after the DSO has triggered (question from host)
  */
 DECLARE(GetDSOLogData_q,
-  uint8_t  dummy;                                                     /*!< Dummy value - due to protocol specification  */
+  uint8_t  dummy;                                                               /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Request the DSO Log Data Answer
@@ -335,7 +335,7 @@ DECLARE(GetDSOLogData_q,
  *  from the DOS after the DSO has triggered (answer to host)
  */
 DECLARE(GetDSOLogData_a,
-  DSOValues values;                                                   /*!< Dataset of logged DSO data */
+  DSOValues values;                                                             /*!< Dataset of logged DSO data */
 );
 
 /*! \brief Request actual system load Question
@@ -344,7 +344,7 @@ DECLARE(GetDSOLogData_a,
  *  running system by percent
  */
 DECLARE(GetSystemLoad_q,
-  uint8_t  dummy;                                                     /*!< Dummy value - due to protocol specification  */
+  uint8_t  dummy;                                                               /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Request actual system load
@@ -353,7 +353,7 @@ DECLARE(GetSystemLoad_q,
  *  running system by percent
  */
 DECLARE(GetSystemLoad_a,
-  uint8_t SystemLoadPercentage;                                       /*!< System Load in Percent */
+  uint8_t SystemLoadPercentage;                                                 /*!< System Load in Percent */
 );
 
 /*! \brief Request the Board Info
@@ -362,7 +362,7 @@ DECLARE(GetSystemLoad_a,
  */
 
 DECLARE(GetBoardInfo_q,
-  uint8_t  dummy;                                                     /*!< Dummy value - due to protocol specification  */
+  uint8_t  dummy;                                                               /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Request the DSO Log Data Answer
@@ -370,7 +370,7 @@ DECLARE(GetBoardInfo_q,
  *  Load data of protocol communication for getting the the board info
  */
 DECLARE(GetBoardInfo_a,
-  BoardInfoValues values;                                             /*!< Board Info Values */
+  BoardInfoValues values;                                                       /*!< Board Info Values */
 );
 
 /*! \brief Configure highspeed DSO - question
@@ -378,10 +378,10 @@ DECLARE(GetBoardInfo_a,
  *  Configure highspeed DSO
  */
 DECLARE(ConfigureHsDSO_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
-  uint8_t  enable;                                                    /*!< enable the HSDSO  */
-  uint32_t selected_values;                                           /*!< Bitfield with DSO_Selection enumerated values for selecting the signals to be logged */
-  uint8_t  spread_factor;                                             /*!< Factor of which the logging is spread */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
+  uint8_t  enable;                                                              /*!< enable the HSDSO  */
+  uint32_t selected_values;                                                     /*!< Bitfield with DSO_Selection enumerated values for selecting the signals to be logged */
+  uint8_t  spread_factor;                                                       /*!< Factor of which the logging is spread */
 );
 
 /*! \brief Configure highspeed DSO - answer
@@ -389,7 +389,7 @@ DECLARE(ConfigureHsDSO_q,
  *  Configure highspeed DSO
  */
 DECLARE(ConfigureHsDSO_a,
-  uint8_t  dummy;                                                     /*!< Dummy value - due to protocol specification  */
+  uint8_t  dummy;                                                               /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get Firmware Version - question
@@ -397,7 +397,7 @@ DECLARE(ConfigureHsDSO_a,
  *  Get FW Version
  */
 DECLARE(GetFWVersion_q,
-  uint8_t  dummy;                                                     /*!< Dummy value - due to protocol specification  */
+  uint8_t  dummy;                                                               /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get Firmware Version - answer
@@ -405,7 +405,7 @@ DECLARE(GetFWVersion_q,
  *  Get FW Version
  */
 DECLARE(GetFWVersion_a,
-  FWVersion  values;                                                  /*!< FW Version  */
+  FWVersion  values;                                                            /*!< FW Version  */
 );
 
 /*! \brief Do Turn - question
@@ -413,9 +413,9 @@ DECLARE(GetFWVersion_a,
  *  Do Turn
  */
 DECLARE(DoTurn_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
-  int16_t  turns;                                                     /*!< Number of turns to perform */
-  uint16_t max_speed;                                                 /*!< Maximum rpm while turning */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
+  int16_t  turns;                                                               /*!< Number of turns to perform */
+  uint16_t max_speed;                                                           /*!< Maximum rpm while turning */
 );
 
 /*! \brief Do Turn - answer
@@ -423,49 +423,49 @@ DECLARE(DoTurn_q,
  *  Do Turn
  */
 DECLARE(DoTurn_a,
-  uint8_t  dummy;                                                     /*!< Dummy value - due to protocol specification  */
+  uint8_t  dummy;                                                               /*!< Dummy value - due to protocol specification  */
 );
 
 /*! \brief Get Turn Number - question
  *
  */
 DECLARE(GetTurnNumber_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
 );
 
 /*! \brief Get Turn Number - answer
  *
  */
 DECLARE(GetTurnNumber_a,
-  int32_t turn_number;                                                /*!< Number of full turns */
+  int32_t turn_number;                                                          /*!< Number of full turns */
 );
 
 /*! \brief Get Temperature - question
  *
  */
 DECLARE(GetTemperature_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
 );
 
 /*! \brief Get Temperature - answer
  *
  */
 DECLARE(GetTemperature_a,
-  int8_t temperature;                                                 /*!< Temperature in Celsius */
+  int8_t temperature;                                                           /*!< Temperature in Celsius */
 );
 
 /*! \brief Get Error State - question
  *
  */
 DECLARE(GetErrorState_q,
-  uint8_t  motor_nr;                                                  /*!< Motor number */
+  uint8_t  motor_nr;                                                            /*!< Motor number */
 );
 
 /*! \brief Get Error State - answer
  *
  */
 DECLARE(GetErrorState_a,
-  int8_t Error;                                                       /*!< Error status of motor */
+  int8_t Error;                                                                 /*!< Error status of motor */
 );
 
 int StartMotor          (struct StartMotor_q* q,          struct StartMotor_a* a);

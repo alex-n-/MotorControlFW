@@ -25,43 +25,70 @@
 
 #include TMPM_HEADER_FILE
 #include TMPM_GPIO_HEADER_FILE
+#include TMPM_ADC_HEADER_FILE
 #include BOARD_SPI_HEADER_FILE
 #include BOARD_BOARD_HEADER_FILE
+
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
+#endif 
+#include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
 
 #include "eeprom.h"
 #include "spi.h"
 #include "motorctrl.h"
 #include "debug.h"
+#include "temperature_measure_table.h"
+
 
 static void eeprom_latch_in(void)
 {
-  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, ENABLE);           /* Deselect CS */
-  vTaskDelay( 1/ portTICK_RATE_MS);                                   /* Wait for 1 ms */
-  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, DISABLE);          /* Select CS */
+  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, ENABLE);                     /* Deselect CS */
+  vTaskDelay( 1/ portTICK_RATE_MS);                                             /* Wait for 1 ms */
+  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, DISABLE);                    /* Select CS */
 }
+
+
+/*! \brief  Detect Board Revision
+  *
+  * Revision 1 doesn't have an EEProm
+  *
+  * @retval Version Number of Board
+*/
 
 uint8_t BOARD_Detect_Revision(void)
 {
   unsigned char status;
   
-  SPI_SelectDevice(SPI_DEVICE_EEPROM);                                /* Select SPI Device  (block access for other drivers) */
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WREN);                      /* Send write enable to eeprom */
-  eeprom_latch_in();                                                  /* Latch data into eeprom */
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRITE);                     /* Send write command */
-  eeprom_latch_in();                                                  /* Latch data into eeprom */
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_RDSR);                      /* Read out status register */
-  status = SPI_ReceiveByte(BOARD_SPI_CHANNEL);                        /* read out data */
+  SPI_SelectDevice(SPI_DEVICE_EEPROM);                                          /* Select SPI Device  (block access for other drivers) */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WREN);                                /* Send write enable to eeprom */
+  eeprom_latch_in();                                                            /* Latch data into eeprom */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRITE);                               /* Send write command */
+  eeprom_latch_in();                                                            /* Latch data into eeprom */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_RDSR);                                /* Read out status register */
+  status = SPI_ReceiveByte(BOARD_SPI_CHANNEL);                                  /* read out data */
   status = SPI_ReceiveByte(BOARD_SPI_CHANNEL);
   eeprom_latch_in();
 
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRDI);                      /* Disable write enable */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRDI);                                /* Disable write enable */
 
-  SPI_DeselectDevice();                                               /* Give SPI access back for other Tasks */
+  SPI_DeselectDevice();                                                         /* Give SPI access back for other Tasks */
   
-  return (status==STATUS_WEL?1:2);                                    /* If there is an EEProm it's revision 2 otherwise 1 */  
+  return (status==STATUS_WEL?1:2);                                              /* If there is an EEProm it's revision 2 otherwise 1 */  
 }
 
 #ifdef USE_TEMPERATURE_CONTROL  
+
+/*! \brief  Get Temperature of FETs/IGBTs/Powermodule
+  *
+  * Using direct ADC Pin on MCU
+  *
+  * @param  channel_number:  channel to read out
+  *
+  * @retval Temperature in degree Celsius
+*/
 int8_t BOARD_GetTemperature(uint8_t channel_number)
 {
   ADC_Result  result;
@@ -106,7 +133,14 @@ static ADC_MonitorTypeDef ClearTemp={ ADC_CMPCR_1,
                                       ADC_LARGER_THAN_CMP_REG,
                                       0};
 
-
+/*! \brief ConfigureADCforTemperature
+  *
+  * Set up monitoring for overtemperature detection
+  *
+  * @param  channel_number:  channel to configure
+  *
+  * @retval None
+*/
 void BOARD_ConfigureADCforTemperature(uint8_t channel_number)
 {
   uint16_t  adc_value;
@@ -147,7 +181,7 @@ void BOARD_ConfigureADCforTemperature(uint8_t channel_number)
     case 0:
       Overtemp.ResultREGx =ADC_REG9;
       ClearTemp.ResultREGx=ADC_REG9;
-    case 1:                                                                   /* Fall trough due to board design */
+    case 1:                                                                     /* Fall trough due to board design */
       ADC_SetMonitor(TSB_ADB, &Overtemp);
       ADC_SetMonitor(TSB_ADB, &ClearTemp);
       ADC_DisableMonitor(TSB_ADB,ADC_CMPCR_1);

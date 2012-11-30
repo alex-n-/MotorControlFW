@@ -85,7 +85,7 @@
 /* Specification for I2C Bitbanging Driver */
 #define I2C_PORT                                GPIO_PA
 #define I2C_SCL                                 GPIO_BIT_4
-#define I2C_SDA                                 GPIO_BIT_6
+#define I2C_SDA                                 GPIO_BIT_5
 
 /* Signaling of different states */
 #define LED_SIGNAL_CONFIG_READ                  LED_NO_0              /* Led Number for signaling config succesful read from EEProm */

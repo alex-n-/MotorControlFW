@@ -32,11 +32,19 @@
 
 static xSemaphoreHandle LEDSemaphore;
 
+/*! \brief LED Toggle
+  *
+  * Toggle an LED
+  *
+  * @param  led:  LED Number
+  *
+  * @retval None
+*/
 void LED_Toggle(uint8_t led)
 {
   uint8_t status;
 
-  if (BoardRevision == 1)                                             /* Don't use on Revision 1 Boards */
+  if (BoardRevision == 1)                                                       /* Don't use on Revision 1 Boards */
     return;
 
   xSemaphoreTake(LEDSemaphore, 1000);
@@ -46,11 +54,20 @@ void LED_Toggle(uint8_t led)
   xSemaphoreGive(LEDSemaphore);
 }
 
+/*! \brief LED set state
+  *
+  * Set the state of an LED
+  *
+  * @param  led:   LED Number
+  * @param  state: State to set
+  *
+  * @retval None
+*/
 void LED_SetState(uint8_t led, uint8_t state)
 {
   uint8_t status;
 
-  if (BoardRevision == 1)                                             /* Don't use on Revision 1 Boards */
+  if (BoardRevision == 1)                                                       /* Don't use on Revision 1 Boards */
     return;
 
   xSemaphoreTake(LEDSemaphore, 1000);
@@ -60,11 +77,19 @@ void LED_SetState(uint8_t led, uint8_t state)
   xSemaphoreGive(LEDSemaphore);
 }
 
+/*! \brief LED get state
+  *
+  * Get the state of an LED
+  *
+  * @param  led:   LED Number
+  *
+  * @retval actual state
+*/
 uint8_t LED_GetState(uint8_t led)
 {
   uint8_t status;
 
-  if (BoardRevision == 1)                                             /* Don't use on Revision 1 Boards */
+  if (BoardRevision == 1)                                                       /* Don't use on Revision 1 Boards */
     return 0;
 
   xSemaphoreTake(LEDSemaphore, 1000);
@@ -74,9 +99,15 @@ uint8_t LED_GetState(uint8_t led)
   return(status != 0);
 }
 
+/*! \brief LED Init
+  *
+  * Initialize the LED access
+  *
+  * @retval None
+*/
 void LED_Init(void)
 {
-  if (BoardRevision == 1)                                             /* Don't use on Revision 1 Boards */
+  if (BoardRevision == 1)                                                       /* Don't use on Revision 1 Boards */
     return;
   LEDSemaphore = xSemaphoreCreateMutex();
 }

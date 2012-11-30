@@ -24,6 +24,13 @@
 #include BOARD_BOARD_HEADER_FILE
 #include BOARD_LED_HEADER_FILE
 
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
+#endif 
+#include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
+
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -70,7 +77,7 @@ int StopMotor(struct StopMotor_q* q, struct StopMotor_a* a)
 
   memset(a, 0, sizeof(*a));
 
-#ifdef USE_CONFIG_STORAGE  
+#if ((defined USE_CONFIG_STORAGE) && (defined DEBUG))
   memset(&g_config_storage[0], 0xcc, CONFIG_STORAGE_PAGE_SIZE);
   vTaskList((signed char*)&g_config_storage[0]);
   printf("Name          State   Prio  StackLeft  Number\n*********************************************");
@@ -85,7 +92,7 @@ int StopMotor(struct StopMotor_q* q, struct StopMotor_a* a)
 #elif defined __KEIL__
 #pragma diag_suppress = 167
 #endif 
-#endif /* USE_CONFIG_STORAGE */
+#endif /* (defined USE_CONFIG_STORAGE) && (define DEBUG) */
   
   
   return VE_Stop(q->motor_nr);

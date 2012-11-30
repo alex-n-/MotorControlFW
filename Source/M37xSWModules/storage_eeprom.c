@@ -116,9 +116,9 @@ int storage_backend_clear(uint8_t *buf, int size)
   }
 #endif  
   
-  memset (clear_page,0xff,sizeof(clear_page));                        /* create array with all 0xff */
+  memset (clear_page,0xff,sizeof(clear_page));                                  /* create array with all 0xff */
 
-  for (pos=0;pos<EEPROM_BYTE_SIZE;pos+=EEPROM_PAGESIZE)               /* write the clear array to EEProm */
+  for (pos=0;pos<EEPROM_BYTE_SIZE;pos+=EEPROM_PAGESIZE)                         /* write the clear array to EEProm */
     EEPROM_Write(pos,clear_page,sizeof(clear_page));
 
   return 0;

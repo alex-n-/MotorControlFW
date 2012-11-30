@@ -165,7 +165,7 @@ void INTOVV0_IRQHandler (void)
   if (normal_operation==1)
   {
     MotorErrorField[0].Error |= VE_OVERVOLTAGE;
-    VE_ActualStage[0].main  = Stage_Emergency;         /* emergency case exists */
+    VE_ActualStage[0].main  = Stage_Emergency;                                  /* emergency case exists */
   }
 }
 
@@ -179,7 +179,7 @@ void INTOVV1_IRQHandler (void)
   if (normal_operation==1)
   {
     MotorErrorField[1].Error |= VE_OVERVOLTAGE;
-    VE_ActualStage[1].main  = Stage_Emergency;         /* emergency case exists */
+    VE_ActualStage[1].main  = Stage_Emergency;                                  /* emergency case exists */
   }
 }
 #endif /* USE_OVERVOLTAGE_SIGNAL */
@@ -282,7 +282,7 @@ void INTEMG0_IRQHandler (void)
   if (normal_operation==1)
   {
     MotorErrorField[0].Error |= VE_EMERGENCY;
-    VE_ActualStage[0].main  = Stage_Emergency;         /* emergency case exists */
+    VE_ActualStage[0].main  = Stage_Emergency;                                  /* emergency case exists */
   }
 }
 
@@ -296,7 +296,7 @@ void INTEMG1_IRQHandler (void)
   if (normal_operation==1)
   {
     MotorErrorField[1].Error |= VE_EMERGENCY;
-    VE_ActualStage[1].main  = Stage_Emergency;         /* emergency case exists */
+    VE_ActualStage[1].main  = Stage_Emergency;                                  /* emergency case exists */
   }
 }
 #endif /* USE_EMERGENCY_SIGNAL */
@@ -433,7 +433,7 @@ void PMD_ShortBrake(unsigned char channel_number)
     break;
   }
  
-  pPMDx->MDOUT= 0;                                                        /* put the motor driver offline */
+  pPMDx->MDOUT= 0;                                                              /* put the motor driver offline */
 }  
 
 /*! \brief  Switch off the PMD Signals to the Motor
@@ -462,7 +462,7 @@ void PMD_SwitchOff(unsigned char channel_number)
     break;
   }
   
-  pPMDx->MDOUT= 0;                                                        /* put the motor driver offline */
+  pPMDx->MDOUT= 0;                                                              /* put the motor driver offline */
 
 }
 
@@ -549,7 +549,7 @@ void PMD_Init (uint8_t channel_number)
   
   PMD_IOInit(channel_number);
   
-  pPMD->PORTMD   = PMD_OUT_ALL_PMD;                        /* Port Output Mode Register */
+  pPMD->PORTMD   = PMD_OUT_ALL_PMD;                                             /* Port Output Mode Register */
 
   pPMD->MDCR     = PMD_CR_CARRIER_TRIANG |
                    PMD_CR_IRQ_PERIODE_1 |
@@ -560,9 +560,9 @@ void PMD_Init (uint8_t channel_number)
 
   /* PMD Control Register */
   pPMD->MDPRD    = (T0/SystemValues[channel_number].PWMFrequency);
-                                                           /* PWM Period Register */
-  pPMD->MODESEL  = PMD_MODE_VE;                            /* Mode Select Register */
-  pPMD->MDOUT    = 0;                                      /* PMD Output Control Register */
+                                                                                /* PWM Period Register */
+  pPMD->MODESEL  = PMD_MODE_VE;                                                 /* Mode Select Register */
+  pPMD->MDOUT    = 0;                                                           /* PMD Output Control Register */
 
   /* PMD Output Setting Register */
   pPMD->MDPOT    = PMD_PSYNC_ASYNC |
@@ -570,23 +570,23 @@ void PMD_Init (uint8_t channel_number)
                    ChannelValues[channel_number].polh<<3 ;
 
   pPMD->DTR      = ChannelValues[channel_number].DeadTime / 100;
-                                                          /* Set Dead Time Register(100ns@80MHz) */
+                                                                                /* Set Dead Time Register(100ns@80MHz) */
   switch(ChannelValues[channel_number].measurement_type)
   {
   case CURRENT_SHUNT_1:
-    pPMD->TRGCR  = PMD_TRG_1SHUNT;                         /* Trigger Control Register */
-    pPMD->TRGMD  = PMD_EMG_TRG_PROT_ENABLE;                /* Trigger Output Mode Setting */
-    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                     /* Trigger Output Select Register */
+    pPMD->TRGCR  = PMD_TRG_1SHUNT;                                              /* Trigger Control Register */
+    pPMD->TRGMD  = PMD_EMG_TRG_PROT_ENABLE;                                     /* Trigger Output Mode Setting */
+    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* Trigger Output Select Register */
     break;
   case CURRENT_SHUNT_3:
-    pPMD->TRGCR  = PMD_TRG_3SHUNT;                         /* Trigger is PWM peek */
-    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                  /* TRG0 change to TRGx (x:Sector No) */
-    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                     /* TRG No = Sector = 0r */
+    pPMD->TRGCR  = PMD_TRG_3SHUNT;                                              /* Trigger is PWM peek */
+    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                                       /* TRG0 change to TRGx (x:Sector No) */
+    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* TRG No = Sector = 0r */
     break;
   case CURRENT_SENSOR_2:
-    pPMD->TRGCR  = PMD_TRG_2SENSOR;                        /* Trigger is PWM peek */
-    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                  /* TRG0 change to TRGx (x:Sector No) */
-    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                     /* TRG No = Sector = 0r */
+    pPMD->TRGCR  = PMD_TRG_2SENSOR;                                             /* Trigger is PWM peek */
+    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                                       /* TRG0 change to TRGx (x:Sector No) */
+    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* TRG No = Sector = 0r */
     break;
   default:
     assert_param(0);

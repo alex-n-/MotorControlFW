@@ -203,26 +203,26 @@ void SPEED_CONTROL_PWM_HANDLER(void)
 */
 void EXTERNAL_SPEED_CONTROL_Init( void )
 {
-  GPIO_Init(SPEED_CONTROL_CWCCW_PORT,                                 /*< Configure Port for CW/CCW selection */
+  GPIO_Init(SPEED_CONTROL_CWCCW_PORT,                                           /*< Configure Port for CW/CCW selection */
             SPEED_CONTROL_CWCCW_PIN,
             &portConfigInput);
 
-  GPIO_Init(SPEED_CONTROL_FAULT_PORT,                                 /*< Configure Port for fault signaling */
+  GPIO_Init(SPEED_CONTROL_FAULT_PORT,                                           /*< Configure Port for fault signaling */
             SPEED_CONTROL_FAULT_PIN,
             &portConfigOutput);
 
-  GPIO_Init(SPEED_CONTROL_FG_PORT,                                    /*< Configure Port for speed signaling by 3 signal changes per electrical turn */
+  GPIO_Init(SPEED_CONTROL_FG_PORT,                                              /*< Configure Port for speed signaling by 3 signal changes per electrical turn */
             SPEED_CONTROL_FG_PIN,
             &portConfigOutput);
 
-  GPIO_Init(SPEED_CONTROL_PWM_PORT,                                   /* Configure Port for PWM speed control */
+  GPIO_Init(SPEED_CONTROL_PWM_PORT,                                             /* Configure Port for PWM speed control */
             SPEED_CONTROL_PWM_PIN,
             &portConfigInput);
   GPIO_EnableFuncReg(SPEED_CONTROL_PWM_PORT,
                      GPIO_FUNC_REG_1,
                      SPEED_CONTROL_PWM_PIN);
   
-  ADC_Enable(SPEED_CONTROL_ADC_CHANNEL);                              /* Set up ADC for speed control */
+  ADC_Enable(SPEED_CONTROL_ADC_CHANNEL);                                        /* Set up ADC for speed control */
   ADC_SetClk(SPEED_CONTROL_ADC_CHANNEL,
              ADC_HOLD_FIX,
              ADC_FC_DIVIDE_LEVEL_2);
@@ -231,11 +231,11 @@ void EXTERNAL_SPEED_CONTROL_Init( void )
                   TRG_ENABLE(SPEED_CONTROL_ADC_REG));
   NVIC_EnableIRQ(SPEED_CONTROL_ADC_IRQ);
       
-  TMRB_Enable(TSB_TB5);                                               /* Set up TB5 for ADC Trigger */
+  TMRB_Enable(TSB_TB5);                                                         /* Set up TB5 for ADC Trigger */
   TMRB_Init(TSB_TB5, &timerTMBRConfigADC);
   TMRB_SetRunState(TSB_TB5, TMRB_RUN);
   
-  TMRB_Enable(SPEED_CONTROL_PWM_TMRB);                                /* Set up Timer for capture PWM signal */
+  TMRB_Enable(SPEED_CONTROL_PWM_TMRB);                                          /* Set up Timer for capture PWM signal */
   TMRB_Init(SPEED_CONTROL_PWM_TMRB,&timerTMBRConfigPWM);
   TMRB_SetCaptureTiming(SPEED_CONTROL_PWM_TMRB,
                         TMRB_CAPTURE_IN_RISING_FALLING);

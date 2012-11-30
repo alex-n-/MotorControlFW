@@ -36,7 +36,7 @@
 
 /* Version information */
 #define FW_VERSION_MAJOR             1                                          /*!< Major number of the firmware */
-#define FW_VERSION_MINOR             7                                          /*!< Minor number of the firmware */
+#define FW_VERSION_MINOR             8                                          /*!< Minor number of the firmware */
 
 /* Stack sizes & task priorities (lower priority value is higher importance) */
 #define INIT_TASK_STACK_SIZE        ((unsigned portSHORT)      50)              /*!< Stack Site for Init Process Task */
@@ -45,8 +45,8 @@
 #define UI_TASK_STACK_SIZE          ((unsigned portSHORT)      80)              /*!< Stack Site for User Interface Task */
 #define PROTOCOL_TASK_STACK_SIZE    ((unsigned portSHORT)     100)              /*!< Stack Site for Serial Protocol Task */
 #define CAN_TASK_STACK_SIZE         ((unsigned portSHORT)      70)              /*!< Stack Site for CAN Communication Task */
-#define STALL_TASK_STACK_SIZE       ((unsigned portSHORT)      50)              /*!< Stack Site for Stall Detection Task */
-#define TURN_TASK_STACK_SIZE        ((unsigned portSHORT)      50)              /*!< Stack Site for Turn Task */
+#define STALL_TASK_STACK_SIZE       ((unsigned portSHORT)      60)              /*!< Stack Site for Stall Detection Task */
+#define TURN_TASK_STACK_SIZE        ((unsigned portSHORT)      60)              /*!< Stack Site for Turn Task */
 
 #define INIT_TASK_PRIORITY          ((unsigned portBASE_TYPE )  4)              /*!< Task Priority for Init Process */
 #define SYSTEM_LOAD_TASK_PRIORITY   ((unsigned portBASE_TYPE )  0)              /*!< Task Priority for System Load */

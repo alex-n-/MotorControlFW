@@ -31,9 +31,22 @@
 #include BOARD_SPI_HEADER_FILE
 #include TMPM_GPIO_HEADER_FILE
 
+#define ROW_0_OFFSET 0x00
+#define ROW_1_OFFSET 0x40
+#define ROW_2_OFFSET 0x14
+#define ROW_3_OFFSET 0x54
+
+/*! \brief LED Transmit Data
+  *
+  * Transmit data to the LCD
+  *
+  * @param  cmdType: Command type
+  * @param  data:    Data
+  *
+  * @retval None
+*/
 static void LCD_TransmitData(uint8_t cmdType, uint8_t data)
 {
-
   /* Put all display pins low */
   GPIO_WriteData(LCD_INSTRUCTION_PINS, (uint8_t)~LCD_INSTRUCTION_MASK);
   GPIO_WriteData(LCD_DATA_PINS,        (uint8_t)~LCD_DATA_MASK);
@@ -60,6 +73,15 @@ static void LCD_TransmitData(uint8_t cmdType, uint8_t data)
   }
 }
 
+/*! \brief LED Set cursor position
+  *
+  * Place the cursor to row/column
+  *
+  * @param  row:    Row
+  * @param  column: Column
+  *
+  * @retval None
+*/
 void LCD_SetCursorPosition(uint8_t row, uint8_t column)
 {
   unsigned char address = 0;
@@ -74,22 +96,28 @@ void LCD_SetCursorPosition(uint8_t row, uint8_t column)
   switch(row)
   {
   case 0:
-    address = 0x00 + column;
+    address = ROW_0_OFFSET + column;
     break;
   case 1:
-    address = 0x40 + column;
+    address = ROW_1_OFFSET + column;
     break;
   case 2:
-    address = 0x14 + column;
+    address = ROW_2_OFFSET + column;
     break;
   case 3:
-    address = 0x54 + column;
+    address = ROW_3_OFFSET + column;
     break;
   }
 
   LCD_TransmitData(LCD_CMD_INSTR, (LCD_INS_SET_ADDR | address));
 }
 
+/*! \brief LCD Clear
+  *
+  * Clear the LCD display
+  *
+  * @retval None
+*/
 void LCD_Clear(void)
 {
   SPI_SelectDevice(SPI_DEVICE_LCD);
@@ -97,6 +125,12 @@ void LCD_Clear(void)
   SPI_DeselectDevice();
 }
 
+/*! \brief Enable Cursor Blink
+  *
+  * Let the cursor blink
+  *
+  * @retval None
+*/
 void LCD_EnableCursorBlink(void)
 {
   SPI_SelectDevice(SPI_DEVICE_LCD);
@@ -107,6 +141,12 @@ void LCD_EnableCursorBlink(void)
   SPI_DeselectDevice();
 }
 
+/*! \brief Disable Cursor Blink
+  *
+  * Stop the cursor blink
+  *
+  * @retval None
+*/
 void LCD_DisableCursorBlink(void)
 {
   SPI_SelectDevice(SPI_DEVICE_LCD);
@@ -115,6 +155,14 @@ void LCD_DisableCursorBlink(void)
   SPI_DeselectDevice();
 }
 
+/*! \brief LCD Display Text
+  *
+  * @param  row:    Row to start
+  * @param  column: Column to start
+  * @param  text:   Text to display
+  *
+  * @retval None
+*/
 void LCD_DisplayText(uint8_t row, uint8_t column, char* text)
 {
   SPI_SelectDevice(SPI_DEVICE_LCD);
@@ -123,13 +171,23 @@ void LCD_DisplayText(uint8_t row, uint8_t column, char* text)
   while(*text != 0)
   {
     LCD_TransmitData(LCD_CMD_DATA, *text++);
-    if(++column >= LCD_COLUMNS)               /* Don't write over end of line */
+    if(++column >= LCD_COLUMNS)                                                 /* Don't write over end of line */
       break;
   }
 
   SPI_DeselectDevice();
 }
 
+/*! \brief LCD Display Value
+  *
+  * @param  row:     Row to start
+  * @param  column:  Column to start
+  * @param  base:    Base of number display
+  * @param  digits:  Digits to display
+  * @param  value:   Value to display
+  *
+  * @retval None
+*/
 void LCD_DisplayValue(uint8_t row, uint8_t column, uint8_t base, uint8_t digits, uint32_t value)
 {
   char    convert[12];
@@ -163,9 +221,15 @@ void LCD_DisplayValue(uint8_t row, uint8_t column, uint8_t base, uint8_t digits,
   LCD_DisplayText(row, column, (char*)string);
 }
 
+/*! \brief LCD Init
+  *
+  * Initialize the LCD Display
+  *
+  * @retval None
+*/
 void LCD_Init(void)
 {
-  vTaskDelay( 200 / portTICK_RATE_MS );                               /* 200 ms needed for powering up the display */
+  vTaskDelay( 200 / portTICK_RATE_MS );                                         /* 200 ms needed for powering up the display */
   SPI_SelectDevice(SPI_DEVICE_LCD);
   LCD_TransmitData(LCD_CMD_INSTR,  LCD_CFG_FUNC_SET 
                                  | LCD_CFG_DATALEN_8

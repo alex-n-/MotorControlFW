@@ -29,7 +29,11 @@
 
 #include "config.h"
 
-#define configTOTAL_HEAP_SIZE           ((size_t) (2780))
+#ifdef __TMPM_370__
+#define configTOTAL_HEAP_SIZE           ((size_t) (3000))
+#else
+#define configTOTAL_HEAP_SIZE           ((size_t) (2700))
+#endif
 
 #ifdef USE_LOAD_STATISTICS
 #define configUSE_IDLE_HOOK             1

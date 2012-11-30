@@ -32,24 +32,24 @@
 ************************ Local Data **********************************
 *********************************************************************/	
 static int16_t              DSODataArray[BOARD_DSO_SIZE];
-static Expected_Log_Caller  expectedCaller        = PMD_CALLING;      /* from whom the next irq should come */
-static unsigned char        trigger_fired         = 0;                /* flag for trigger has fired */
-static unsigned char        channel               = 1;                /* channel to use for dso logging */
-static unsigned long        selected_values       = 0;                /* selected signals for dso logging */
-static unsigned int         storage_size          = 0;                /* size of dso logging storage area */
-static unsigned char        do_logging            = 0;                /* flag for logging is active */
-static unsigned int         values_after_trigger  = 0;                /* number of values to log after trigger has happened */
-static signed   char        trigger_offset        = 0;                /* ofset inside logged data for the value to trigger on */
-static unsigned int         nr_log_data           = 0;                /* Number of Data beeing captured */
-static signed char          trigger_edge          = 0;                /* flag for egde trigger - otherwise center trigger */
-static unsigned char        transmits             = 0;                /* number of transmit elements to host */
-static int16_t              trigger_level         = 0;                /* level of trigger */
-static int16_t*             actual_pos            = NULL;             /* actual pointer inside of logged data */
-static int16_t*             storage_position      = NULL;             /* start of log data area */
-static int16_t*             wrap_position         = NULL;             /* end of log data area (might not be at the real end - depending logged data fit to the total end */
-static unsigned long        log_times             = 0;                /* numer of times the logging has been done (can not compare first log with nothing) */
-static int16_t              spread                = 0;                /* actual spread state */
-static unsigned char        spread_factor         = 0;                /* factor of which the logging is spread */
+static Expected_Log_Caller  expectedCaller        = PMD_CALLING;                /* from whom the next irq should come */
+static unsigned char        trigger_fired         = 0;                          /* flag for trigger has fired */
+static unsigned char        channel               = 1;                          /* channel to use for dso logging */
+static unsigned long        selected_values       = 0;                          /* selected signals for dso logging */
+static unsigned int         storage_size          = 0;                          /* size of dso logging storage area */
+static unsigned char        do_logging            = 0;                          /* flag for logging is active */
+static unsigned int         values_after_trigger  = 0;                          /* number of values to log after trigger has happened */
+static signed   char        trigger_offset        = 0;                          /* ofset inside logged data for the value to trigger on */
+static unsigned int         nr_log_data           = 0;                          /* Number of Data beeing captured */
+static signed char          trigger_edge          = 0;                          /* flag for egde trigger - otherwise center trigger */
+static unsigned char        transmits             = 0;                          /* number of transmit elements to host */
+static int16_t              trigger_level         = 0;                          /* level of trigger */
+static int16_t*             actual_pos            = NULL;                       /* actual pointer inside of logged data */
+static int16_t*             storage_position      = NULL;                       /* start of log data area */
+static int16_t*             wrap_position         = NULL;                       /* end of log data area (might not be at the real end - depending logged data fit to the total end */
+static unsigned long        log_times             = 0;                          /* numer of times the logging has been done (can not compare first log with nothing) */
+static int16_t              spread                = 0;                          /* actual spread state */
+static unsigned char        spread_factor         = 0;                          /* factor of which the logging is spread */
 
 /*********************************************************************
 ************************** Macros ************************************
@@ -190,62 +190,62 @@ uint16_t DSO_Configure_Continuous_Mode(uint8_t  channel_number,
                                        uint16_t level,
                                        uint8_t  spread_selection)
 {
-  nr_log_data = get_nr_of_bits_set(selected_signals);                 /* get the number of different signals to be logged */
+  nr_log_data = get_nr_of_bits_set(selected_signals);                           /* get the number of different signals to be logged */
   
-  if (nr_log_data>MAX_DSO_VALUE)                                      /* check for overflow */
+  if (nr_log_data>MAX_DSO_VALUE)                                                /* check for overflow */
     return 0;
 
-  do_logging    = 0;                                                  /* prevent logging during configuration */
+  do_logging    = 0;                                                            /* prevent logging during configuration */
   
-  memset(&DSODataArray,0,sizeof(DSODataArray));                       /* clean up buffer */
+  memset(&DSODataArray,0,sizeof(DSODataArray));                                 /* clean up buffer */
 
   log_times       = 0;
-  expectedCaller  = PMD_CALLING;                                      /* PMD IRQ comes first */
+  expectedCaller  = PMD_CALLING;                                                /* PMD IRQ comes first */
   
-  storage_size    = sizeof(DSODataArray)/sizeof(DSODataArray[0]);     /* number of elements that could be logged */
-  storage_position= &DSODataArray[0];                                 /* start position of storage area */
-  actual_pos      = storage_position;                                 /* actual position is beginning of area */
-  channel         = channel_number;                                   /* remember the channel */
-  selected_values = selected_signals;                                 /* remember the signals */
-  wrap_position   = (int16_t*)(( unsigned long)storage_position       /* position where to wrap (if data doesn't fit to the last byte */
+  storage_size    = sizeof(DSODataArray)/sizeof(DSODataArray[0]);               /* number of elements that could be logged */
+  storage_position= &DSODataArray[0];                                           /* start position of storage area */
+  actual_pos      = storage_position;                                           /* actual position is beginning of area */
+  channel         = channel_number;                                             /* remember the channel */
+  selected_values = selected_signals;                                           /* remember the signals */
+  wrap_position   = (int16_t*)(( unsigned long)storage_position                 /* position where to wrap (if data doesn't fit to the last byte */
                      + nr_log_data * (storage_size/nr_log_data)
                      * sizeof(uint16_t));
 
-  spread_factor   = spread_selection;                                 /* remember spread factor */
+  spread_factor   = spread_selection;                                           /* remember spread factor */
   spread          = 0;
-  trigger_level   = level;                                            /* remember trigger level */
-  transmits       = ((unsigned long)wrap_position                     /* calculate number of transmit packets for GUI */
+  trigger_level   = level;                                                      /* remember trigger level */
+  transmits       = ((unsigned long)wrap_position                               /* calculate number of transmit packets for GUI */
                    - (unsigned long)storage_position
                    + MAX_DSO_VALUE*sizeof(uint16_t) - 1 )
                    / MAX_DSO_VALUE / sizeof(uint16_t) -1;
   
   
-  if ((trigger_mode & TRIGGER_CENTER) == TRIGGER_CENTER)              /* calculate values to log after trigger has fired */
+  if ((trigger_mode & TRIGGER_CENTER) == TRIGGER_CENTER)                        /* calculate values to log after trigger has fired */
     values_after_trigger = storage_size/nr_log_data/2;
   else
     values_after_trigger = storage_size/nr_log_data;
 
-  if ((trigger_mode & TRIGGER_RISING) == TRIGGER_RISING)              /* remember trigger edge */
+  if ((trigger_mode & TRIGGER_RISING) == TRIGGER_RISING)                        /* remember trigger edge */
     trigger_edge = TRIGGER_RISING;
   else
     trigger_edge = ~TRIGGER_RISING;
   
   if (!trigger_on_value)
   {
-      trigger_fired = 1;                                              /* when no trigger selected just start directly */
-      values_after_trigger = storage_size/nr_log_data;                /* fill full buffer with data */
+      trigger_fired = 1;                                                        /* when no trigger selected just start directly */
+      values_after_trigger = storage_size/nr_log_data;                          /* fill full buffer with data */
   }
   else
   {
-      trigger_fired = 0;                                              /* when trigger signal selected - wait ... */
-      trigger_offset  = get_trigger_offset(trigger_on_value);         /* get value (nuber of logged data) to trigger on */
+      trigger_fired = 0;                                                        /* when trigger signal selected - wait ... */
+      trigger_offset  = get_trigger_offset(trigger_on_value);                   /* get value (nuber of logged data) to trigger on */
   }
   
   dprintf("trigger_offset:%d\n",trigger_offset);
   dprintf("nr_log_data:%d\n",nr_log_data);
   dprintf("values_after_trigger:%d\n",values_after_trigger);
   
-  do_logging = 1;                                                     /* enable logging (arm trigger) */
+  do_logging = 1;                                                               /* enable logging (arm trigger) */
   
   return transmits;
 }
@@ -263,26 +263,26 @@ uint16_t DSO_Configure_Single_Shot_Mode(uint8_t  channel_number,
 {
   unsigned char nr_log_data;
   
-  nr_log_data = get_nr_of_bits_set(selected_signals);                 /* get the number of different signals to be logged */
+  nr_log_data = get_nr_of_bits_set(selected_signals);                           /* get the number of different signals to be logged */
  
-  if (nr_log_data>MAX_DSO_VALUE)                                      /* check for overflow */
+  if (nr_log_data>MAX_DSO_VALUE)                                                /* check for overflow */
     return 0;
   
-  if (do_logging==1)                                                  /* checkif normal logging is active and prevent singleshot in that case */
+  if (do_logging==1)                                                            /* checkif normal logging is active and prevent singleshot in that case */
     return 0;
 
-  storage_size        = sizeof(DSODataArray)/sizeof(DSODataArray[0]); /* number of elements that could be logged */ 
-  storage_position    = &DSODataArray[0];                             /* start position of storage area */
-  actual_pos          = storage_position;                             /* actual position is beginning of area */
+  storage_size        = sizeof(DSODataArray)/sizeof(DSODataArray[0]);           /* number of elements that could be logged */ 
+  storage_position    = &DSODataArray[0];                                       /* start position of storage area */
+  actual_pos          = storage_position;                                       /* actual position is beginning of area */
 
-  channel             = channel_number;                               /* remember channel */
-  selected_values     = selected_signals;                             /* remember selected signals */
-  expectedCaller      = PMD_CALLING;                                  /* PMD IRQ comes first */
-  log_times           = 0;                                            /* first set of data */
-  values_after_trigger= 1;                                            /* one set of values */
-  trigger_fired       = 1;                                            /* set trigger fired */
-  transmits           = 1;                                            /* one set of data to transmit */
-  do_logging          = 1;                                            /* start logging directly */
+  channel             = channel_number;                                         /* remember channel */
+  selected_values     = selected_signals;                                       /* remember selected signals */
+  expectedCaller      = PMD_CALLING;                                            /* PMD IRQ comes first */
+  log_times           = 0;                                                      /* first set of data */
+  values_after_trigger= 1;                                                      /* one set of values */
+  trigger_fired       = 1;                                                      /* set trigger fired */
+  transmits           = 1;                                                      /* one set of data to transmit */
+  do_logging          = 1;                                                      /* start logging directly */
   
   return transmits;
 }
@@ -298,20 +298,20 @@ int DSO_GetLogData(int16_t* pos)
 {
   int i;
   
-  if (do_logging==1)                                                  /* logging is active ? */
+  if (do_logging==1)                                                            /* logging is active ? */
     return -2;
 
-  if (transmits==0)                                                   /* nothing to transmit anymore */
+  if (transmits==0)                                                             /* nothing to transmit anymore */
     return -1;
   
-  for (i=0;i<MAX_DSO_VALUE;i++)                                       /* prepare one set of data */
+  for (i=0;i<MAX_DSO_VALUE;i++)                                                 /* prepare one set of data */
   {
     *pos++=*actual_pos++;
     CHECK_WRAP(actual_pos);
   }
   
-  transmits--;                                                        /* one set less to tranfer */
-  return 0;                                                           /* data is valid */
+  transmits--;                                                                  /* one set less to tranfer */
+  return 0;                                                                     /* data is valid */
 }
 
 /*! \brief  Logging functionality
@@ -344,23 +344,23 @@ void DSO_Log (Expected_Log_Caller caller , TEE_VE_TypeDef* pVEx )
     break;
   }
     
-  if (   (caller        == expectedCaller)                            /* Interrupr from IRQ that's next to log? */
-      && (pVEx          == check_pVEx)                                /* correct channel? */
-      && (trigger_fired == 0) )                                       /* trigger has fired */
+  if (   (caller        == expectedCaller)                                      /* Interrupr from IRQ that's next to log? */
+      && (pVEx          == check_pVEx)                                          /* correct channel? */
+      && (trigger_fired == 0) )                                                 /* trigger has fired */
   {
     if (caller==PMD_CALLING)
     {
-      if (spread == 0)                                                /* when spread factor fefined - only log every spread-number value */
-        actual_pos=DSO_Fill_up_dataPMD(actual_pos);                     /* put values available during PMD IRQ to the log data */
-      expectedCaller=VE_CALLING;                                      /* next one is Vector Engine */
+      if (spread == 0)                                                          /* when spread factor fefined - only log every spread-number value */
+        actual_pos=DSO_Fill_up_dataPMD(actual_pos);                             /* put values available during PMD IRQ to the log data */
+      expectedCaller=VE_CALLING;                                                /* next one is Vector Engine */
     }
     else
     {        
-      if (spread == 0)                                                /* when spread factor fefined - only log every spread-number value */
-        actual_pos=DSO_Fill_up_dataVE(actual_pos,pVEx);                 /* put values available during VE IRQ to the log data */
-      expectedCaller=PMD_CALLING;                                     /* next one is PMD again */
+      if (spread == 0)                                                          /* when spread factor fefined - only log every spread-number value */
+        actual_pos=DSO_Fill_up_dataVE(actual_pos,pVEx);                         /* put values available during VE IRQ to the log data */
+      expectedCaller=PMD_CALLING;                                               /* next one is PMD again */
 
-      CHECK_WRAP(actual_pos);                                         /* check for passing wrap around position */
+      CHECK_WRAP(actual_pos);                                                   /* check for passing wrap around position */
       log_times++;
 
       /* Determine position of trigger value (older) - keep wrap around in mind */
@@ -370,16 +370,16 @@ void DSO_Log (Expected_Log_Caller caller , TEE_VE_TypeDef* pVEx )
       oldval_pos = newval_pos - nr_log_data;
       CHECK_REWRAP(oldval_pos);
       
-      if (log_times>2)                                                /* Can only compare if more than 2 values are available */
+      if (log_times>2)                                                          /* Can only compare if more than 2 values are available */
       {        
         if ( (   (oldval_pos[trigger_offset] > newval_pos[trigger_offset])
               && (newval_pos[trigger_offset] <= trigger_level)
               && (oldval_pos[trigger_offset] >= trigger_level)
-              && (trigger_edge == ~TRIGGER_RISING) )                  /* Falling edge and value smaller or equal trigger level */
+              && (trigger_edge == ~TRIGGER_RISING) )                            /* Falling edge and value smaller or equal trigger level */
         || (   (oldval_pos[trigger_offset] < newval_pos[trigger_offset])
               && (newval_pos[trigger_offset] >= trigger_level)
               && (oldval_pos[trigger_offset] <= trigger_level)
-              && (trigger_edge ==  TRIGGER_RISING) ) )                /* Rising  edge and value greater or equal trigger level */
+              && (trigger_edge ==  TRIGGER_RISING) ) )                          /* Rising  edge and value greater or equal trigger level */
         {
           trigger_fired=1;
 //          dprintf("old 0x%04x, new 0x%04x, level 0x%04x, trigger_edge %d\n", oldval_pos[trigger_offset], newval_pos[trigger_offset], trigger_level, trigger_edge);
@@ -389,31 +389,31 @@ void DSO_Log (Expected_Log_Caller caller , TEE_VE_TypeDef* pVEx )
     }
   }
   
-  if (    (caller       == expectedCaller)                            /* Interrupr from IRQ that's next to log? */
-       && (pVEx         ==check_pVEx)                                 /* correct channel? */
-       && (trigger_fired== 1)                                         /* trigger has fired */
-       && (spread       == 0) )                                       /* when spread factor fefined - only log every spread-number value */
+  if (    (caller       == expectedCaller)                                      /* Interrupr from IRQ that's next to log? */
+       && (pVEx         ==check_pVEx)                                           /* correct channel? */
+       && (trigger_fired== 1)                                                   /* trigger has fired */
+       && (spread       == 0) )                                                 /* when spread factor fefined - only log every spread-number value */
   {
-    if (values_after_trigger > 0)                                     /* still something to log? */
+    if (values_after_trigger > 0)                                               /* still something to log? */
     {
       if (caller==PMD_CALLING)
       {
-        actual_pos=DSO_Fill_up_dataPMD(actual_pos);                   /* put values available during PMD IRQ to the log data */
-        expectedCaller=VE_CALLING;                                    /* next one is Vector Engine */
+        actual_pos=DSO_Fill_up_dataPMD(actual_pos);                             /* put values available during PMD IRQ to the log data */
+        expectedCaller=VE_CALLING;                                              /* next one is Vector Engine */
       }
       else
       {        
-        actual_pos=DSO_Fill_up_dataVE(actual_pos,pVEx);               /* put values available during VE IRQ to the log data */
-        CHECK_WRAP(actual_pos);                                       /* check wrap */
+        actual_pos=DSO_Fill_up_dataVE(actual_pos,pVEx);                         /* put values available during VE IRQ to the log data */
+        CHECK_WRAP(actual_pos);                                                 /* check wrap */
 
-        expectedCaller=PMD_CALLING;                                   /* PMD is next again */
-        values_after_trigger--;                                       /* one set of values less to log */
+        expectedCaller=PMD_CALLING;                                             /* PMD is next again */
+        values_after_trigger--;                                                 /* one set of values less to log */
       }
     }
     else
     {
-      do_logging=0;                                                   /* Logging has finished */
-      trigger_fired=0;                                                /* clear trigger fired */
+      do_logging=0;                                                             /* Logging has finished */
+      trigger_fired=0;                                                          /* clear trigger fired */
       dprintf("Logging done\n");
     }
   }
@@ -423,7 +423,7 @@ void DSO_Log (Expected_Log_Caller caller , TEE_VE_TypeDef* pVEx )
   {
      spread--;                                                        
      if (spread<0)
-       spread=spread_factor;                                          /* cause not logging every set of values */
+       spread=spread_factor;                                                    /* cause not logging every set of values */
   }
   
   }    

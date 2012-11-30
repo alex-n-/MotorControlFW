@@ -26,49 +26,49 @@
 #include "config.h"
 #include TMPM_HEADER_FILE
 
-#define VE_PERIOD_TIME         1                                      /* [ms]  Cycle time of MAIN control */
+#define VE_PERIOD_TIME                    1                                     /* [ms]  Cycle time of MAIN control */
 
-#define PAI   314159265                                               /* Pi     * 100000000 */
-#define PAI2  2 * PAI                                                 /* Pi * 2 * 100000000 */
+#define PAI   314159265                                                         /* Pi     * 100000000 */
+#define PAI2  2 * PAI                                                           /* Pi * 2 * 100000000 */
 
-#define SECONDS_PER_MINUTE      60                                    /* One minute has 60 seconds */                                    
+#define SECONDS_PER_MINUTE                60                                    /* One minute has 60 seconds */                                    
 
-#define FIXPOINT_12 0x1000                                            /* fix point Q12 4096 */
-#define FIXPOINT_15 0x8000                                            /* fix point Q15 32768 */
-#define FIXPOINT_16 0x10000                                           /* fix point Q16 65536 */
-#define FIXPOINT_31 0x80000000                                        /* fix point Q31 */
-#define ROUND_BIT15 0x00008000                                        /* Rounding off */
+#define FIXPOINT_12 0x1000                                                      /* fix point Q12 4096 */
+#define FIXPOINT_15 0x8000                                                      /* fix point Q15 32768 */
+#define FIXPOINT_16 0x10000                                                     /* fix point Q16 65536 */
+#define FIXPOINT_31 0x80000000                                                  /* fix point Q31 */
+#define ROUND_BIT15 0x00008000                                                  /* Rounding off */
 
 /* fix point12 sine values */
-#define cSine1            (int16_t) (FIXPOINT_12 * 3.140625)
-#define cSine2            (int16_t) (FIXPOINT_12 * 0.02026367)
-#define cSine3            (int16_t) (FIXPOINT_12 * -5.325196)
-#define cSine4            (int16_t) (FIXPOINT_12 * 0.5446778)
-#define cSine5            (int16_t) (FIXPOINT_12 * 1.800293)
-#define VE_DIV_Q15_SQRT3             18919                            /* 1 / ROOT3 * 32768 */
+#define cSine1                            (int16_t) (FIXPOINT_12 * 3.140625)
+#define cSine2                            (int16_t) (FIXPOINT_12 * 0.02026367)
+#define cSine3                            (int16_t) (FIXPOINT_12 * -5.325196)
+#define cSine4                            (int16_t) (FIXPOINT_12 * 0.5446778)
+#define cSine5                            (int16_t) (FIXPOINT_12 * 1.800293)
+#define VE_DIV_Q15_SQRT3                  18919                                 /* 1 / ROOT3 * 32768 */
 
-#define ELE_DEG(x)        (FIXPOINT_16 * (x) / 360)
+#define ELE_DEG(x)                        (FIXPOINT_16 * (x) / 360)
 
-#define VE_ENABLE         (1 << 0)                                    /* Enable VE */
-#define VE_DISABLE        (0 << 0)                                    /* Enable VE */
-#define VE_IDLE_ACTIVE    (1 << 1)                                    /* Controls whether or not the clock is supplied to the Vector Engine in IDLE mode */
+#define VE_ENABLE                         (1 << 0)                              /* Enable VE */
+#define VE_DISABLE                        (0 << 0)                              /* Enable VE */
+#define VE_IDLE_ACTIVE                    (1 << 1)                              /* Controls whether or not the clock is supplied to the Vector Engine in IDLE mode */
 
-#define VE_MODE_OFF       0x00                                        /* Flag VE channel off */
-#define VE_OUTPUTENABLE	  0x04                                        /* Flag VE output enable */
-#define VE_EMGRETURN      0x0C                                        /* Flag VE return from EMG */
-#define VE_ZEROCURRENTEN  0x02                                        /* Flag VE Zero Current detection enable */
-#define VE_PHASEINTERPOL  0x01                                        /* Flag VE phase interpolation enable */
+#define VE_MODE_OFF                       0x00                                  /* Flag VE channel off */
+#define VE_OUTPUTENABLE	                  0x04                                  /* Flag VE output enable */
+#define VE_EMGRETURN                      0x0C                                  /* Flag VE return from EMG */
+#define VE_ZEROCURRENTEN                  0x02                                  /* Flag VE Zero Current detection enable */
+#define VE_PHASEINTERPOL                  0x01                                  /* Flag VE phase interpolation enable */
 
 
-#define VE_TRIGGER_MODE_CHANNEL_0_SHIFT 0
-#define VE_TRIGGER_MODE_CHANNEL_1_SHIFT 2
-#define VE_TRIGGER_MODE_IGN_BOTH        0x00                          /* Ignore both INTA0 (unit A) and INTA1 (unit B) */
-#define VE_TRIGGER_MODE_START_x0        0x01                          /* Start by INTx0 */
-#define VE_TRIGGER_MODE_START_x1        0x02                          /* Start by INTx1 */
-#define VE_TRIGGER_MODE_START_BOTH      0x03                          /* Start when both INTA0 (unit A) and INTA1 (unit B) occur */
+#define VE_TRIGGER_MODE_CHANNEL_0_SHIFT   0
+#define VE_TRIGGER_MODE_CHANNEL_1_SHIFT   2
+#define VE_TRIGGER_MODE_IGN_BOTH          0x00                                  /* Ignore both INTA0 (unit A) and INTA1 (unit B) */
+#define VE_TRIGGER_MODE_START_x0          0x01                                  /* Start by INTx0 */
+#define VE_TRIGGER_MODE_START_x1          0x02                                  /* Start by INTx1 */
+#define VE_TRIGGER_MODE_START_BOTH        0x03                                  /* Start when both INTA0 (unit A) and INTA1 (unit B) occur */
 
-#define VE_CPURUNTRG_CHANNEL_0          (0x1 << 0)                    /* Starts channel 0 by programming */
-#define VE_CPURUNTRG_CHANNEL_1          (0x1 << 1)                    /* Starts channel 1 by programming */
+#define VE_CPURUNTRG_CHANNEL_0            (0x1 << 0)                            /* Starts channel 0 by programming */
+#define VE_CPURUNTRG_CHANNEL_1            (0x1 << 1)                            /* Starts channel 1 by programming */
 
 /* FMODE */
 #define VE_FMODE_3PHASE_MODULATION        (0 << 0)
@@ -94,24 +94,24 @@
 #define VE_MODE_OUTPUT_OFF_EMG_RET        (0x3 << 2)
 
 /* REPTIME */
-#define VE_REPTIME_CHANNEL_0_SHIFT  0
-#define VE_REPTIME_CHANNEL_1_SHIFT  4
-#define VE_REPTIME_NO_SCHEDULE      0
-#define VE_REPTIME_1                0x01
-#define VE_REPTIME_2                0x02
-#define VE_REPTIME_3                0x03
-#define VE_REPTIME_4                0x04
-#define VE_REPTIME_5                0x05
-#define VE_REPTIME_6                0x06
-#define VE_REPTIME_7                0x07
-#define VE_REPTIME_8                0x08
-#define VE_REPTIME_9                0x09
-#define VE_REPTIME_10               0x0a
-#define VE_REPTIME_11               0x0b
-#define VE_REPTIME_12               0x0c
-#define VE_REPTIME_13               0x0d
-#define VE_REPTIME_14               0x0e
-#define VE_REPTIME_15               0x0f
+#define VE_REPTIME_CHANNEL_0_SHIFT        0
+#define VE_REPTIME_CHANNEL_1_SHIFT        4
+#define VE_REPTIME_NO_SCHEDULE            0
+#define VE_REPTIME_1                      0x01
+#define VE_REPTIME_2                      0x02
+#define VE_REPTIME_3                      0x03
+#define VE_REPTIME_4                      0x04
+#define VE_REPTIME_5                      0x05
+#define VE_REPTIME_6                      0x06
+#define VE_REPTIME_7                      0x07
+#define VE_REPTIME_8                      0x08
+#define VE_REPTIME_9                      0x09
+#define VE_REPTIME_10                     0x0a
+#define VE_REPTIME_11                     0x0b
+#define VE_REPTIME_12                     0x0c
+#define VE_REPTIME_13                     0x0d
+#define VE_REPTIME_14                     0x0e
+#define VE_REPTIME_15                     0x0f
 
 /* TASKAPP */
 #define VE_TASKAPP_CLEAN_MASK                         0x0f
@@ -135,23 +135,23 @@
 
 typedef struct
 {
-  __IO uint32_t EN;                                                   /*!< VE enable/disable                            */
-  __O  uint32_t CPURUNTRG;                                            /*!< CPU start trigger selection                  */
-  __IO uint32_t TASKAPP;                                              /*!< Task selection                               */
-  __IO uint32_t ACTSCH;                                               /*!< Operation schedule selection                 */
-  __IO uint32_t REPTIME;                                              /*!< Schedule repeat count                        */
-  __IO uint32_t TRGMODE;                                              /*!< Start trigger mode                           */
-  __IO uint32_t ERRINTEN;                                             /*!< Error interrupt enable/disable               */
-  __O  uint32_t COMPEND;                                              /*!< VE forced termination                        */
-  __I  uint32_t ERRDET;                                               /*!< Error detection                              */
-  __I  uint32_t SCHTASKRUN;                                           /*!< Schedule executing flag/executing task       */
+  __IO uint32_t EN;                                                             /*!< VE enable/disable                            */
+  __O  uint32_t CPURUNTRG;                                                      /*!< CPU start trigger selection                  */
+  __IO uint32_t TASKAPP;                                                        /*!< Task selection                               */
+  __IO uint32_t ACTSCH;                                                         /*!< Operation schedule selection                 */
+  __IO uint32_t REPTIME;                                                        /*!< Schedule repeat count                        */
+  __IO uint32_t TRGMODE;                                                        /*!< Start trigger mode                           */
+  __IO uint32_t ERRINTEN;                                                       /*!< Error interrupt enable/disable               */
+  __O  uint32_t COMPEND;                                                        /*!< VE forced termination                        */
+  __I  uint32_t ERRDET;                                                         /*!< Error detection                              */
+  __I  uint32_t SCHTASKRUN;                                                     /*!< Schedule executing flag/executing task       */
        uint32_t RESERVED0;
-  __IO uint32_t TMPREG0;                                              /*!< Temporary register                           */
-  __IO uint32_t TMPREG1;                                              /*!< Temporary register                           */
-  __IO uint32_t TMPREG2;                                              /*!< Temporary register                           */
-  __IO uint32_t TMPREG3;                                              /*!< Temporary register                           */
-  __IO uint32_t TMPREG4;                                              /*!< Temporary register                           */
-  __IO uint32_t TMPREG5;                                              /*!< Temporary register                           */
+  __IO uint32_t TMPREG0;                                                        /*!< Temporary register                           */
+  __IO uint32_t TMPREG1;                                                        /*!< Temporary register                           */
+  __IO uint32_t TMPREG2;                                                        /*!< Temporary register                           */
+  __IO uint32_t TMPREG3;                                                        /*!< Temporary register                           */
+  __IO uint32_t TMPREG4;                                                        /*!< Temporary register                           */
+  __IO uint32_t TMPREG5;                                                        /*!< Temporary register                           */
        uint32_t RESERVED00;
        uint32_t RESERVED01;
        uint32_t RESERVED02;
@@ -229,61 +229,61 @@ typedef struct
        uint32_t RESERVED74;
        uint32_t RESERVED75;
        uint32_t RESERVED76;
-  __IO uint32_t TADC;                                                 /*!< Common ADC conversion time (based on PWM clock) */
+  __IO uint32_t TADC;                                                           /*!< Common ADC conversion time (based on PWM clock) */
 } TEE_VEC_TypeDef;
 
 typedef struct
 {
-  __IO uint32_t MCTLF;                                               /*!< Status flags                                 */
-  __IO uint32_t MODE;                                                /*!< Task control mode                            */
-  __IO uint32_t FMODE;                                               /*!< Flow control                                 */
-  __IO uint32_t TPWM;                                                /*!< PWM period rate (PWM period [s] ¡Á maximum speed*1 ¡Á 2^16) */
-  __IO uint32_t OMEGA;                                               /*!< Rotation speed (speed [Hz]¡Â maximum speed *1¡ù1 ¡Á 2^15) */
-  __IO uint32_t THETA;                                               /*!< Motor phase (motor phase [deg]/360 ¡Á 2^16) */
-  __IO uint32_t IDREF;                                               /*!< d-axis reference value (current [A] ¡Â maximum current*2 ¡Á 2^15) */
-  __IO uint32_t IQREF;                                               /*!< q-axis reference value (current [A] ¡Â maximum current *2 ¡Á 2^15) */
-  __IO uint32_t VD;                                                  /*!< d-axis voltage (voltage [V] ¡Â maximum voltage *3 ¡Á 2^31)*/
-  __IO uint32_t VQ;                                                  /*!< q-axis voltage (voltage [V] ¡Â maximum voltage *3 ¡Á 2^31)*/
-  __IO uint32_t CIDKI;                                               /*!< Integral coefficient for PI control of d-axis */
-  __IO uint32_t CIDKP;                                               /*!< Proportional coefficient for PI control of d-axis */
-  __IO uint32_t CIQKI;                                               /*!< Integral coefficient for PI control of q-axis */
-  __IO uint32_t CIQKP;                                               /*!< Proportional coefficient for PI control of q-axis */
-  __IO uint32_t VDIH;                                                /*!< Upper 32 bits of integral term (VDI ) of d-axis voltage */
-  __IO uint32_t VDILH;                                               /*!< Lower 32 bits of integral term (VDI) of d-axis voltage */
-  __IO uint32_t VQIH;                                                /*!< Upper 32 bits of integral term (VQI) of q-axis voltage */
-  __IO uint32_t VQILH;                                               /*!< Lower 32 bits of integral term (VQI) of q-axis voltage */
-  __IO uint32_t FPWMCHG;                                             /*!< Switching speed (for 2-phase modulation and shift PWM) */
-  __IO uint32_t MDPRD;                                               /*!< PWM period (to be set identically with PMD¡¯s PWM period) */
-  __IO uint32_t MINPLS;                                              /*!< Minimum pulse width                          */
-  __IO uint32_t TRGCRC;                                              /*!< Synchronizing trigger correction value       */
+  __IO uint32_t MCTLF;                                                          /*!< Status flags                                 */
+  __IO uint32_t MODE;                                                           /*!< Task control mode                            */
+  __IO uint32_t FMODE;                                                          /*!< Flow control                                 */
+  __IO uint32_t TPWM;                                                           /*!< PWM period rate (PWM period [s] ¡Á maximum speed*1 ¡Á 2^16) */
+  __IO uint32_t OMEGA;                                                          /*!< Rotation speed (speed [Hz]¡Â maximum speed *1¡ù1 ¡Á 2^15) */
+  __IO uint32_t THETA;                                                          /*!< Motor phase (motor phase [deg]/360 ¡Á 2^16) */
+  __IO uint32_t IDREF;                                                          /*!< d-axis reference value (current [A] ¡Â maximum current*2 ¡Á 2^15) */
+  __IO uint32_t IQREF;                                                          /*!< q-axis reference value (current [A] ¡Â maximum current *2 ¡Á 2^15) */
+  __IO uint32_t VD;                                                             /*!< d-axis voltage (voltage [V] ¡Â maximum voltage *3 ¡Á 2^31)*/
+  __IO uint32_t VQ;                                                             /*!< q-axis voltage (voltage [V] ¡Â maximum voltage *3 ¡Á 2^31)*/
+  __IO uint32_t CIDKI;                                                          /*!< Integral coefficient for PI control of d-axis */
+  __IO uint32_t CIDKP;                                                          /*!< Proportional coefficient for PI control of d-axis */
+  __IO uint32_t CIQKI;                                                          /*!< Integral coefficient for PI control of q-axis */
+  __IO uint32_t CIQKP;                                                          /*!< Proportional coefficient for PI control of q-axis */
+  __IO uint32_t VDIH;                                                           /*!< Upper 32 bits of integral term (VDI ) of d-axis voltage */
+  __IO uint32_t VDILH;                                                          /*!< Lower 32 bits of integral term (VDI) of d-axis voltage */
+  __IO uint32_t VQIH;                                                           /*!< Upper 32 bits of integral term (VQI) of q-axis voltage */
+  __IO uint32_t VQILH;                                                          /*!< Lower 32 bits of integral term (VQI) of q-axis voltage */
+  __IO uint32_t FPWMCHG;                                                        /*!< Switching speed (for 2-phase modulation and shift PWM) */
+  __IO uint32_t MDPRD;                                                          /*!< PWM period (to be set identically with PMD¡¯s PWM period) */
+  __IO uint32_t MINPLS;                                                         /*!< Minimum pulse width                          */
+  __IO uint32_t TRGCRC;                                                         /*!< Synchronizing trigger correction value       */
        uint32_t RESERVED;
-  __IO uint32_t COS;                                                 /*!< Cosine value at THETA for output conversion (Q15 data) */
-  __IO uint32_t SIN;                                                 /*!< Sine value at THETA for output conversion (Q15 data) */
-  __IO uint32_t COSM;                                                /*!< Previous cosine value for input processing (Q15 data) */
-  __IO uint32_t SINM;                                                /*!< Previous sine value for input processing (Q15 data) */
-  __IO uint32_t SECTOR;                                              /*!< Sector information (0-11)                    */
-  __IO uint32_t SECTORM;                                             /*!< Previous sector information for input processing (0-11) */
-  __IO uint32_t IA0;                                                 /*!< AD conversion result of a-phase zero-current *4 */
-  __IO uint32_t IB0;                                                 /*!< AD conversion result of b-phase zero-current *4 */
-  __IO uint32_t IC0;                                                 /*!< AD conversion result of c-phase zero-current *4 */
-  __IO uint32_t IAADC;                                               /*!< AD conversion result of a-phase current *4    */
-  __IO uint32_t IBADC;                                               /*!< AD conversion result of b-phase current *4    */
-  __IO uint32_t ICADC;                                               /*!< AD conversion result of c-phase current *4    */
-  __IO uint32_t VDC;                                                 /*!< DC supply voltage (voltage [V] ¡Â maximum voltage *3 ¡Á 2^15) */
-  __IO uint32_t ID;                                                  /*!< d-axis current (current [A] ¡Â maximum current *2 ¡Á 2^31) */
-  __IO uint32_t IQ;                                                  /*!< q-axis current (current [A] ¡Â maximum current *2 ¡Á 2^31) */
+  __IO uint32_t COS;                                                            /*!< Cosine value at THETA for output conversion (Q15 data) */
+  __IO uint32_t SIN;                                                            /*!< Sine value at THETA for output conversion (Q15 data) */
+  __IO uint32_t COSM;                                                           /*!< Previous cosine value for input processing (Q15 data) */
+  __IO uint32_t SINM;                                                           /*!< Previous sine value for input processing (Q15 data) */
+  __IO uint32_t SECTOR;                                                         /*!< Sector information (0-11)                    */
+  __IO uint32_t SECTORM;                                                        /*!< Previous sector information for input processing (0-11) */
+  __IO uint32_t IA0;                                                            /*!< AD conversion result of a-phase zero-current *4 */
+  __IO uint32_t IB0;                                                            /*!< AD conversion result of b-phase zero-current *4 */
+  __IO uint32_t IC0;                                                            /*!< AD conversion result of c-phase zero-current *4 */
+  __IO uint32_t IAADC;                                                          /*!< AD conversion result of a-phase current *4    */
+  __IO uint32_t IBADC;                                                          /*!< AD conversion result of b-phase current *4    */
+  __IO uint32_t ICADC;                                                          /*!< AD conversion result of c-phase current *4    */
+  __IO uint32_t VDC;                                                            /*!< DC supply voltage (voltage [V] ¡Â maximum voltage *3 ¡Á 2^15) */
+  __IO uint32_t ID;                                                             /*!< d-axis current (current [A] ¡Â maximum current *2 ¡Á 2^31) */
+  __IO uint32_t IQ;                                                             /*!< q-axis current (current [A] ¡Â maximum current *2 ¡Á 2^31) */
 } TEE_VE_TypeDef;
 
 typedef struct
 {
-  __IO uint32_t VCMPU;                                               /*!< PMD control: CMPU setting                    */
-  __IO uint32_t VCMPV;                                               /*!< PMD control: CMPV setting                    */
-  __IO uint32_t VCMPW;                                               /*!< PMD control: CMPW setting                    */
-  __IO uint32_t OUTCR;                                               /*!< PMD control: Output control (MDOUT)          */
-  __IO uint32_t VTRGCMP0;                                            /*!< PMD control: TRGCMP0 setting                 */
-  __IO uint32_t VTRGCMP1;                                            /*!< PMD control: TRGCMP1 setting                 */
-  __IO uint32_t VTRGSEL;                                             /*!< PMD control: Trigger selection               */
-  __O  uint32_t EMGRS;                                               /*!< PMD control: EMG return (EMGCR[EMGRS])       */
+  __IO uint32_t VCMPU;                                                          /*!< PMD control: CMPU setting                    */
+  __IO uint32_t VCMPV;                                                          /*!< PMD control: CMPV setting                    */
+  __IO uint32_t VCMPW;                                                          /*!< PMD control: CMPW setting                    */
+  __IO uint32_t OUTCR;                                                          /*!< PMD control: Output control (MDOUT)          */
+  __IO uint32_t VTRGCMP0;                                                       /*!< PMD control: TRGCMP0 setting                 */
+  __IO uint32_t VTRGCMP1;                                                       /*!< PMD control: TRGCMP1 setting                 */
+  __IO uint32_t VTRGSEL;                                                        /*!< PMD control: Trigger selection               */
+  __O  uint32_t EMGRS;                                                          /*!< PMD control: EMG return (EMGCR[EMGRS])       */
 }TEE_VEPMD_TypeDef;
 
 #define TEE_VEC    (( TEE_VEC_TypeDef *)   TSB_VE_BASE)
@@ -315,13 +315,13 @@ typedef union
  */
 enum _mainstage
 {
-  Stage_Stop,                                                         /* control loop is off, no actions pending */
-  Stage_ZeroCurrentMeasure,                                           /* measure zero current adc value */
-  Stage_Initposition,                                                 /* control loop is off, first signals out and in */
-  Stage_Force,                                                        /* forced commutation */
-  Stage_ChangeUp,                                                     /* switch from forced commutation to FOC */
-  Stage_FOC,                                                          /* Field Oriented Commutation */
-  Stage_Emergency                                                     /* emergency state */
+  Stage_Stop,                                                                   /* control loop is off, no actions pending */
+  Stage_ZeroCurrentMeasure,                                                     /* measure zero current adc value */
+  Stage_Initposition,                                                           /* control loop is off, first signals out and in */
+  Stage_Force,                                                                  /* forced commutation */
+  Stage_ChangeUp,                                                               /* switch from forced commutation to FOC */
+  Stage_FOC,                                                                    /* Field Oriented Commutation */
+  Stage_Emergency                                                               /* emergency state */
 };
 
 /*! \brief Substages
@@ -351,18 +351,18 @@ typedef struct
 typedef struct
 {
   int16_t WaitTime_Position;
-  int32_t R_mult_amax_div_vmax;                                       /* fixpoint15 calculation R*I/U */
-  int32_t InductanceDropoutFactor;                                    /* fixpoint15 calculation 2*PI*I*Speed*1000/U */
-  int32_t PositionKiPreCalculation;                                   /* fixpoint15 calculation Ki*Tt*U/f */
-  int32_t PositionKpPreCalculation;                                   /* fixpoint15 calculation Kp*U/f */
-  int16_t ChangeFrq_normed_to_HzMax;                                  /* fixpoint15 calculation HzChange normalized to HzMax */
-  int16_t IqLim_normed_to_amax;                                       /* fixpoint15 calculation IqLim normalized to a_max */
-  int16_t IdLim_normed_to_amax;                                       /* fixpoint31 calculation IdLim normalized to a_max */
-  int32_t HzMax_normed_to_PWMFrequency;                               /* fixpoint   calcualtion HzMax normalized to PWMFrequency */
+  int32_t R_mult_amax_div_vmax;                                                 /* fixpoint15 calculation R*I/U */
+  int32_t InductanceDropoutFactor;                                              /* fixpoint15 calculation 2*PI*I*Speed*1000/U */
+  int32_t PositionKiPreCalculation;                                             /* fixpoint15 calculation Ki*Tt*U/f */
+  int32_t PositionKpPreCalculation;                                             /* fixpoint15 calculation Kp*U/f */
+  int16_t ChangeFrq_normed_to_HzMax;                                            /* fixpoint15 calculation HzChange normalized to HzMax */
+  int16_t IqLim_normed_to_amax;                                                 /* fixpoint15 calculation IqLim normalized to a_max */
+  int16_t IdLim_normed_to_amax;                                                 /* fixpoint31 calculation IdLim normalized to a_max */
+  int32_t HzMax_normed_to_PWMFrequency;                                         /* fixpoint   calcualtion HzMax normalized to PWMFrequency */
   int16_t SpeedUpLimit;
   int16_t IdCurrentForInitposition;
   int16_t IqCurrentForInitposition;  
-} PreCalc;                                                            /* set of pre-calculations for control loop */
+} PreCalc;                                                                      /* set of pre-calculations for control loop */
 
 /*! \brief Shutdown mode
  *
@@ -388,12 +388,12 @@ int8_t VE_Start(uint8_t channel_number);
 int8_t VE_Stop (uint8_t channel_number);
 
 /* global data */
-extern int16_t              VE_Id[MAX_CHANNEL];                       /* [A/maxA] d-axis current */
-extern int16_t              VE_Iq[MAX_CHANNEL];                       /* [A/maxA] q-axis current */
-extern int16_t              VE_Id_reference[MAX_CHANNEL];             /* [A/maxA] Reference of d-axis c */
-extern int16_t              VE_Iq_reference[MAX_CHANNEL];             /* [A/maxA] Reference of q-axis c */
+extern int16_t              VE_Id[MAX_CHANNEL];                                 /* [A/maxA] d-axis current */
+extern int16_t              VE_Iq[MAX_CHANNEL];                                 /* [A/maxA] q-axis current */
+extern int16_t              VE_Id_reference[MAX_CHANNEL];                       /* [A/maxA] Reference of d-axis c */
+extern int16_t              VE_Iq_reference[MAX_CHANNEL];                       /* [A/maxA] Reference of q-axis c */
 extern int16_t              VE_Theta_command[MAX_CHANNEL];
-extern FRACTIONAL           VE_Omega[MAX_CHANNEL];                    /* [Hz/maxHz] Omega(speed): Elect */
+extern FRACTIONAL           VE_Omega[MAX_CHANNEL];                              /* [Hz/maxHz] Omega(speed): Elect */
 extern FRACTIONAL           VE_Omega[MAX_CHANNEL];
 extern FRACTIONAL           VE_Theta[MAX_CHANNEL];
 extern FRACTIONAL           VE_Omega_command[MAX_CHANNEL];

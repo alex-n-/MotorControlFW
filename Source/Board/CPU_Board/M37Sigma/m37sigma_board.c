@@ -32,14 +32,30 @@
 
 #include "motorctrl.h"
 
+
+/*! \brief  Detect Board Revision
+  *
+  * @retval Version Number of Board
+*/
+
 uint8_t BOARD_Detect_Revision(void)
 {
+  /* There is only Revision 1 available */
   return 1;
 }
 
 #ifdef USE_TEMPERATURE_CONTROL
 
 #ifndef USE_HV_COMMUNICATION
+
+/*! \brief  Get Temperature of FETs/IGBTs/Powermodule
+  *
+  * Using direct ADC Pin on MCU
+  *
+  * @param  channel_number:  channel to read out
+  *
+  * @retval Temperature in degree Celsius
+*/
 int8_t BOARD_GetTemperature(uint8_t channel_number)
 {
   ADC_Result  result;
@@ -74,6 +90,14 @@ static ADC_MonitorTypeDef ClearTemp={ ADC_CMPCR_1,
                                       0};
 
 
+/*! \brief ConfigureADCforTemperature
+  *
+  * Set up monitoring for overtemperature detection
+  *
+  * @param  channel_number:  channel to configure
+  *
+  * @retval None
+*/
 void BOARD_ConfigureADCforTemperature(uint8_t channel_number)
 {
   uint16_t  adc_value;
@@ -125,6 +149,14 @@ void BOARD_ConfigureADCforTemperature(uint8_t channel_number)
 
 #include "hv_serial_communication.h"
 
+/*! \brief  Get Temperature of FETs/IGBTs/Powermodule
+  *
+  * Using HV Communication protocol
+  *
+  * @param  channel_number:  channel to read out
+  *
+  * @retval Temperature in degree Celsius
+*/
 int8_t BOARD_GetTemperature(uint8_t channel_number)
 {
   uint16_t result;
@@ -148,6 +180,14 @@ int8_t BOARD_GetTemperature(uint8_t channel_number)
   
 }
 
+/*! \brief ConfigureADCforTemperature
+  *
+  * Set up monitoring for overtemperature detection
+  *
+  * @param  channel_number:  channel to configure
+  *
+  * @retval None
+*/
 void BOARD_ConfigureADCforTemperature(uint8_t channel_number)
 {
   uint16_t OvertempCmpValue = 0x3ff;

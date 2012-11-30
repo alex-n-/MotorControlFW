@@ -145,7 +145,6 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
     ADC_SetPMDTrg(pADC, &PMDTrigger1_1Phase);
     break;
 
-#ifndef BOARD_HITEX_M370
   case CURRENT_SENSOR_2:
     switch (channel_number)
     {
@@ -163,8 +162,10 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL11,TRG_ENABLE(PMD_PROG1));
       ADC_SetPMDTrgProgINT(pADC, &TrgProgINT_2SensorB);
 
+#ifndef BOARD_HITEX_M370
       ADC_SetPMDTrg(pADC, &PMDTrigger0_2Phase);
       ADC_SetPMDTrg(pADC, &PMDTrigger1_2Phase);
+#endif /* BOARD_HITEX_M370 */    
       
       break;
     default:
@@ -172,7 +173,6 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
       break;
     }
     break;
-#endif /* BOARD_HITEX_M370 */    
   default:
     assert_param(0);
     break;

@@ -39,6 +39,12 @@ static const GPIO_InitTypeDef GPIO_Init_Struct =
 };
 #endif /* DEBUG */
 
+/*! \brief LED Init
+  *
+  * Initialize the LED access
+  *
+  * @retval None
+*/
 void LED_Init(void)
 {
 #ifndef DEBUG
@@ -55,6 +61,14 @@ void LED_Init(void)
 #endif /* DEBUG */  
 }
 
+/*! \brief LED Toggle
+  *
+  * Toggle an LED
+  *
+  * @param  led:  LED Number
+  *
+  * @retval None
+*/
 void LED_Toggle(unsigned char led)
 {
 #ifndef DEBUG  
@@ -76,6 +90,15 @@ void LED_Toggle(unsigned char led)
 #endif /* DEBUG */
 }
 
+/*! \brief LED set state
+  *
+  * Set the state of an LED
+  *
+  * @param  led:   LED Number
+  * @param  state: State to set
+  *
+  * @retval None
+*/
 void LED_SetState(unsigned char led, unsigned char state)
 {
 #ifndef DEBUG  
@@ -97,6 +120,14 @@ void LED_SetState(unsigned char led, unsigned char state)
 #endif /* DEBUG */  
 }
 
+/*! \brief LED get state
+  *
+  * Get the state of an LED
+  *
+  * @param  led:   LED Number
+  *
+  * @retval actual state
+*/
 unsigned char LED_GetState(unsigned char led)
 {
   unsigned char state = 0;

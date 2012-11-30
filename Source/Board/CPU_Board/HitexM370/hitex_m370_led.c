@@ -26,7 +26,7 @@
 #include BOARD_LED_HEADER_FILE
 
 
-  /* GPIO settings for LED purpose */
+/* GPIO settings for LED purpose */
 static const GPIO_InitTypeDef GPIO_Init_Struct =
 {
   GPIO_OUTPUT_MODE,         /* Enable LEDs as output */
@@ -35,6 +35,12 @@ static const GPIO_InitTypeDef GPIO_Init_Struct =
   GPIO_PULLDOWN_DISABLE,    /* Enable/disable pull down */
 };
 
+/*! \brief LED Init
+  *
+  * Initialize the LED access
+  *
+  * @retval None
+*/
 void LED_Init(void)
 {
   int i;
@@ -47,6 +53,14 @@ void LED_Init(void)
     LED_SetState(i,LED_OFF);
 }
 
+/*! \brief LED Toggle
+  *
+  * Toggle an LED
+  *
+  * @param  led:  LED Number
+  *
+  * @retval None
+*/
 void LED_Toggle(unsigned char led)
 {
   switch(led)
@@ -66,6 +80,15 @@ void LED_Toggle(unsigned char led)
   }
 }
 
+/*! \brief LED set state
+  *
+  * Set the state of an LED
+  *
+  * @param  led:   LED Number
+  * @param  state: State to set
+  *
+  * @retval None
+*/
 void LED_SetState(unsigned char led, unsigned char state)
 {
   switch(led)
@@ -85,6 +108,14 @@ void LED_SetState(unsigned char led, unsigned char state)
   }
 }
 
+/*! \brief LED get state
+  *
+  * Get the state of an LED
+  *
+  * @param  led:   LED Number
+  *
+  * @retval actual state
+*/
 unsigned char LED_GetState(unsigned char led)
 {
   unsigned char state = 0;

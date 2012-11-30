@@ -49,20 +49,28 @@ static void ReleaseChannelAccess(void)
 static const GPIO_InitTypeDef GPIO_Init_Struct_LCD =
 {
   GPIO_OUTPUT_MODE,
-  GPIO_PULLUP_DISABLE,      /* Enable/disable pull up */
-  GPIO_OPEN_DRAIN_DISABLE,  /* Open drain or CMOS */
-  GPIO_PULLDOWN_DISABLE,    /* Enable/disable pull down */
+  GPIO_PULLUP_DISABLE,                                                          /* Enable/disable pull up */
+  GPIO_OPEN_DRAIN_DISABLE,                                                      /* Open drain or CMOS */
+  GPIO_PULLDOWN_DISABLE,                                                        /* Enable/disable pull down */
 };
 
 /* Setup the CS on PA7 */
 static const GPIO_InitTypeDef GPIO_Init_Struct_CS =
 {
   GPIO_OUTPUT_MODE,
-  GPIO_PULLUP_DISABLE,      /* Enable/disable pull up */
-  GPIO_OPEN_DRAIN_DISABLE,  /* Open drain or CMOS */
-  GPIO_PULLDOWN_DISABLE,    /* Enable/disable pull down */
+  GPIO_PULLUP_DISABLE,                                                          /* Enable/disable pull up */
+  GPIO_OPEN_DRAIN_DISABLE,                                                      /* Open drain or CMOS */
+  GPIO_PULLDOWN_DISABLE,                                                        /* Enable/disable pull down */
 };
 
+/*! \brief Select SPI device
+  *
+  * Set the CS signal for an SPI device
+  *    
+  * @param  device:  Device to be set
+  *
+  * @retval None
+*/
 void SPI_SelectDevice(SPI_DeviceSelect device)
 {
   SPI_InitTypeDef   SPI_InitValues;
@@ -107,6 +115,10 @@ void SPI_SelectDevice(SPI_DeviceSelect device)
   }
 }
 
+/*! \brief Deselect SPI device
+  *
+  * @retval None
+*/
 void SPI_DeselectDevice(void)
 {
   /*
@@ -122,6 +134,15 @@ void SPI_DeselectDevice(void)
   ReleaseChannelAccess();
 }
 
+/*! \brief SPI Transmit Byte
+  *
+  * Transmit Byte via SPI
+  *
+  * @param  SPIx: SPI Channel
+  * @param  byte: byte to transmit
+  *
+  * @retval None
+*/
 void SPI_TransmitByte(TSB_SC_TypeDef* SPIx, uint8_t byte)
 {
   WorkState tmp;
@@ -135,6 +156,14 @@ void SPI_TransmitByte(TSB_SC_TypeDef* SPIx, uint8_t byte)
     tmp = SPI_GetBufState(BOARD_SPI_CHANNEL, SPI_TX);
 }
 
+/*! \brief SPI Receive Byte
+  *
+  * Receive Byte via SPI
+  *
+  * @param  byte: byte to transmit
+  *
+  * @retval received byte
+*/
 uint8_t SPI_ReceiveByte(TSB_SC_TypeDef* SPIx)
 {
   WorkState tmp;
@@ -148,6 +177,14 @@ uint8_t SPI_ReceiveByte(TSB_SC_TypeDef* SPIx)
   return SPI_GetRxData(BOARD_SPI_CHANNEL);
 }
 
+/*! \brief SPI Init
+  *
+  * Initalize the SPI bus
+  *
+  * @param  spi_speed: speed of SPI bus
+  *
+  * @retval none
+*/
 void SPI_DeviceInit(uint32_t speed)
 {
   SPI_ChannelMutex = xSemaphoreCreateMutex();

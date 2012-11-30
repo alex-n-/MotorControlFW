@@ -26,6 +26,15 @@
 
 #include "spi.h"
 
+/*! \brief PGA Init state machine
+  *
+  * Initialize the state machine of the PGAs
+  * Please refer to the Datasheet for more information about state machine
+  *
+  * @param  device:   Device Number
+  *
+  * @retval None
+*/
 static void PGA_InitStateMachine(SPI_DeviceSelect device)
 {
   /* Bring PGA state machine to defined state */
@@ -35,6 +44,15 @@ static void PGA_InitStateMachine(SPI_DeviceSelect device)
   vTaskDelay( 1 / portTICK_RATE_MS);
 }
 
+/*! \brief PGA Set Gain
+  *
+  * Set the gain for the PGA
+  *
+  * @param  device: Device Number
+  * @param  gain:   Gain enumeration type
+  *
+  * @retval None
+*/
 static void PGA_SetGain(SPI_DeviceSelect device, PGA_GAIN gain)
 {
   /* Setting the gain */
@@ -44,6 +62,15 @@ static void PGA_SetGain(SPI_DeviceSelect device, PGA_GAIN gain)
   SPI_DeselectDevice();
 }
 
+/*! \brief PGA Set Channel
+  *
+  * Select the channel of the PGA
+  *
+  * @param  device:  Device Number
+  * @param  channel: Channel number of the PGA
+  *
+  * @retval None
+*/
 void PGA_SetChannel(SPI_DeviceSelect device, PGA_CHANNEL channel)
 {
   /* Setting the channel */
@@ -53,6 +80,15 @@ void PGA_SetChannel(SPI_DeviceSelect device, PGA_CHANNEL channel)
   SPI_DeselectDevice();
 }
 
+/*! \brief PGA Init
+  *
+  * Initialize the PGA
+  *
+  * @param  settings:    Settings table
+  * @param  nr_settings: Number of settings to perform
+  *
+  * @retval None
+*/
 void PGA_Init(PGA_Settings* settings, uint8_t nr_settings)
 {
   uint8_t i;

@@ -30,7 +30,7 @@
 #include "motorctrl.h"
 #include "ve.h"
 
-EncoderValues                 EncoderData[MAX_CHANNEL];               /*<! generic encoder result data */
+EncoderValues                 EncoderData[MAX_CHANNEL];                         /*<! generic encoder result data */
 
 static const GPIO_InitTypeDef portConfigENC =
 {
@@ -195,7 +195,7 @@ void ENC_Init(unsigned char channel_number)
    ||(MotorParameterValues[channel_number].EncRes   == 0)
    ||(MotorParameterValues[channel_number].EncMult  == 0))
   {
-    MotorParameterValues[channel_number].Encoder = MOTOR_NO_ENCODER;  /* Disable Encoder usage */
+    MotorParameterValues[channel_number].Encoder = MOTOR_NO_ENCODER;            /* Disable Encoder usage */
     switch (channel_number)
     {
 #ifdef __TMPM_370__
@@ -228,7 +228,7 @@ void ENC_Init(unsigned char channel_number)
     break;
   }
 
-  ENC_IOInit(channel_number);                                         /*! setup IO */
+  ENC_IOInit(channel_number);                                                   /*! setup IO */
 
   switch (MotorParameterValues[channel_number].Encoder)
   {
@@ -252,19 +252,19 @@ void ENC_Init(unsigned char channel_number)
     break;
   }
   
-  __DSB();                                                            /* ! flush the pipeline */
+  __DSB();                                                                      /* ! flush the pipeline */
 
   switch (channel_number)
   {
 #ifdef __TMPM_370__
   case 0:
-    NVIC_SetPriority(INTENC0_IRQn, INTERRUPT_PRIORITY_ENCODER);       /*! set the encoder interrupt priority */
-    NVIC_EnableIRQ(INTENC0_IRQn);                                     /*! enable the interrupt */
+    NVIC_SetPriority(INTENC0_IRQn, INTERRUPT_PRIORITY_ENCODER);                 /*! set the encoder interrupt priority */
+    NVIC_EnableIRQ(INTENC0_IRQn);                                               /*! enable the interrupt */
     break;
 #endif
   case 1:
-    NVIC_SetPriority(INTENC1_IRQn, INTERRUPT_PRIORITY_ENCODER);       /*! set the encoder interrupt priority */
-    NVIC_EnableIRQ(INTENC1_IRQn);                                     /*! enable the interrupt */
+    NVIC_SetPriority(INTENC1_IRQn, INTERRUPT_PRIORITY_ENCODER);                 /*! set the encoder interrupt priority */
+    NVIC_EnableIRQ(INTENC1_IRQn);                                               /*! enable the interrupt */
     break;
   default:
     assert_param(0);

@@ -55,7 +55,7 @@
 #include BOARD_CAN_HEADER_FILE
 #endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
 
-static xTaskHandle xSystemInit;                                       /*!< Handle of the init task - for suicide */
+static xTaskHandle xSystemInit;                                                 /*!< Handle of the init task - for suicide */
 
 /*! \brief  Application Stack Overflow
   *
@@ -87,11 +87,11 @@ void system_init( void *pvParameters )
 {
   int ret;
   
-  SCB->SHCSR = SCB_SHCSR_MEMFAULTENA_Msk                              /* enable Fault Interrupts */
+  SCB->SHCSR = SCB_SHCSR_MEMFAULTENA_Msk                                        /* enable Fault Interrupts */
               |SCB_SHCSR_BUSFAULTENA_Msk
               |SCB_SHCSR_USGFAULTENA_Msk;
     
-  BOARD_SetupHW();                                                    /* Setup HW components on the Board (internal/external) */
+  BOARD_SetupHW();                                                              /* Setup HW components on the Board (internal/external) */
 
   /* Clear all settings */
   memset(&MotorParameterValues[0], 0,sizeof(MotorParameterValues)); 
@@ -108,13 +108,13 @@ void system_init( void *pvParameters )
   if (ret)
   {
 #ifdef USE_INTERNAL_MOTOR_PARAMS
-    SetupInternalMotorParams();                                       /* Use compiled in Parameter setting on error */
+    SetupInternalMotorParams();                                                 /* Use compiled in Parameter setting on error */
 #endif /* USE_INTERNAL_MOTOR_PARAMS */
   }
   else
   {
 #ifdef USE_LED
-    LED_SetState(LED_SIGNAL_CONFIG_READ,LED_ON);                      /* Signal successful read-back */
+    LED_SetState(LED_SIGNAL_CONFIG_READ,LED_ON);                                /* Signal successful read-back */
 #endif /* USE_LED */
   }
 #ifdef USE_RGB_LED
@@ -123,9 +123,9 @@ void system_init( void *pvParameters )
 #endif /* USE_RGB_LED */ 
   
 #else
-  SetupInternalMotorParams();                                         /* When no EEProm - use compiled in parameters */
+  SetupInternalMotorParams();                                                   /* When no EEProm - use compiled in parameters */
 #endif
-  BOARD_SetupHW2();                                                   /* Setup rest of the HW components on the Board */
+  BOARD_SetupHW2();                                                             /* Setup rest of the HW components on the Board */
   
   /* Kill myself to free stack memory */
   vTaskDelete(xSystemInit);
@@ -140,7 +140,7 @@ int main(void)
   for (nr = (IRQn_Type)0; nr < INTF_IRQn; nr++)
     NVIC_SetPriority(nr, ~0);
 
-  if ( xTaskCreate(system_init,                                       /* Create an init task - needed as some of the inits use a task delay */
+  if ( xTaskCreate(system_init,                                                 /* Create an init task - needed as some of the inits use a task delay */
                    (signed char*) "SystemInit",
                    120,
                    NULL,
@@ -149,7 +149,7 @@ int main(void)
     dprintf("Can't create System Init Task\n");
 
 #ifdef USE_UI  
-  if ( xTaskCreate(UITask,                                            /* Create User Interface */
+  if ( xTaskCreate(UITask,                                                      /* Create User Interface */
                    (signed char*) "UI",
                    UI_TASK_STACK_SIZE,
                    NULL,
@@ -159,7 +159,7 @@ int main(void)
 #endif /* USE_UI */
   
 #ifdef USE_SERIAL_COMMUNICATION  
-  if ( xTaskCreate(ProtocolTask,                                      /* Create serial communication protocol task */
+  if ( xTaskCreate(ProtocolTask,                                                /* Create serial communication protocol task */
                    (signed char*) "Comm",
                    PROTOCOL_TASK_STACK_SIZE,
                    NULL,
@@ -169,7 +169,7 @@ int main(void)
 #endif /* USE_SERIAL_COMMUNICATION */
 
 #ifdef USE_LOAD_STATISTICS
-  if ( xTaskCreate(SystemLoadTaks,                                    /* Create System Load Task */
+  if ( xTaskCreate(SystemLoadTaks,                                              /* Create System Load Task */
                    (signed char*) "SysLoad",
                    SYSTEM_LOAD_TASK_STACK_SIZE,
                    NULL,
@@ -179,7 +179,7 @@ int main(void)
 #endif /* USE_LOAD_STATISTICS */
 
 #ifdef USE_CAN
-  if ( xTaskCreate(CanTask,                                           /* Create CAN Communication Protocol Task */
+  if ( xTaskCreate(CanTask,                                                     /* Create CAN Communication Protocol Task */
                    (signed char*) "Can",
                    CAN_TASK_STACK_SIZE,
                    NULL,
@@ -189,7 +189,7 @@ int main(void)
 #endif /* USE_CAN */
 
 #ifdef USE_STALL_DETECT
-  if ( xTaskCreate(StallTask,                                         /* Create Stall Detection Task */
+  if ( xTaskCreate(StallTask,                                                   /* Create Stall Detection Task */
                    (signed char*) "Stall",
                    STALL_TASK_STACK_SIZE,
                    NULL,
@@ -200,7 +200,7 @@ int main(void)
 
 #ifdef USE_TURN_CONTROL
 #ifdef __TMPM_370__
-  if ( xTaskCreate(TurnTask,                                          /* Create Turn Task Channel 0*/
+  if ( xTaskCreate(TurnTask,                                                    /* Create Turn Task Channel 0*/
                    (signed char*) "Turn",
                    TURN_TASK_STACK_SIZE,
                    (void*)0,
@@ -208,7 +208,7 @@ int main(void)
                    NULL) != pdPASS)
     dprintf("Can't create Turn Task\n");
 #endif /* USE_TURN_CONTROL */
-  if ( xTaskCreate(TurnTask,                                          /* Create Turn Task Channel 1*/
+  if ( xTaskCreate(TurnTask,                                                    /* Create Turn Task Channel 1*/
                    (signed char*) "Turn",
                    TURN_TASK_STACK_SIZE,
                    (void*)1,
@@ -219,11 +219,11 @@ int main(void)
 #endif /* USE_TURN_CONTROL */
   
 
-  vTaskStartScheduler();                                              /* Start the scheduler. */
+  vTaskStartScheduler();                                                        /* Start the scheduler. */
 
   /*
    * Will only get here if there was insufficient memory to create the idle task.
    * The idle task is created within vTaskStartScheduler().
    */
-  for(;;);                                                            /* Error */
+  for(;;);                                                                      /* Error */
 }

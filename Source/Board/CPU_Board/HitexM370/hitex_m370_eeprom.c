@@ -31,44 +31,67 @@
 #include "eeprom.h"
 #include "spi.h"
 
+/*! \brief EEProm latch data in
+  *
+  * @retval None
+*/
 static void eeprom_latch_in(void)
 {
-  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, ENABLE);           /* Deselect CS */
-  vTaskDelay( 1/ portTICK_RATE_MS);                                   /* Wait for 1 ms */
-  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, DISABLE);          /* Select CS */
+  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, ENABLE);                     /* Deselect CS */
+  vTaskDelay( 1/ portTICK_RATE_MS);                                             /* Wait for 1 ms */
+  GPIO_WriteDataBit(EEPROM_CS_PORT, EEPROM_CS_BIT, DISABLE);                    /* Select CS */
 }
 
+/*! \brief EEProm paged write
+  *
+  * Write data in paged mode to EEProm
+  *
+  * @param  pos:  Starting byte in EEProm
+  * @param  data: Data to write
+  * @param  size: Size of Data 
+  *
+  * @retval None
+*/
 static void eeprom_paged_write(uint8_t pos, uint8_t* data, uint8_t size)
 {
   unsigned char status, i;
 
-  SPI_SelectDevice(SPI_DEVICE_EEPROM);                                /* Select SPI Device  (block access for other drivers) */
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WREN);                      /* Send write enable to eeprom */
-  eeprom_latch_in();                                                  /* Latch data into eeprom */
+  SPI_SelectDevice(SPI_DEVICE_EEPROM);                                          /* Select SPI Device  (block access for other drivers) */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WREN);                                /* Send write enable to eeprom */
+  eeprom_latch_in();                                                            /* Latch data into eeprom */
 
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRITE);                     /* Send write command */
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, pos);                           /* transmit start position of data */
-  for(i = 0; i < size; i++)                                           /* write data */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRITE);                               /* Send write command */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, pos);                                     /* transmit start position of data */
+  for(i = 0; i < size; i++)                                                     /* write data */
     SPI_TransmitByte(BOARD_SPI_CHANNEL, *data++);
 
-  eeprom_latch_in();                                                  /* Latch data into eeprom */
+  eeprom_latch_in();                                                            /* Latch data into eeprom */
   
-  do                                                                  /* Wait until write has finished */
+  do                                                                            /* Wait until write has finished */
   {
-    SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_RDSR);                    /* Read out status register */
-    status = SPI_ReceiveByte(BOARD_SPI_CHANNEL);                      /* read out data */
+    SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_RDSR);                              /* Read out status register */
+    status = SPI_ReceiveByte(BOARD_SPI_CHANNEL);                                /* read out data */
     status = SPI_ReceiveByte(BOARD_SPI_CHANNEL);
     eeprom_latch_in();
 
-    vTaskDelay(1/ portTICK_RATE_MS);                                  /* Wait 1 ms before ask again */
-  } while((status & STATUS_WIP) == STATUS_WIP);                       /* Wait till Write In Progress is cleared */
+    vTaskDelay(1/ portTICK_RATE_MS);                                            /* Wait 1 ms before ask again */
+  } while((status & STATUS_WIP) == STATUS_WIP);                                 /* Wait till Write In Progress is cleared */
 
-  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRDI);                      /* Disable write enable */
+  SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_WRDI);                                /* Disable write enable */
 
-  SPI_DeselectDevice();                                               /* Give SPI access back for other Tasks */
+  SPI_DeselectDevice();                                                         /* Give SPI access back for other Tasks */
 }
 
-
+/*! \brief EEProm write
+  *
+  * Write data to EEProm
+  *
+  * @param  pos:  Starting byte in EEProm
+  * @param  data: Data to write
+  * @param  size: Size of Data 
+  *
+  * @retval None
+*/
 int8_t EEPROM_Write(uint16_t pos, uint8_t* data, uint16_t size)
 {
   unsigned char rest_of_first_page,
@@ -77,7 +100,7 @@ int8_t EEPROM_Write(uint16_t pos, uint8_t* data, uint16_t size)
                 amount_on_last_page,
                 i;
   
-  if((pos + size) > EEPROM_BYTE_SIZE)                                 /* Check for writing over the end of EEProm - prevent overwriting of data */
+  if((pos + size) > EEPROM_BYTE_SIZE)                                           /* Check for writing over the end of EEProm - prevent overwriting of data */
     return -1;
 
   /* Calculate byte amounts / full pages for paged write */
@@ -120,15 +143,21 @@ int8_t EEPROM_Write(uint16_t pos, uint8_t* data, uint16_t size)
   return 0;
 }
 
-/*
- =======================================================================================================================
- =======================================================================================================================
- */
+/*! \brief EEProm read
+  *
+  * Read Data from EEProm
+  *
+  * @param  pos:  Starting byte in EEProm
+  * @param  data: Data buffer
+  * @param  size: Size of Data to read
+  *
+  * @retval error code
+*/
 int8_t EEPROM_Read(uint16_t pos, uint8_t* data, uint16_t size)
 {
   unsigned int  i;
 
-  if((pos + size) > EEPROM_BYTE_SIZE)                                 /* Check for reading after end of EEProm - prevent of reading some not wanted data */
+  if((pos + size) > EEPROM_BYTE_SIZE)                                           /* Check for reading after end of EEProm - prevent of reading some not wanted data */
     return -1;
 
   /* Select SPI Device  (block access for other drivers) */
@@ -137,7 +166,7 @@ int8_t EEPROM_Read(uint16_t pos, uint8_t* data, uint16_t size)
   /* Read out data */
   SPI_TransmitByte(BOARD_SPI_CHANNEL, CMD_READ);
   SPI_TransmitByte(BOARD_SPI_CHANNEL, pos);
-  SPI_ReceiveByte(BOARD_SPI_CHANNEL);  /* Dummy read to get buffer in line */
+  SPI_ReceiveByte(BOARD_SPI_CHANNEL);                                           /* Dummy read to get buffer in line */
 
   for(i = 0; i < size; i++)
   {

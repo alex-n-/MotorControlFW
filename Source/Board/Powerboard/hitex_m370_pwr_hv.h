@@ -22,6 +22,7 @@
 
 #define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
+#define VISHAY_NTCLE100E3103JB0
 
 #define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
@@ -30,12 +31,12 @@
 #define BOARD_DEAD_TIME                         1400                            /* [us]             - Dead time for FETs */
 
 #ifdef HWPATCH_2_TIMES_LV
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       833                             /* [mV/A]           - Sensivity of current measurement circuit */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       278                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SHUNT_3                 /* NONE */
-#define BOARD_SENSITIVITY_VOLTAGE_MEASURE       140                             /* [mV/V]           - Sensivity of voltage measurement circuit  */
+#define BOARD_SENSITIVITY_VOLTAGE_MEASURE       139                             /* [mV/V]           - Sensivity of voltage measurement circuit  */
 #define BOARD_VDC_CHANNEL_0                     24                              /* [V]              - VDC value for Channel 0 */
 #else
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       833                             /* [mV/A]           - Sensivity of current measurement circuit */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       278                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SHUNT_3                 /* NONE */
 #define BOARD_SENSITIVITY_VOLTAGE_MEASURE       12                              /* [mV/V]           - Sensivity of voltage measurement circuit  */
 #endif /* HWPATCH_2_TIMES_LV */

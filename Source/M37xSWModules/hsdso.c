@@ -59,12 +59,12 @@ static const GPIO_InitTypeDef portConfigTX =
 
 static const UART_InitTypeDef uartdefault =
 {
-  115200,                 /* Baud Rate */
-  UART_DATA_BITS_8,       /* Data Bits */
-  UART_STOP_BITS_1,       /* Stop Bits */
-  UART_NO_PARITY,         /* Parity */
-  UART_ENABLE_TX,         /* Mode */
-  UART_NONE_FLOW_CTRL,    /* Flow COntrol */
+  115200,                                                                       /* Baud Rate */
+  UART_DATA_BITS_8,                                                             /* Data Bits */
+  UART_STOP_BITS_1,                                                             /* Stop Bits */
+  UART_NO_PARITY,                                                               /* Parity */
+  UART_ENABLE_TX,                                                               /* Mode */
+  UART_NONE_FLOW_CTRL,                                                          /* Flow COntrol */
 };
 
 static void configure_hsdso(void)

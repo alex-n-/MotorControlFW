@@ -72,33 +72,33 @@ ChannelDependandValues  ChannelValues[MAX_CHANNEL];
 SystemDependandValues   SystemValues[MAX_CHANNEL];
 uint8_t                 ParameterChange[MAX_CHANNEL];
 
-int16_t                 VE_Id[MAX_CHANNEL];                           /*< [A/maxA] d-axis current */
-int16_t                 VE_Iq[MAX_CHANNEL];                           /*< [A/maxA] q-axis current */
-int16_t                 VE_Id_reference[MAX_CHANNEL];                 /*< [A/maxA] Reference of d-axis current */
-int16_t                 VE_Iq_reference[MAX_CHANNEL];                 /*< [A/maxA] Reference of q-axis current */
-FRACTIONAL              VE_Omega[MAX_CHANNEL];                        /*< [Hz/maxHz] Omega(speed): Electrical angle   */
-FRACTIONAL              VE_Theta[MAX_CHANNEL];                        /*< [---] Electrical angle */
-FRACTIONAL              VE_Omega_command[MAX_CHANNEL];                /*< [Hz/maxHz] Command of Motor omega (electrical angle)  */
-int16_t                 VE_Theta_command[MAX_CHANNEL];                /*< [---] Command of motor theta */
-VEStage                 VE_ActualStage[MAX_CHANNEL];                  /*< Actual stage of VE */
-PreCalc                 VE_PreCalc[MAX_CHANNEL];                      /*< Pre calculated values for further computation */
-uint16_t                VE_HzMax[MAX_CHANNEL];                        /*< Scaling factor for calculations */
-uint32_t                VE_a_max[MAX_CHANNEL];                        /*< Scaling factor for calculations */
-uint32_t                VE_v_max[MAX_CHANNEL];                        /*< Scaling factor for calculations */
+int16_t                 VE_Id[MAX_CHANNEL];                                     /*< [A/maxA] d-axis current */
+int16_t                 VE_Iq[MAX_CHANNEL];                                     /*< [A/maxA] q-axis current */
+int16_t                 VE_Id_reference[MAX_CHANNEL];                           /*< [A/maxA] Reference of d-axis current */
+int16_t                 VE_Iq_reference[MAX_CHANNEL];                           /*< [A/maxA] Reference of q-axis current */
+FRACTIONAL              VE_Omega[MAX_CHANNEL];                                  /*< [Hz/maxHz] Omega(speed): Electrical angle   */
+FRACTIONAL              VE_Theta[MAX_CHANNEL];                                  /*< [---] Electrical angle */
+FRACTIONAL              VE_Omega_command[MAX_CHANNEL];                          /*< [Hz/maxHz] Command of Motor omega (electrical angle)  */
+int16_t                 VE_Theta_command[MAX_CHANNEL];                          /*< [---] Command of motor theta */
+VEStage                 VE_ActualStage[MAX_CHANNEL];                            /*< Actual stage of VE */
+PreCalc                 VE_PreCalc[MAX_CHANNEL];                                /*< Pre calculated values for further computation */
+uint16_t                VE_HzMax[MAX_CHANNEL];                                  /*< Scaling factor for calculations */
+uint32_t                VE_a_max[MAX_CHANNEL];                                  /*< Scaling factor for calculations */
+uint32_t                VE_v_max[MAX_CHANNEL];                                  /*< Scaling factor for calculations */
 
 /*********************************************************************
 ************************ Local Data **********************************
 *********************************************************************/
-static xTaskHandle      xVETask[MAX_CHANNEL];                         /*< VE Task Handle */
-static xTaskHandle      xShutdownHandle[MAX_CHANNEL];                 /*< Local storage of VE Task Handle needed for gentle shutdown */
-static uint8_t          VE_PerformShutdown[MAX_CHANNEL];              /*< Flag for Shutdown requested */
-static uint32_t         VE_PerformShutdownTargetSpeed[MAX_CHANNEL];   /*< Remember Target Speed before Shutdown has initiated for recover */
-static uint16_t	        VE_StageCounter[MAX_CHANNEL];                 /*< Stage counter (for reaching the above timings) */
-static int32_t          VE_Vd[MAX_CHANNEL];                           /*< [V/maxV] d-axis Voltage */
-static int16_t          VE_Id_command[MAX_CHANNEL];                   /*< [A/maxA] d-axis current command */
-static int16_t          VE_Iq_command[MAX_CHANNEL];                   /*< [A/maxA] q-axis current command */
-static FRACTIONAL       VE_Iq_reference_I[MAX_CHANNEL];               /*< reference command current */
-static int16_t          VE_Omega_Target[MAX_CHANNEL];                 /*< [Hz/maxHz] OMEGA Target */
+static xTaskHandle      xVETask[MAX_CHANNEL];                                   /*< VE Task Handle */
+static xTaskHandle      xShutdownHandle[MAX_CHANNEL];                           /*< Local storage of VE Task Handle needed for gentle shutdown */
+static uint8_t          VE_PerformShutdown[MAX_CHANNEL];                        /*< Flag for Shutdown requested */
+static uint32_t         VE_PerformShutdownTargetSpeed[MAX_CHANNEL];             /*< Remember Target Speed before Shutdown has initiated for recover */
+static uint16_t	        VE_StageCounter[MAX_CHANNEL];                           /*< Stage counter (for reaching the above timings) */
+static int32_t          VE_Vd[MAX_CHANNEL];                                     /*< [V/maxV] d-axis Voltage */
+static int16_t          VE_Id_command[MAX_CHANNEL];                             /*< [A/maxA] d-axis current command */
+static int16_t          VE_Iq_command[MAX_CHANNEL];                             /*< [A/maxA] q-axis current command */
+static FRACTIONAL       VE_Iq_reference_I[MAX_CHANNEL];                         /*< reference command current */
+static int16_t          VE_Omega_Target[MAX_CHANNEL];                           /*< [Hz/maxHz] OMEGA Target */
 
 /*! \brief  Disable Vector Engine Interrupts
   *
@@ -111,11 +111,11 @@ static void VE_DisableIRQ(unsigned char channel_number)
   {
 #ifdef __TMPM_370__
   case 0:
-    NVIC_DisableIRQ(INTVCNA_IRQn);                                    /* disable VE0 interrupt while configure */
+    NVIC_DisableIRQ(INTVCNA_IRQn);                                              /* disable VE0 interrupt while configure */
     break;
 #endif
   case 1:
-    NVIC_DisableIRQ(INTVCNB_IRQn);                                    /* disable VE1 interrupt while configure */
+    NVIC_DisableIRQ(INTVCNB_IRQn);                                              /* disable VE1 interrupt while configure */
     break;
   default:
     assert_param(0);
@@ -134,11 +134,11 @@ static void VE_EnableIRQ(unsigned char channel_number)
   {
 #ifdef __TMPM_370__
   case 0:
-      NVIC_EnableIRQ(INTVCNA_IRQn);                                   /* disable VE0 interrupt while configure */
+      NVIC_EnableIRQ(INTVCNA_IRQn);                                             /* disable VE0 interrupt while configure */
       break;
 #endif
   case 1:
-      NVIC_EnableIRQ(INTVCNB_IRQn);                                   /* disable VE1 interrupt while configure */
+      NVIC_EnableIRQ(INTVCNB_IRQn);                                             /* disable VE1 interrupt while configure */
       break;
   default:
     assert_param(0);
@@ -156,29 +156,29 @@ static void VE_EnableIRQ(unsigned char channel_number)
 */
 static int16_t Limit_Omega(int16_t now, int16_t target, int16_t lim_up, int16_t lim_down)
 {
-  int32_t delta;                                                      /* local data with 64 bit */
+  int32_t delta;                                                                /* local data with 64 bit */
 
   delta = (int32_t) target - now;
 
-  if(delta == 0)                                                      /* nothing to do : useless call */
-    return(target);                                                   /* target value is reached */
-  else                                                                /* tendencies */
+  if(delta == 0)                                                                /* nothing to do : useless call */
+    return(target);                                                             /* target value is reached */
+  else                                                                          /* tendencies */
   {
-    if((lim_down < 1) || (lim_up < 1))                                /* sanity check fo call parameter */
+    if((lim_down < 1) || (lim_up < 1))                                          /* sanity check fo call parameter */
       return(now);
 
-    if(delta > 0)                                                     /* positive delta -> positive tendency */
-      if(delta > lim_up)                                              /* determine staep wise or rest */
-        return(now + lim_up);                                         /* -> returns new value up step */
+    if(delta > 0)                                                               /* positive delta -> positive tendency */
+      if(delta > lim_up)                                                        /* determine staep wise or rest */
+        return(now + lim_up);                                                   /* -> returns new value up step */
       else
-        return(now + (int16_t) delta);                                /* or -> returns new value up rest */
-    else                                                              /* negative delta -> negative tendency */
+        return(now + (int16_t) delta);                                          /* or -> returns new value up rest */
+    else                                                                        /* negative delta -> negative tendency */
     {
-      delta = -delta;                                                 /* determine step wise or rest */
+      delta = -delta;                                                           /* determine step wise or rest */
       if(delta > lim_down)
-        return(now - lim_down);                                       /* -> returns new value down step */
+        return(now - lim_down);                                                 /* -> returns new value down step */
       else
-        return(now - (int16_t) delta);                                /* or -> returns new value down rest */
+        return(now - (int16_t) delta);                                          /* or -> returns new value down rest */
     }
   }
 }
@@ -190,18 +190,18 @@ static int16_t Limit_Omega(int16_t now, int16_t target, int16_t lim_up, int16_t 
 */
 static int16_t Sine(int16_t theta)
 {
-  int16_t x;                                                          /* local swap data */
-  int16_t x1;                                                         /* local swap data */
-  int32_t temp32;                                                     /* local calculation data */
+  int16_t x;                                                                    /* local swap data */
+  int16_t x1;                                                                   /* local swap data */
+  int32_t temp32;                                                               /* local calculation data */
 
-  x = (int16_t) (theta & 0x7fff);                                     /* theta is unsigned now */
+  x = (int16_t) (theta & 0x7fff);                                               /* theta is unsigned now */
   if(x >= ELE_DEG(90))
   {
-    x = (int16_t) (ELE_DEG(180) - x);                                 /* macro returns 360°s fraction */
+    x = (int16_t) (ELE_DEG(180) - x);                                           /* macro returns 360°s fraction */
   }
 
   x1 = x; /* x1 start data */
-  temp32 = (cSine1 * (int32_t) x1) << 1;                              /* approximating the sine value */
+  temp32 = (cSine1 * (int32_t) x1) << 1;                                        /* approximating the sine value */
   x1 = (int16_t) (x1 * (int32_t) x >> (16 - 1));
   temp32 += (cSine2 * (int32_t) x1) << 1;
   x1 = (int16_t) (x1 * (int32_t) x >> (16 - 1));
@@ -212,13 +212,13 @@ static int16_t Sine(int16_t theta)
   temp32 += (cSine5 * (int32_t) x1) << 1;
   temp32 <<= 3;
 
-  if((uint32_t) temp32 >= 0x7fffffff)                                 /* limit the result */
+  if((uint32_t) temp32 >= 0x7fffffff)                                           /* limit the result */
     temp32 = 0x7fffffff;
 
-  if(theta <= 0)                                                      /* sign the result */
+  if(theta <= 0)                                                                /* sign the result */
     temp32 *= (-1);
 
-  return((int16_t) (temp32 >> 16));                                   /* return sine as fixpoint15 */
+  return((int16_t) (temp32 >> 16));                                             /* return sine as fixpoint15 */
 }
 
 /*! \brief  Cosine Calculation
@@ -256,12 +256,12 @@ static void VE_InitParameterDependandValues(unsigned char channel_number)
   }
 
   pVEx->TPWM  = VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency;
-  pVEx->MDPRD = T0/SystemValues[channel_number].PWMFrequency;         /* PWM frequency */
+  pVEx->MDPRD = T0/SystemValues[channel_number].PWMFrequency;                   /* PWM frequency */
 
-  pVEx->CIDKI = PIControl[channel_number].Id_Ki;                      /* Initialize PI-Control value */
-  pVEx->CIDKP = PIControl[channel_number].Id_Kp;                      /* Initialize PI-Control value */
-  pVEx->CIQKI = PIControl[channel_number].Iq_Ki;                      /* Initialize PI-Control value */
-  pVEx->CIQKP = PIControl[channel_number].Iq_Kp;                      /* Initialize PI-Control value */
+  pVEx->CIDKI = PIControl[channel_number].Id_Ki;                                /* Initialize PI-Control value */
+  pVEx->CIDKP = PIControl[channel_number].Id_Kp;                                /* Initialize PI-Control value */
+  pVEx->CIQKI = PIControl[channel_number].Iq_Ki;                                /* Initialize PI-Control value */
+  pVEx->CIQKP = PIControl[channel_number].Iq_Kp;                                /* Initialize PI-Control value */
 
 }
 /*! \brief  Initialize the Vector Engine
@@ -290,9 +290,9 @@ static void VE_Init(unsigned char channel_number)
     break;
   }
   
-  TEE_VEC->EN |= VE_ENABLE;                                           /* VE Enable */
+  TEE_VEC->EN |= VE_ENABLE;                                                     /* VE Enable */
 
-  pVEx->FMODE = (channel_number << 6) |                               /* Always set this bits (madatory due to TD) */
+  pVEx->FMODE = (channel_number << 6) |                                         /* Always set this bits (madatory due to TD) */
                 (channel_number << 4);
 
   switch (ChannelValues[channel_number].measurement_type)
@@ -312,15 +312,15 @@ static void VE_Init(unsigned char channel_number)
     break;
   }
 
-  TEE_VEC->REPTIME |= (VE_REPTIME_1 << (channel_number*4) );          /* Repeat time =1time */
+  TEE_VEC->REPTIME |= (VE_REPTIME_1 << (channel_number*4) );                    /* Repeat time =1time */
   TEE_VEC->TRGMODE |= ( (1<<channel_number) << (channel_number*2) );
 
   VE_InitParameterDependandValues(channel_number);
 
   TEE_VEC->CPURUNTRG |= (1<<channel_number);
 
-  __DSB();                                                            /* flush the pipeline */
-  __enable_irq();                                                     /* enable global interrupts */
+  __DSB();                                                                      /* flush the pipeline */
+  __enable_irq();                                                               /* enable global interrupts */
 
 }
 
@@ -340,19 +340,19 @@ static void VE_PrecalculateValues(unsigned char channel_number)
                              / ChannelValues[channel_number].sensitivity_voltage_measure;
     
   VE_HzMax[channel_number]
-    =   MotorParameterValues[channel_number].HzLimit                  /* put HzMax scaling factor 20 % over HzLimit */
+    =   MotorParameterValues[channel_number].HzLimit                            /* put HzMax scaling factor 20 % over HzLimit */
       + MotorParameterValues[channel_number].HzLimit / 5; 
   
   VE_PreCalc[channel_number].WaitTime_Position
     = (uint16_t)(            MotorParameterValues[channel_number].InitDelay
-                /            VE_PERIOD_TIME);                         /* Time of Positioning (Force) */
+                /            VE_PERIOD_TIME);                                   /* Time of Positioning (Force) */
 
   VE_PreCalc[channel_number].R_mult_amax_div_vmax
     = (int32_t)(           FIXPOINT_15
                 * (int64_t)MotorParameterValues[channel_number].Resistance
                 *          VE_a_max[channel_number]
                 /          VE_v_max[channel_number]
-                /          1000000);                                  /* Resistance and current are in (mX) */
+                /          1000000);                                            /* Resistance and current are in (mX) */
 
   VE_PreCalc[channel_number].InductanceDropoutFactor
     = (int32_t)(           FIXPOINT_15
@@ -430,14 +430,14 @@ static void VE_PrecalculateValues(unsigned char channel_number)
 */
 static void VE_Calculate_Omega(uint8_t channel_number)
 {
-  int32_t VE_temp1;             /*< intermediate (temp) values for better debugging */
+  int32_t VE_temp1;                                                             /*< intermediate (temp) values for better debugging */
   int32_t VE_temp2;
   int32_t VE_temp3;
   int32_t VE_temp4;
-  int32_t VE_Ed_PI;             /*< intermediate calculation of position */
-  int32_t VE_Ed_I;              /*< intermediate calculation of measured current over R */
-  int16_t VE_Ed;                /*< intermediate calculation of d-axis induced voltage */
-  int32_t VE_Omega_Calculated;  /*< calculated Omega */
+  int32_t VE_Ed_PI;                                                             /*< intermediate calculation of position */
+  int32_t VE_Ed_I;                                                              /*< intermediate calculation of measured current over R */
+  int16_t VE_Ed;                                                                /*< intermediate calculation of d-axis induced voltage */
+  int32_t VE_Omega_Calculated;                                                  /*< calculated Omega */
 
   /* equations :\n
    * -# Vd = R*Id - OMEGAest * Iq + Ed  ->\n
@@ -457,7 +457,7 @@ static void VE_Calculate_Omega(uint8_t channel_number)
   /* calculate the d-axis induced voltage */
   VE_Ed = (int16_t)((VE_Vd[channel_number] - VE_temp1 + VE_temp2 + ROUND_BIT15)>>16);
 
-  /* Calculate the estimated position\n
+  /* Calculate the estimated position
    * OMEGAest = OMWEGAref - K * ed\n
    * OmegaErr(I) * Hz_MAX = FIXPOINT_15 * Position_Ki * CtrlPrd * R_Ed * V_MAX */
   VE_temp3 = (VE_PreCalc[channel_number].PositionKiPreCalculation * (int32_t)VE_Ed)<<1;
@@ -468,7 +468,7 @@ static void VE_Calculate_Omega(uint8_t channel_number)
 
   VE_Ed_I = - VE_temp3;                 /* Saturation subtraction */
 
-  /* Calculate the speed from proportional part:\n
+  /* Calculate the speed from proportional part:
    * Speed calculation value = Speed command value + Error I value
    * OmegaErr(P) * Hz_MAX = FIXPOINT_15 * Position_Kp * R_Ed * V_MAX */
   VE_temp4 = (VE_PreCalc[channel_number].PositionKpPreCalculation * (int32_t)VE_Ed)<<1;
@@ -532,9 +532,10 @@ static void VE_Calculate_Iq_ref_Current_Control (uint8_t channel_number)
                         / VE_a_max[channel_number]
                         / SystemValues[channel_number].PWMFrequency));
 
-  VE_Iq_reference_I[channel_number].value += VE_Temp_I;             /* integrate to Iq(reference) */
-
-  if(VE_Iq_reference_I[channel_number].value > (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))  /* keep this in range */
+  VE_Iq_reference_I[channel_number].value += VE_Temp_I;                         /* integrate to Iq(reference) */
+  
+  /* keep this in range */
+  if(VE_Iq_reference_I[channel_number].value > (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))  
     VE_Iq_reference_I[channel_number].value  = (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
   else if(VE_Iq_reference_I[channel_number].value < -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))
     VE_Iq_reference_I[channel_number].value       = -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
@@ -614,13 +615,13 @@ static void VE_Forced_Omega_Theta(uint8_t channel_number)
 */
 static void calculate_new_target_speed(uint8_t channel_number)
 {
-  static int32_t  old_target=0;                                   /* remember old value */
-  int32_t         targetspeed60;                                  /* local target speed (multiplied with 60) */
+  static int32_t  old_target=0;                                                 /* remember old value */
+  int32_t         targetspeed60;                                                /* local target speed (multiplied with 60) */
 
   if (MotorSetValues[channel_number].TargetSpeed == old_target)
-    return;                                                       /* nothing new to calculate */
+    return;                                                                     /* nothing new to calculate */
 
-  old_target = MotorSetValues[channel_number].TargetSpeed;        /* remember new setting */
+  old_target = MotorSetValues[channel_number].TargetSpeed;                      /* remember new setting */
 
   targetspeed60 =   MotorSetValues[channel_number].TargetSpeed
                   * MotorParameterValues[channel_number].PolePairs;
@@ -656,10 +657,10 @@ static void calculate_new_target_speed(uint8_t channel_number)
 */
 static void collect_data_for_display (uint8_t channel_number)
 {
-  int64_t         av_out;                                             /* average value output */
+  int64_t         av_out;                                                       /* average value output */
   uint32_t        VE_Current;
-  static uint8_t  av_count[MAX_CHANNEL];                              /* average build counter value output */
-  static int64_t  VE_SpeedAverage[MAX_CHANNEL][5];                    /*< output for GUI */
+  static uint8_t  av_count[MAX_CHANNEL];                                        /* average build counter value output */
+  static int64_t  VE_SpeedAverage[MAX_CHANNEL][5];                              /*< output for GUI */
 
   /* Calculate rpm average over 5 ms */
   VE_SpeedAverage[channel_number][av_count[channel_number]++] = VE_Omega[channel_number].part.reg/5;
@@ -805,14 +806,14 @@ static void VE_Stage_Stop(uint8_t channel_number)
 #ifdef USE_OVERVOLTAGE_SIGNAL  
   PMD_OvervoltageReset(channel_number);
 #endif /* USE_OVERVOLTAGE_SIGNAL */
-  MotorErrorField[channel_number].Error &= 0x1;                       /* Reset all errors except overtemperature */
+  MotorErrorField[channel_number].Error &= 0x1;                                 /* Reset all errors except overtemperature */
 
-  VE_Id_command[channel_number]          = 0;                         /* reset all control process data */
+  VE_Id_command[channel_number]          = 0;                                   /* reset all control process data */
   VE_Omega[channel_number].value         = 0;
   VE_Omega_command[channel_number].value = 0;
-  VE_StageCounter[channel_number]        = 0;                         /* stage counter to limit time */
+  VE_StageCounter[channel_number]        = 0;                                   /* stage counter to limit time */
 
-  if (SystemValues[1].ShutdownMode != SHUTDOWN_GENTLE)                /* Use old Theta value in case that we know it */
+  if (SystemValues[1].ShutdownMode != SHUTDOWN_GENTLE)                          /* Use old Theta value in case that we know it */
   {
     VE_Theta_command[channel_number] = 0;
     VE_Theta[channel_number].value   = 0;
@@ -842,27 +843,27 @@ static void VE_Stage_MeasureZeroCurrent(uint8_t channel_number)
 static void VE_Stage_Initposition(uint8_t channel_number)
 {
   switch(VE_ActualStage[channel_number].sub)
-  {                                                                   /* initial substage */
+  {                                                                             /* initial substage */
   case Substage_Step0:
     VE_PMD_NormalOutput(channel_number);    
-    VE_Id_command[channel_number]    = 0;                             /* Id is zero */
-    VE_Theta_command[channel_number] = 0;                             /* set position */
-    VE_ActualStage[channel_number].sub= Substage_Step1;               /* next step */
+    VE_Id_command[channel_number]    = 0;                                       /* Id is zero */
+    VE_Theta_command[channel_number] = 0;                                       /* set position */
+    VE_ActualStage[channel_number].sub= Substage_Step1;                         /* next step */
     /*  No break. Continue to the next statements. */
   case Substage_Step1:
-    VE_StageCounter[channel_number]++;                                /* stage counter to limit time */
+    VE_StageCounter[channel_number]++;                                          /* stage counter to limit time */
     if(VE_StageCounter[channel_number] >= VE_PreCalc[channel_number].WaitTime_Position) /* check timeout */
     {
-      VE_ActualStage[channel_number].sub = Substage_StepEnd;          /* set last substage */
-      VE_StageCounter[channel_number]    = 0;                         /* stage counter to limit time */
+      VE_ActualStage[channel_number].sub = Substage_StepEnd;                    /* set last substage */
+      VE_StageCounter[channel_number]    = 0;                                   /* stage counter to limit time */
     }
     /* set current "Id" increasing as C-load */
     VE_Id_command[channel_number] += (((abs(VE_PreCalc[channel_number].IdCurrentForInitposition)<<16))
                                         / VE_PreCalc[channel_number].WaitTime_Position)>>16;
     break;
-  case Substage_StepEnd:                                              /* final stage */
-    VE_ActualStage[channel_number].main  = Stage_Force;               /* set next stage */
-    VE_ActualStage[channel_number].sub   = Substage_Step0;            /* set next substage */
+  case Substage_StepEnd:                                                        /* final stage */
+    VE_ActualStage[channel_number].main  = Stage_Force;                         /* set next stage */
+    VE_ActualStage[channel_number].sub   = Substage_Step0;                      /* set next substage */
     break;
   default:
     assert_param(0);
@@ -881,23 +882,23 @@ static void VE_Stage_Force(uint8_t channel_number)
 {
   switch(VE_ActualStage[channel_number].sub)
   {
-  case Substage_Step0:                                                /* initial substage */
+  case Substage_Step0:                                                          /* initial substage */
     VE_Id_command[channel_number] = abs(VE_PreCalc[channel_number].IdCurrentForInitposition);
     /*  No break. Continue to the next statements.  */
     /* If reach minimum frequency, it change to cStepEnd */
     if(abs(VE_Omega_command[channel_number].part.reg) >= VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
-      VE_ActualStage[channel_number].sub = Substage_StepEnd;          /* limit exceeded -> final stage active */
+      VE_ActualStage[channel_number].sub = Substage_StepEnd;                    /* limit exceeded -> final stage active */
 
-    VE_Iq_command[channel_number] = VE_Id_command[channel_number];    /* make some output */
+    VE_Iq_command[channel_number] = VE_Id_command[channel_number];              /* make some output */
     /* Update drive frequency. for ever in this mode */
     VE_Omega_command[channel_number].value = Limit_Omega(VE_Omega_command[channel_number].part.reg,
                                                         VE_Omega_Target[channel_number],
                                                         VE_PreCalc[channel_number].SpeedUpLimit,
                                                         VE_PreCalc[channel_number].SpeedUpLimit)<<16;
     break;
-  case Substage_StepEnd:                                              /* continuous stage */
-    VE_ActualStage[channel_number].main = Stage_ChangeUp;             /* final set for forcing stage */
-    VE_ActualStage[channel_number].sub  = Substage_Step0;             /* set next substage */
+  case Substage_StepEnd:                                                        /* continuous stage */
+    VE_ActualStage[channel_number].main = Stage_ChangeUp;                       /* final set for forcing stage */
+    VE_ActualStage[channel_number].sub  = Substage_Step0;                       /* set next substage */
     break;
   default:
     assert_param(0);
@@ -913,16 +914,16 @@ static void VE_Stage_Force(uint8_t channel_number)
 static void VE_Stage_ChangeUp(uint8_t channel_number)
 {
   int32_t id_temp,iq_temp;
-  int16_t VE_Lambda_Calculation;                                      /*< intermediate calculation of position */
+  int16_t VE_Lambda_Calculation;                                                /*< intermediate calculation of position */
 
   switch(VE_ActualStage[channel_number].sub)
   {
-  case Substage_Step0:                                                /* initial substage */
+  case Substage_Step0:                                                          /* initial substage */
     VE_Lambda_Calculation               = 0;
     VE_ActualStage[channel_number].sub  = Substage_Step1;
 
     /* No break. Continue to the next statements. */
-  case Substage_Step1:                                                /* continuous stage */
+  case Substage_Step1:                                                          /* continuous stage */
 
     /* recalculate lambda (speed) by omega (normalized) */
     VE_Lambda_Calculation += (abs(VE_Omega_command[channel_number].part.reg)
@@ -946,7 +947,7 @@ static void VE_Stage_ChangeUp(uint8_t channel_number)
 
     VE_DisableIRQ(channel_number);
 
-    VE_Id_command[channel_number] = id_temp>>16;                /* set current for vector engine */
+    VE_Id_command[channel_number] = id_temp>>16;                                /* set current for vector engine */
     VE_Iq_command[channel_number] = iq_temp>>16;
 
     VE_EnableIRQ(channel_number);
@@ -959,18 +960,18 @@ static void VE_Stage_ChangeUp(uint8_t channel_number)
 
     /* check frequency exceeding defined limits */
     if (abs(VE_Omega_command[channel_number].part.reg) >= VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
-      VE_ActualStage[channel_number].sub = Substage_Step2;            /* call final stage */
+      VE_ActualStage[channel_number].sub = Substage_Step2;                      /* call final stage */
 
     break;
   case Substage_Step2:
-    VE_Id_command[channel_number]       = 0;                        /* leaving this mode : Id = 0 */
+    VE_Id_command[channel_number]       = 0;                                    /* leaving this mode : Id = 0 */
     /* Update drive frequency. */
     VE_ActualStage[channel_number].sub  = Substage_StepEnd;
     VE_StageCounter[channel_number]     = 0;
     break;
-  case Substage_StepEnd:                                              /* final stage */
-    VE_ActualStage[channel_number].main = Stage_FOC;                  /* set next stage */
-    VE_ActualStage[channel_number].sub  = Substage_Step0;             /* set next substage */
+  case Substage_StepEnd:                                                        /* final stage */
+    VE_ActualStage[channel_number].main = Stage_FOC;                            /* set next stage */
+    VE_ActualStage[channel_number].sub  = Substage_Step0;                       /* set next substage */
     break;
   default:
     assert_param(0);
@@ -992,7 +993,7 @@ static void VE_Stage_FOC(uint8_t channel_number)
   case Substage_Step0:
     VE_ActualStage[channel_number].sub = Substage_Step1;
     /* No break. Continue to the next statements. */
-  case Substage_Step1:                                                /* continuous stage */
+  case Substage_Step1:                                                          /* continuous stage */
     /* Update drive frequency. */
     VE_Omega_command[channel_number].value = Limit_Omega(VE_Omega_command[channel_number].part.reg,
                                                         VE_Omega_Target[channel_number],
@@ -1004,7 +1005,7 @@ static void VE_Stage_FOC(uint8_t channel_number)
     /* check low speed rotation */
     if(abs(VE_Omega_command[channel_number].part.reg) < VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
     {
-      VE_ActualStage[channel_number].main  = Stage_Force;             /* terminate this stage */
+      VE_ActualStage[channel_number].main  = Stage_Force;                       /* terminate this stage */
       VE_ActualStage[channel_number].sub   = Substage_Step0;
     }
     break;
@@ -1042,33 +1043,33 @@ static void IRQ_Common(uint8_t channel_number)
   {
   case Stage_Emergency:
   case Stage_Stop:
-    pVEx->MODE       = VE_MODE_OFF;                                   /* Output OFF */
+    pVEx->MODE       = VE_MODE_OFF;                                             /* Output OFF */
     break;
   case Stage_ZeroCurrentMeasure:
-    pVEx->MODE        = VE_ZEROCURRENTEN;                             /* Input 0 current */
-    TEE_VEC->TASKAPP &= ~(VE_TASKAPP_CLEAN_MASK<<(channel_number*4)); /* VE start from output control */
+    pVEx->MODE        = VE_ZEROCURRENTEN;                                       /* Input 0 current */
+    TEE_VEC->TASKAPP &= ~(VE_TASKAPP_CLEAN_MASK<<(channel_number*4));           /* VE start from output control */
     TEE_VEC->ACTSCH   = (TEE_VEC->ACTSCH
                          & ~(VE_ACTSCH_CLEAN_MASK<<(channel_number*4)))
-                         | VE_ACTSCH_SCHEDULE_9<<(channel_number*4);  /* Schedule 9 */
+                         | VE_ACTSCH_SCHEDULE_9<<(channel_number*4);            /* Schedule 9 */
     break;
   case Stage_Initposition:
   case Stage_Force:
   case Stage_ChangeUp:
   case Stage_FOC:
-    pVEx->MODE        = VE_OUTPUTENABLE;                              /* Output ON */
+    pVEx->MODE        = VE_OUTPUTENABLE;                                        /* Output ON */
 #ifndef USE_USER_CALLBACKS
-    TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                             /* VE start from current control */
+    TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                                       /* VE start from current control */
                          & ~(VE_TASKAPP_CLEAN_MASK<<(channel_number*4)))
                          | VE_TASKAPP_CURRENT_CONTROL<<(channel_number*4);
     TEE_VEC->ACTSCH   = (TEE_VEC->ACTSCH
                          & ~(VE_ACTSCH_CLEAN_MASK<<(channel_number*4)))
-                         | VE_ACTSCH_SCHEDULE_1<<(channel_number*4);  /* Schedule 1 */
+                         | VE_ACTSCH_SCHEDULE_1<<(channel_number*4);            /* Schedule 1 */
 #else
     if ( (VE_ActualStage[channel_number].main == Stage_Initposition)
        &&(VE_ActualStage[channel_number].sub  == Substage_Step0)
        &&(TEE_VEC->ACTSCH >>(channel_number*4) == VE_ACTSCH_SCHEDULE_9 ))
     {
-      TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                           /* VE start from current control */
+      TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                                     /* VE start from current control */
                            & ~(VE_TASKAPP_CLEAN_MASK<<(channel_number*4)))
                            | VE_TASKAPP_CURRENT_CONTROL<<(channel_number*4);
       TEE_VEC->ACTSCH   = (TEE_VEC->ACTSCH
@@ -1090,7 +1091,7 @@ static void IRQ_Common(uint8_t channel_number)
 
     if (TEE_VEC->TASKAPP>>(channel_number*4) != VE_TASKAPP_CURRENT_CONTROL)
     {
-      TEE_VEC->CPURUNTRG	|= (1<<channel_number);               /* VE start */
+      TEE_VEC->CPURUNTRG	|= (1<<channel_number);                         /* VE start */
       return;
     }
 
@@ -1104,37 +1105,37 @@ static void IRQ_Common(uint8_t channel_number)
 #ifdef BOARD_PWR_HEADER_FILE_0
 #include BOARD_PWR_HEADER_FILE_0
 #endif
-#ifdef BOARD_VDC_CHANNEL_0                                            /* If there is no measurement channel for VDC, we have to give a constant value */
+#ifdef BOARD_VDC_CHANNEL_0                                                      /* If there is no measurement channel for VDC, we have to give a constant value */
   if (channel_number==0)
-    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_0/VE_v_max[channel_number];  /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
+    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_0/VE_v_max[channel_number];         /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
 #endif
-#ifdef BOARD_VDC_CHANNEL_0_HV_COMMUNICATION                           /* Galvanic isolation prevents direct measurement - use HV communication instead */
+#ifdef BOARD_VDC_CHANNEL_0_HV_COMMUNICATION                                     /* Galvanic isolation prevents direct measurement - use HV communication instead */
   if (channel_number==0)
-    pVEx->VDC = HV_Communication_GetValue(0)<<5;                      /* ADC valus from Device is 10 bit - max is 0x3ff - blown up to 15 bit */
+    pVEx->VDC = HV_Communication_GetValue(0)<<5;                                /* ADC valus from Device is 10 bit - max is 0x3ff - blown up to 15 bit */
 #endif
 
 #include "pwr_undefine.h"
 #include BOARD_PWR_HEADER_FILE_1
-#ifdef BOARD_VDC_CHANNEL_1                                            /* If there is no measurement channel for VDC, we have to give a constant value */
+#ifdef BOARD_VDC_CHANNEL_1                                                      /* If there is no measurement channel for VDC, we have to give a constant value */
   if (channel_number==1)
-    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_1/VE_v_max[channel_number];  /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
+    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_1/VE_v_max[channel_number];         /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
 #endif
-#ifdef BOARD_VDC_CHANNEL_1_HV_COMMUNICATION                           /* Galvanic isolation prevents direct measurement - use HV communication instead */
+#ifdef BOARD_VDC_CHANNEL_1_HV_COMMUNICATION                                     /* Galvanic isolation prevents direct measurement - use HV communication instead */
   if (channel_number==1)
-    pVEx->VDC = HV_Communication_GetValue(0)<<5;                      /* ADC valus from Device 10 bit - max is 0x3ff - blown up to 15 bit */
+    pVEx->VDC = HV_Communication_GetValue(0)<<5;                                /* ADC valus from Device 10 bit - max is 0x3ff - blown up to 15 bit */
 #endif
 #include "pwr_undefine.h"
 
   if ( (ChannelValues[channel_number].measurement_type==CURRENT_SENSOR_2)
      &&(ChannelValues[channel_number].sensor_direction==CURRENT_SENSOR_NORMAL) )
   {
-    pVEx->ID = (unsigned long)(-1 * (signed long)pVEx->ID);           /* Invert for 2 Sensor solution */
-    pVEx->IQ = (unsigned long)(-1 * (signed long)pVEx->IQ);           /* Invert for 2 Sensor solution */
+    pVEx->ID = (unsigned long)(-1 * (signed long)pVEx->ID);                     /* Invert for 2 Sensor solution */
+    pVEx->IQ = (unsigned long)(-1 * (signed long)pVEx->IQ);                     /* Invert for 2 Sensor solution */
   }
 
-  VE_Vd[channel_number] = pVEx->VD;                                   /* Read Vd from VE */
-  VE_Id[channel_number] = (int16_t)(pVEx->ID>>16);                    /* Read Id from VE */
-  VE_Iq[channel_number] = (int16_t)(pVEx->IQ>>16);                    /* Read Iq from VE */
+  VE_Vd[channel_number] = pVEx->VD;                                             /* Read Vd from VE */
+  VE_Id[channel_number] = (int16_t)(pVEx->ID>>16);                              /* Read Id from VE */
+  VE_Iq[channel_number] = (int16_t)(pVEx->IQ>>16);                              /* Read Iq from VE */
 
   switch (VE_ActualStage[channel_number].main)
   {
@@ -1185,30 +1186,30 @@ static void IRQ_Common(uint8_t channel_number)
   /*****************************************/
   case Stage_ZeroCurrentMeasure:
     VE_StageCounter[channel_number]++;
-    if(VE_StageCounter[channel_number] >= 4)                          /* check timeout - 2 times on 1/PWM_Frequency */
+    if(VE_StageCounter[channel_number] >= 4)                                    /* check timeout - 2 times on 1/PWM_Frequency */
     {
-      if (VE_Theta[channel_number].value == 0)                        /* first time of startup or nit shutdown gentle mode */
-        VE_ActualStage[channel_number].main = Stage_Initposition;     /* set next stage */
+      if (VE_Theta[channel_number].value == 0)                                  /* first time of startup or nit shutdown gentle mode */
+        VE_ActualStage[channel_number].main = Stage_Initposition;               /* set next stage */
       else
-        VE_ActualStage[channel_number].main = Stage_Force;            /* set next stage */
+        VE_ActualStage[channel_number].main = Stage_Force;                      /* set next stage */
 
-      VE_ActualStage[channel_number].sub  = Substage_Step0;           /* set next substage */
-      VE_StageCounter[channel_number]     = 0;                        /* stage counter to limit time */
+      VE_ActualStage[channel_number].sub  = Substage_Step0;                     /* set next substage */
+      VE_StageCounter[channel_number]     = 0;                                  /* stage counter to limit time */
     }
     break;
   /*****************************************/
   /********** Position Stage ***************/
   /*****************************************/
   case Stage_Initposition:
-    pVEx->IDREF = VE_Id_command[channel_number];                      /* Set Id */
+    pVEx->IDREF = VE_Id_command[channel_number];                                /* Set Id */
     break;
   /*****************************************/
   /**** Forced Commutation Stage ***********/
   /*****************************************/
   case Stage_Force:
-    pVEx->IDREF = VE_Id_command[channel_number];                      /* Set Id */
-    pVEx->IQREF = 0x00u;                                              /* Set Iq=0 */
-    pVEx->THETA = VE_Theta[channel_number].part.reg;                  /* Theta set */
+    pVEx->IDREF = VE_Id_command[channel_number];                                /* Set Id */
+    pVEx->IQREF = 0x00u;                                                        /* Set Iq=0 */
+    pVEx->THETA = VE_Theta[channel_number].part.reg;                            /* Theta set */
 #ifdef USE_MOTOR_DISCONNECT_DETECTION    
     if( ( abs(pVEx->IAADC-pVEx->IA0)
         + abs(pVEx->IBADC-pVEx->IB0)
@@ -1223,17 +1224,17 @@ static void IRQ_Common(uint8_t channel_number)
   /********** ChangeUp Stage ***************/
   /*****************************************/
   case Stage_ChangeUp:
-    pVEx->IDREF = VE_Id_command[channel_number];                      /* Set Id */
-    pVEx->IQREF = VE_Iq_command[channel_number];                      /* Set Iq */
-    pVEx->THETA = VE_Theta[channel_number].part.reg;                  /* Theta set */
+    pVEx->IDREF = VE_Id_command[channel_number];                                /* Set Id */
+    pVEx->IQREF = VE_Iq_command[channel_number];                                /* Set Iq */
+    pVEx->THETA = VE_Theta[channel_number].part.reg;                            /* Theta set */
     break;
   /*****************************************/
   /************* FOC Stage *****************/
   /*****************************************/
   case Stage_FOC:
-    pVEx->IDREF = VE_Id_reference[channel_number];                    /* Set Id */
-    pVEx->IQREF = VE_Iq_reference[channel_number];                    /* Set Iq */
-    pVEx->THETA = VE_Theta[channel_number].part.reg;                  /* Theta set */
+    pVEx->IDREF = VE_Id_reference[channel_number];                              /* Set Id */
+    pVEx->IQREF = VE_Iq_reference[channel_number];                              /* Set Iq */
+    pVEx->THETA = VE_Theta[channel_number].part.reg;                            /* Theta set */
     break;
   /*****************************************/
   /************ Emergency Stage ************/
@@ -1252,27 +1253,27 @@ static void IRQ_Common(uint8_t channel_number)
     static uint8_t      sector[MAX_CHANNEL];
     static uint8_t      oldsector[MAX_CHANNEL];
 
-    sector[channel_number] = pVEx->SECTOR;                            /* Get actual sector */
+    sector[channel_number] = pVEx->SECTOR;                                      /* Get actual sector */
 
-    if ((oldsector[channel_number] == 11)                             /* Changing from 11 -> 0 means CW */
+    if ((oldsector[channel_number] == 11)                                       /* Changing from 11 -> 0 means CW */
      && (sector[channel_number]==0))
       EncoderData[channel_number].event_nr++;
-    else if ((oldsector[channel_number] == 0)                         /* Changing from 0 -> 11 means CCW */
+    else if ((oldsector[channel_number] == 0)                                   /* Changing from 0 -> 11 means CCW */
           && (sector[channel_number]==11))
       EncoderData[channel_number].event_nr--;
-    oldsector[channel_number]=sector[channel_number];                 /* remember old sector */
+    oldsector[channel_number]=sector[channel_number];                           /* remember old sector */
 
     if (EncoderData[channel_number].event_nr > MotorParameterValues[channel_number].PolePairs-1)
     {
-      EncoderData[channel_number].event_nr=0;                         /* reset electrical turn count */
-      EncoderData[channel_number].FullTurns++;                        /* increase full turns */
-      EncoderData[channel_number].CW=1;                               /* turning CW */
+      EncoderData[channel_number].event_nr=0;                                   /* reset electrical turn count */
+      EncoderData[channel_number].FullTurns++;                                  /* increase full turns */
+      EncoderData[channel_number].CW=1;                                         /* turning CW */
     }
     else if (EncoderData[channel_number].event_nr < -MotorParameterValues[channel_number].PolePairs+1)
     {
-      EncoderData[channel_number].event_nr=0;                         /* reset electrical turn count */
-      EncoderData[channel_number].FullTurns--;                        /* increase full turns */
-      EncoderData[channel_number].CW=0;                               /* turning CCW */
+      EncoderData[channel_number].event_nr=0;                                   /* reset electrical turn count */
+      EncoderData[channel_number].FullTurns--;                                  /* increase full turns */
+      EncoderData[channel_number].CW=0;                                         /* turning CCW */
     }
   }
 #endif /* USE_ENCODER */
@@ -1283,7 +1284,7 @@ static void IRQ_Common(uint8_t channel_number)
     static uint8_t      sector;
     static uint8_t      oldsector;
 
-    sector = pVEx->SECTOR;                                            /* Get actual sector */
+    sector = pVEx->SECTOR;                                                      /* Get actual sector */
 
     if (oldsector !=  sector)
     {
@@ -1292,12 +1293,12 @@ static void IRQ_Common(uint8_t channel_number)
                         (~GPIO_ReadDataBit(SPEED_CONTROL_FG_PORT,
                                            SPEED_CONTROL_FG_PIN) & 0x01));
 
-      oldsector=sector;                                                 /* remember old sector */
+      oldsector=sector;                                                         /* remember old sector */
     }
   }
 #endif /* USE_EXTERNAL_SPEED_CONTROL */
 
-  TEE_VEC->CPURUNTRG	|= (1<<channel_number);                       /* VE start */
+  TEE_VEC->CPURUNTRG	|= (1<<channel_number);                                 /* VE start */
 
 }
 
@@ -1361,25 +1362,25 @@ static void VE_Loop(uint8_t channel_number)
   switch (VE_ActualStage[channel_number].main)
   {
   case Stage_Stop:
-    VE_Stage_Stop(channel_number);                                    /* active in Stop mode */
+    VE_Stage_Stop(channel_number);                                              /* active in Stop mode */
     break;
   case Stage_ZeroCurrentMeasure:
-    VE_Stage_MeasureZeroCurrent(channel_number);                      /* measure zero current */
+    VE_Stage_MeasureZeroCurrent(channel_number);                                /* measure zero current */
     break;
   case Stage_Initposition:
-    VE_Stage_Initposition(channel_number);                            /* Positioning mode */
+    VE_Stage_Initposition(channel_number);                                      /* Positioning mode */
     break;
   case Stage_Force:
-    VE_Stage_Force(channel_number);                                   /* Forced commutation mode */
+    VE_Stage_Force(channel_number);                                             /* Forced commutation mode */
     break;
   case Stage_ChangeUp:
-    VE_Stage_ChangeUp(channel_number);                                /* Change up mode */
+    VE_Stage_ChangeUp(channel_number);                                          /* Change up mode */
     break;
   case Stage_FOC:
-    VE_Stage_FOC(channel_number);                                     /* Speed control by current mode */
+    VE_Stage_FOC(channel_number);                                               /* Speed control by current mode */
     break;
   case Stage_Emergency:
-    VE_Stage_Emergency(channel_number);                               /* Emergency mode */
+    VE_Stage_Emergency(channel_number);                                         /* Emergency mode */
     break;
   default:
     assert_param(0);
@@ -1411,29 +1412,29 @@ static void complete_shutdown(uint8_t channel_number)
     break;
   }
 
-  VE_ActualStage[channel_number].main = Stage_Stop;                   /* set STOP stage */
+  VE_ActualStage[channel_number].main = Stage_Stop;                             /* set STOP stage */
   VE_ActualStage[channel_number].sub  = Substage_Step0;
 #ifdef USE_LED
-  LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_OFF);        /* Clear FOC signal Led */
+  LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_OFF);                  /* Clear FOC signal Led */
 #endif
 #ifdef USE_RGB_LED
   RGB_LED_RestoreValue();  
 #endif /* USE_RGB_LED */ 
   
-  MotorStateValues[channel_number].ActualSpeed  = 0;                  /* Clear GUI Values (but don't Error Flag) */
+  MotorStateValues[channel_number].ActualSpeed  = 0;                            /* Clear GUI Values (but don't Error Flag) */
   MotorStateValues[channel_number].TargetSpeed  = 0;
   MotorStateValues[channel_number].Current      = 0;
   MotorStateValues[channel_number].Torque       = 0;
 
-  xVETask[channel_number]=NULL;                                       /* Delete Task Handle */
+  xVETask[channel_number]=NULL;                                                 /* Delete Task Handle */
   VE_DisableIRQ(channel_number);
   memset (pVEx,0,sizeof(TEE_VE_TypeDef));
   VE_Omega[channel_number].value         = 0;
   VE_Omega_command[channel_number].value = 0;
   VE_Stage_Stop(channel_number);
 
-  VE_PerformShutdown[channel_number]     =0;                          /* Shutdown has finihed */
-  vTaskDelete(xShutdownHandle[channel_number]);                       /* Kill the Task */
+  VE_PerformShutdown[channel_number]     =0;                                    /* Shutdown has finihed */
+  vTaskDelete(xShutdownHandle[channel_number]);                                 /* Kill the Task */
 }
 
 /*! \brief  Vector Engine Worker Task
@@ -1525,16 +1526,16 @@ int8_t VE_Start(uint8_t channel_number)
   if (xVETask[channel_number]!=NULL)
     return 0;
 
-  VE_PrecalculateValues(channel_number);                            /* do all pre-calculations */
-  VE_Init(channel_number);                                          /* Initialize the vector engine */
+  VE_PrecalculateValues(channel_number);                                        /* do all pre-calculations */
+  VE_Init(channel_number);                                                      /* Initialize the vector engine */
 
   VE_EnableIRQ(channel_number);
 
-  VE_ActualStage[channel_number].main = Stage_ZeroCurrentMeasure;   /* initial set for positioning stage */
+  VE_ActualStage[channel_number].main = Stage_ZeroCurrentMeasure;               /* initial set for positioning stage */
   VE_ActualStage[channel_number].sub  = Substage_Step0;
 
 #ifdef USE_ENCODER
-  ENC_Init(channel_number);                                         /* initialize the Encoder 1 interface */
+  ENC_Init(channel_number);                                                     /* initialize the Encoder 1 interface */
 #endif
 
   if (xTaskCreate(VETask,

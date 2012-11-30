@@ -23,11 +23,12 @@
 
 #define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
+#define VISHAY_NTCLE100E3103JB0
 
 /* BOARD PARAMETER */
 #define BOARD_DEAD_TIME                         1400                            /* [us]             - Dead time for FETs */
 
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       1250                            /* [mV/A]           - Sensivity of current measurement circuit */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       833                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SHUNT_1                 /* NONE */
 #define BOARD_SENSITIVITY_VOLTAGE_MEASURE       140                             /* [mV/V]           - Sensivity of voltage measurement circuit  */
 

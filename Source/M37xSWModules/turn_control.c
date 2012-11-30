@@ -67,7 +67,7 @@ recalculate:
   ForcedSpeed[channel_number]=   60
                                * MotorParameterValues[channel_number].HzChange
                                / MotorParameterValues[channel_number].PolePairs
-                               - 5;                                           /* Security margin */
+                               - 5;                                             /* Security margin */
 
   /* Calculate the time needed to reach target rpm in ms */  
   SpeedUpTime = (uint16_t) ( (long long)PAI2
@@ -78,7 +78,7 @@ recalculate:
                                       / 100000);
   /* Calculate the number of tuns happen during speed up */
   TurnsWhileSpeedUp =   max_speed
-                      / 2                                                     /* spinning the whole time with half the speed */
+                      / 2                                                       /* spinning the whole time with half the speed */
                       / SECONDS_PER_MINUTE
                       * SpeedUpTime
                       / 1000;
@@ -123,7 +123,7 @@ recalculate:
 
     WaitValueForShutdown[channel_number] = TargetValue[channel_number] + TurnsWhileSpeedDown;
     WaitValueForForced[channel_number]   = TargetValue[channel_number] + TurnsWhileSpeedUp   + TurnsWhileSpeedDown ;
-    if (nr_turns<-LOW_SPEED_BORDER)                                           /* Some safety margins */
+    if (nr_turns<-LOW_SPEED_BORDER)                                             /* Some safety margins */
     {
       WaitValueForShutdown[channel_number]+=2;
       WaitValueForForced[channel_number]  +=5;
@@ -133,7 +133,7 @@ recalculate:
   {
     WaitValueForShutdown[channel_number] = TargetValue[channel_number] - TurnsWhileSpeedDown;
     WaitValueForForced[channel_number]   = TargetValue[channel_number] - TurnsWhileSpeedUp -TurnsWhileSpeedDown;
-    if (nr_turns>LOW_SPEED_BORDER)                                            /* Some safety margins */
+    if (nr_turns>LOW_SPEED_BORDER)                                              /* Some safety margins */
     {
       WaitValueForShutdown[channel_number]-=2;
       WaitValueForForced[channel_number]  -=5;
@@ -141,7 +141,7 @@ recalculate:
 
   }    
 
-  do_turn_control[channel_number]=1;                                          /* start turn control */
+  do_turn_control[channel_number]=1;                                            /* start turn control */
 }
 
 /*! \brief  Turn Task
@@ -164,14 +164,14 @@ void TurnTask(void* pvParameters)
       /* Wait to reach shutdown to forced commutation value */
       while (   (EncoderData[channel].FullTurns!=WaitValueForForced[channel])
              && (do_turn_control[channel]==1))
-        vTaskDelay( 1 / portTICK_RATE_MS );                                   /* sleep a while */
+        vTaskDelay( 1 / portTICK_RATE_MS );                                     /* sleep a while */
         
       MotorSetValues[channel].TargetSpeed=ForcedSpeed[channel];
       
       /* Wait to reach shutdown to shutdown */
       while (   (EncoderData[channel].FullTurns!=WaitValueForShutdown[channel])
              && (do_turn_control[channel]==1))
-        vTaskDelay( 1 / portTICK_RATE_MS );                                   /* sleep a while */
+        vTaskDelay( 1 / portTICK_RATE_MS );                                     /* sleep a while */
         
       /* Limit speed to approach level */
       if (EncoderData[channel].CW==1)
@@ -182,15 +182,15 @@ void TurnTask(void* pvParameters)
       /* Wait for reaching destination */
       while (   (EncoderData[channel].FullTurns!=TargetValue[channel])
              && (do_turn_control[channel]==1))
-        vTaskDelay( 1 / portTICK_RATE_MS );                                   /* sleep a while */
+        vTaskDelay( 1 / portTICK_RATE_MS );                                     /* sleep a while */
       
-      VE_Stop(channel);                                                       /* stop motor */
-      do_turn_control[channel]            =0;                                 /* stop turn control */
-      MotorSetValues[channel].TargetSpeed =0;                                 /* reset target value to 0 - if someone has interrupted the turn control by stopping the motor */
-      TargetValue[channel]                = EncoderData[channel].FullTurns;   /* save actual value - needed if starting again a stopped turn position */
+      VE_Stop(channel);                                                         /* stop motor */
+      do_turn_control[channel]            =0;                                   /* stop turn control */
+      MotorSetValues[channel].TargetSpeed =0;                                   /* reset target value to 0 - if someone has interrupted the turn control by stopping the motor */
+      TargetValue[channel]                = EncoderData[channel].FullTurns;     /* save actual value - needed if starting again a stopped turn position */
     }
     
-    vTaskDelay( 100 / portTICK_RATE_MS );                                     /* sleep a while */
+    vTaskDelay( 100 / portTICK_RATE_MS );                                       /* sleep a while */
   }
 }
 #endif // USE_TURN_CONTROL

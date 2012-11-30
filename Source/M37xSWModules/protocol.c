@@ -329,18 +329,18 @@ static const GPIO_InitTypeDef portConfigRX =
 */
 static void uart_init (void)
 {
-  GPIO_Init(SERIAL_COMMUNICATION_PORT,                                /* Set up TX Port */
+  GPIO_Init(SERIAL_COMMUNICATION_PORT,                                          /* Set up TX Port */
             SERIAL_COMMUNICATION_TX,
             &portConfigTX);
-  GPIO_Init(SERIAL_COMMUNICATION_PORT,                                /* Set up RX Port */
+  GPIO_Init(SERIAL_COMMUNICATION_PORT,                                          /* Set up RX Port */
             SERIAL_COMMUNICATION_RX,
             &portConfigRX);
 
-  GPIO_EnableFuncReg(SERIAL_COMMUNICATION_PORT,                       /* Enable UART on the Port Pins */
+  GPIO_EnableFuncReg(SERIAL_COMMUNICATION_PORT,                                 /* Enable UART on the Port Pins */
                      SERIAL_COMMUNICATION_FUNCTION_REGISTER,
                      SERIAL_COMMUNICATION_TX | SERIAL_COMMUNICATION_RX);
 
-  UART_SWReset(SERIAL_COMMUNICATION_CHANNEL);                         /* Do a SW reset to clear out any crap */
+  UART_SWReset(SERIAL_COMMUNICATION_CHANNEL);                                   /* Do a SW reset to clear out any crap */
 
   /* Configure Port for 115200 bps */
   UART_Enable(SERIAL_COMMUNICATION_CHANNEL);
@@ -357,12 +357,12 @@ static int protocol_init (void)
   struct rx_machine *rx = &g_rx_machine;
   struct tx_machine *tx = &g_tx_machine;
 
-  vSemaphoreCreateBinary(rx->s);                                      /* create semaphore for receive */
-  vSemaphoreCreateBinary(tx->s);                                      /* create semaphore for transmit */
-  xSemaphoreTake(rx->s, 0);                                           /* take semaphore for receive  directly that task has to wait */
-  xSemaphoreTake(tx->s, 0);                                           /* take semaphore for transmit directly that task has to wait */
+  vSemaphoreCreateBinary(rx->s);                                                /* create semaphore for receive */
+  vSemaphoreCreateBinary(tx->s);                                                /* create semaphore for transmit */
+  xSemaphoreTake(rx->s, 0);                                                     /* take semaphore for receive  directly that task has to wait */
+  xSemaphoreTake(tx->s, 0);                                                     /* take semaphore for transmit directly that task has to wait */
 
-  uart_init();                                                        /* initialize the uart */
+  uart_init();                                                                  /* initialize the uart */
 
   return 0;
 }
@@ -515,7 +515,7 @@ out:
 */
 void ProtocolTask( void *pvParameters )
 {
-  while (INIT_Done==0)                                                /* Wailt until HW setup has finished */
+  while (INIT_Done==0)                                                          /* Wailt until HW setup has finished */
     vTaskDelay( 100 / portTICK_RATE_MS );
   
   protocol_init();
@@ -527,9 +527,9 @@ void ProtocolTask( void *pvParameters )
     
   for( ;; )
   {
-    protocol_handle_one_q_a();                                        /* Handle one question or answer */
+    protocol_handle_one_q_a();                                                  /* Handle one question or answer */
 #ifdef USE_LED
-    LED_Toggle(LED_SIGNAL_SERIAL_COMMUNICATION_RUNNING);              /* Tollgle LED for signal working to outside */
+    LED_Toggle(LED_SIGNAL_SERIAL_COMMUNICATION_RUNNING);                        /* Tollgle LED for signal working to outside */
 #endif
 #ifdef USE_RGB_LED
     RGB_LED_ToggleValue(LED_RGB_GREEN);

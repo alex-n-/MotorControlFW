@@ -23,24 +23,24 @@
 #include <stdint.h>
 #include "config.h"
 
-#define EEPROM_PAGESIZE 16    /*!< Pagesize of used EEProm */
+#define EEPROM_PAGESIZE 16                                                      /*!< Pagesize of used EEProm */
 
-#define CMD_WRSR        0x01  /*!< Write STATUS register */
-#define CMD_WRITE       0x02  /*!< Write data to memory array beginning at selected address */
-#define CMD_READ        0x03  /*!< Read data from memory array beginning at selected address */
-#define CMD_WRDI        0x04  /*!< Reset the write enable latch (disable write operations) */
-#define CMD_RDSR        0x05  /*!< Read STATUS register */
-#define CMD_WREN        0x06  /*!< Set the write enable latch (enable write operations) */
+#define CMD_WRSR        0x01                                                    /*!< Write STATUS register */
+#define CMD_WRITE       0x02                                                    /*!< Write data to memory array beginning at selected address */
+#define CMD_READ        0x03                                                    /*!< Read data from memory array beginning at selected address */
+#define CMD_WRDI        0x04                                                    /*!< Reset the write enable latch (disable write operations) */
+#define CMD_RDSR        0x05                                                    /*!< Read STATUS register */
+#define CMD_WREN        0x06                                                    /*!< Set the write enable latch (enable write operations) */
 
-#define STATUS_WIP      0x01  /*!< Write-In-Process */
-#define STATUS_WEL      0x02  /*!< Write Enable Latch */
-#define STATUS_BP0      0x04  /*!< Block Protection */
-#define STATUS_BP1      0x08  /*!< Block Protection */
+#define STATUS_WIP      0x01                                                    /*!< Write-In-Process */
+#define STATUS_WEL      0x02                                                    /*!< Write Enable Latch */
+#define STATUS_BP0      0x04                                                    /*!< Block Protection */
+#define STATUS_BP1      0x08                                                    /*!< Block Protection */
 
-#define BP_NONE         0x00  /*!< Block Protection none */
-#define BP_60_7F        0x01  /*!< Block Protection upper quarter */
-#define BP_40_7F        0x02  /*!< Block Protection upper half */
-#define BP_ALL          0x03  /*!< Block Protection all */
+#define BP_NONE         0x00                                                    /*!< Block Protection none */
+#define BP_60_7F        0x01                                                    /*!< Block Protection upper quarter */
+#define BP_40_7F        0x02                                                    /*!< Block Protection upper half */
+#define BP_ALL          0x03                                                    /*!< Block Protection all */
 
 int8_t EEPROM_Read (uint16_t pos, uint8_t* data, uint16_t size);
 int8_t EEPROM_Write(uint16_t pos, uint8_t* data, uint16_t size);

@@ -26,14 +26,14 @@
  */
 typedef enum
 {
-  GAIN_1_5,                                                           /*!< Gain of +1.5 */
-  GAIN_2_5,                                                           /*!< Gain of +2.5 */
-  GAIN_3_0,                                                           /*!< Gain of +3.0 */
-  GAIN_3_5,                                                           /*!< Gain of +3.5 */
-  GAIN_4_0,                                                           /*!< Gain of +4.0 */
-  GAIN_6_0,                                                           /*!< Gain of +6.0 */
-  GAIN_8_0,                                                           /*!< Gain of +8.0 */
-  GAIN_10_0,                                                          /*!< Gain of +10.0 */
+  GAIN_1_5,                                                                     /*!< Gain of +1.5 */
+  GAIN_2_5,                                                                     /*!< Gain of +2.5 */
+  GAIN_3_0,                                                                     /*!< Gain of +3.0 */
+  GAIN_3_5,                                                                     /*!< Gain of +3.5 */
+  GAIN_4_0,                                                                     /*!< Gain of +4.0 */
+  GAIN_6_0,                                                                     /*!< Gain of +6.0 */
+  GAIN_8_0,                                                                     /*!< Gain of +8.0 */
+  GAIN_10_0,                                                                    /*!< Gain of +10.0 */
 } M370_GAIN;
 
 /* Gain as number multiplied by 10 */
@@ -54,15 +54,15 @@ static const unsigned int gaintable[]={
  */
 typedef enum
 {
-  CHANNEL_A,                                                          /*!< Channel A */
-  CHANNEL_B,                                                          /*!< Channel B */
-  CHANNEL_C,                                                          /*!< Channel C */
-  CHANNEL_D,                                                          /*!< Channel D */
+  CHANNEL_A,                                                                    /*!< Channel A */
+  CHANNEL_B,                                                                    /*!< Channel B */
+  CHANNEL_C,                                                                    /*!< Channel C */
+  CHANNEL_D,                                                                    /*!< Channel D */
 } M370_AMPCMP_CHANNEL;
 
-#define CMP_ENABLE    0x01                                            /*!< Enable the comperator */
-#define CMP_OPAMP_OUT 0x02                                            /*!< Enable the output */
-#define AMP_ENABLE    0x01                                            /*!< Enable the amplifier */
+#define CMP_ENABLE    0x01                                                      /*!< Enable the comperator */
+#define CMP_OPAMP_OUT 0x02                                                      /*!< Enable the output */
+#define AMP_ENABLE    0x01                                                      /*!< Enable the amplifier */
 
 void AMPCMP_setup(M370_AMPCMP_CHANNEL channel_number, M370_GAIN gain);
 

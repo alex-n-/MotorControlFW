@@ -23,20 +23,21 @@
 #include TMPM_GPIO_HEADER_FILE
 #include BOARD_KEYPAD_HEADER_FILE
 
-/*
- =======================================================================================================================
- =======================================================================================================================
- */
-
 /* GPIO settings for Keypad purpose */
 static const GPIO_InitTypeDef GPIO_Init_Struct =
 {
-  GPIO_INPUT_MODE,          /* Enable Keypad as input */
-  GPIO_PULLUP_DISABLE,      /* Enable/disable pull up */
-  GPIO_OPEN_DRAIN_DISABLE,  /* Open drain or CMOS */
-  GPIO_PULLDOWN_DISABLE,    /* Enable/disable pull down */
+  GPIO_INPUT_MODE,                                                              /* Enable Keypad as input */
+  GPIO_PULLUP_DISABLE,                                                          /* Enable/disable pull up */
+  GPIO_OPEN_DRAIN_DISABLE,                                                      /* Open drain or CMOS */
+  GPIO_PULLDOWN_DISABLE,                                                        /* Enable/disable pull down */
 };
 
+/*! \brief Keypad init
+  *
+  * Initialize the ports for the keypad
+  *
+  * @retval None
+*/
 void KEYPAD_Init(void)
 {
   GPIO_Init(GPIO_PH,
@@ -48,13 +49,15 @@ void KEYPAD_Init(void)
             GPIO_BIT_7,   &GPIO_Init_Struct);
 }
 
-/*
- =======================================================================================================================
- =======================================================================================================================
- */
+/*! \brief Keypad Get State
+  *
+  * Get the state of the keypad buttons
+  *
+  * @retval None
+*/
 unsigned char KEYPAD_GetState(void)
 {
-  return ((~(GPIO_ReadData(GPIO_PH) >> 2)) & 0x3f);     /* Lower 2 Bits are used for LED */
+  return ((~(GPIO_ReadData(GPIO_PH) >> 2)) & 0x3f);                             /* Lower 2 Bits are used for LED */
 }
 
 #endif

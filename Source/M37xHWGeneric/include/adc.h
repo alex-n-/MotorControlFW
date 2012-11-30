@@ -27,16 +27,16 @@
  */
 typedef enum 
 {
-  CURRENT_SHUNT_1 = 1,                                                    /*!< Channel is using 1-shunt solution */
-  CURRENT_SHUNT_3 = 3,                                                    /*!< Channel is using 3-shunt solution */
-  CURRENT_SENSOR_2= 2,                                                    /*!< Channel is using 2 sensor solution */
+  CURRENT_SHUNT_1 = 1,                                                          /*!< Channel is using 1-shunt solution */
+  CURRENT_SHUNT_3 = 3,                                                          /*!< Channel is using 3-shunt solution */
+  CURRENT_SENSOR_2= 2,                                                          /*!< Channel is using 2 sensor solution */
 } CURRENT_MEASUREMENT;
 
 
 typedef enum 
 {
-  CURRENT_SENSOR_NORMAL = 0,                                              /*!< Channel is using 1-shunt solution */
-  CURRENT_SENSOR_INVERTED = 1,                                            /*!< Channel is using 3-shunt solution */
+  CURRENT_SENSOR_NORMAL = 0,                                                    /*!< Channel is using 1-shunt solution */
+  CURRENT_SENSOR_INVERTED = 1,                                                  /*!< Channel is using 3-shunt solution */
 } CURRENT_SENSOR_ORIENTATION;
 
 void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type);

@@ -22,16 +22,11 @@
 #include "config.h"
 
 #ifdef BOARD_PWR_HEADER_FILE_0
-#include BOARD_PWR_HEADER_FILE_0
-#endif
-#undef BOARD_DEAD_TIME
-#undef BOARD_SENSITIVITY_VOLTAGE_MEASURE
-#undef BOARD_SENSITIVITY_CURRENT_MEASURE
-#undef BOARD_MEASUREMENT_TYPE
-#undef BOARD_SENSOR_DIRECTION
-#undef BOARD_POLL
-#undef BOARD_POLH
 #include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
+#endif 
+#include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
 
 #ifdef USE_HV_COMMUNICATION
 
@@ -179,6 +174,15 @@ void INTTB00_IRQHandler(void)
 }
 
 #ifdef USE_TEMPERATURE_CONTROL
+/*! \brief Configure Temperature Control
+  *
+  * Configure HV serial communication for temperature control
+  *
+  * @param  overtemp: overtemperature value
+  * @param  cleartemp: overtemperature clearance value
+  *
+  * @retval None
+*/
 void HV_Communication_ConfigureTemperatureControl(uint16_t overtemp, uint16_t cleartemp)
 {
   OvertempCmpValue = overtemp;
@@ -186,6 +190,14 @@ void HV_Communication_ConfigureTemperatureControl(uint16_t overtemp, uint16_t cl
 }
 #endif /* USE_TEMPERATURE_CONTROL */    
 
+/*! \brief Get High Volate Serial Communication Value
+  *
+  * Get the value of the selected channel
+  *
+  * @param  channel_number: number of transmission channel
+  *
+  * @retval None
+*/
 uint16_t HV_Communication_GetValue(uint8_t channel_number)
 {
   assert_param(channel_number<2);
@@ -193,6 +205,12 @@ uint16_t HV_Communication_GetValue(uint8_t channel_number)
   return received_adc_value[channel_number];
 }
 
+/*! \brief High Voltage Serial Communication
+  *
+  * Set up the high voltage serial communication Timer
+  *
+  * @retval None
+*/
 void HV_SerialCommunicationInit( void )
 {
   GPIO_Init(GPIO_PK,

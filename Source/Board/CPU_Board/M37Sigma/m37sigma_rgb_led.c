@@ -33,6 +33,15 @@ static uint16_t rgb_value;
 static uint16_t rgb_value_old;
 static uint16_t rgb_value_store;
 
+/*! \brief I2C RGB Led Write
+  *
+  * Write data via I2C to LED
+  *
+  * @param  device_id: I2C Device Id
+  * @param  *byte:     Pointer to register bytes
+  *
+  * @retval None
+*/
 static void i2c_led_write(uint8_t device_id, uint8_t *byte)
 {
     int i=0;
@@ -45,6 +54,14 @@ static void i2c_led_write(uint8_t device_id, uint8_t *byte)
 }
 
 #if 0
+/*! \brief I2C RGB Led Read
+  *
+  * Read data via I2C from LED
+  *
+  * @param  device_id: I2C Device Id
+  *
+  * @retval register values
+*/
 static uint16_t i2c_led_read(uint8_t device_id)
 {
     uint16_t status=0;
@@ -55,6 +72,12 @@ static uint16_t i2c_led_read(uint8_t device_id)
 }
 #endif
 
+/*! \brief Send LED
+  *
+  * Update RGB Value to LED
+  *
+  * @retval None
+*/
 static void send_led(void)
 {
   unsigned char   rgb_data[3];
@@ -68,11 +91,21 @@ static void send_led(void)
   rgb_value_old = rgb_value;
 }
 
+/*! \brief Set RGB Value
+  *
+  * @retval None
+*/
 void RGB_LED_SetValue(uint16_t value)
 {
   rgb_value=value;
 }
 
+/*! \brief Toggle RGB part
+  *
+  * Toggle bits of RGB value
+  *
+  * @retval None
+*/
 void RGB_LED_ToggleValue(uint16_t value)
 {
 
@@ -82,21 +115,47 @@ void RGB_LED_ToggleValue(uint16_t value)
     rgb_value &= ~value;
 }
 
+/*! \brief RGB Store value
+  *
+  * Store actual RGB value
+  *
+  * @retval None
+*/
 void RGB_LED_StoreValue(void)
 {
   rgb_value_store=rgb_value;
 }
 
+/*! \brief RGB restore value
+  *
+  * Restore actual RGB value to earlier saved one
+  *
+  * @retval None
+*/
 void RGB_LED_RestoreValue(void)
 {
   rgb_value=rgb_value_store;
 }
 
+/*! \brief RGB get value
+  *
+  * Get the actual RGB value
+  *
+  * @retval None
+*/
 uint16_t RGB_LED_GetValue(uint16_t value)
 {
   return (rgb_value);
 }
 
+/*! \brief RGB Value transmit task
+  *
+  * Update the RGB value on a regular base
+  *
+  * @param  pvParameters: Mandatory for FreeRTOS
+  *
+  * @retval None
+*/
 void RGBLEDTransmitTask(void* pvParameters)
 {
  
@@ -112,6 +171,12 @@ void RGBLEDTransmitTask(void* pvParameters)
   }
 }    
 
+/*! \brief RGB LED Init
+  *
+  * Initialize the RGB LED access
+  *
+  * @retval None
+*/
 void RGB_LED_Init (void)
 {
   if ( xTaskCreate(RGBLEDTransmitTask,                                          /* Create Turn Task Channel 1*/

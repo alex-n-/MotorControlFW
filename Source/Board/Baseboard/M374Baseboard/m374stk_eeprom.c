@@ -29,6 +29,14 @@
 #include "eeprom.h"
 #include "spi.h"
 
+/*! \brief EEProm send command
+  *
+  * Send command byte to EEProm
+  *
+  * @param  command: Command to send
+  *
+  * @retval None
+*/
 static void eeprom_send_command(uint8_t command)
 {
 
@@ -41,6 +49,16 @@ static void eeprom_send_command(uint8_t command)
   vTaskDelay( 2 / portTICK_RATE_MS);
 }
 
+/*! \brief EEProm paged write
+  *
+  * Write data in paged mode to EEProm
+  *
+  * @param  pos:  Starting byte in EEProm
+  * @param  data: Data to write
+  * @param  size: Size of Data 
+  *
+  * @retval None
+*/
 static void eeprom_paged_write(uint16_t pos, uint8_t* data, uint16_t size)
 {
   uint8_t status, i;
@@ -76,6 +94,16 @@ static void eeprom_paged_write(uint16_t pos, uint8_t* data, uint16_t size)
   eeprom_send_command(CMD_WRDI);
 }
 
+/*! \brief EEProm write
+  *
+  * Write data to EEProm
+  *
+  * @param  pos:  Starting byte in EEProm
+  * @param  data: Data to write
+  * @param  size: Size of Data 
+  *
+  * @retval None
+*/
 int8_t EEPROM_Write(uint16_t pos, uint8_t* data, uint16_t size)
 {
   uint8_t rest_of_first_page,
@@ -128,6 +156,16 @@ int8_t EEPROM_Write(uint16_t pos, uint8_t* data, uint16_t size)
   return 0;
 }
 
+/*! \brief EEProm read
+  *
+  * Read Data from EEProm
+  *
+  * @param  pos:  Starting byte in EEProm
+  * @param  data: Data buffer
+  * @param  size: Size of Data to read
+  *
+  * @retval error code
+*/
 int8_t EEPROM_Read(uint16_t pos, uint8_t* data, uint16_t size)
 {
   uint8_t  i;

@@ -61,7 +61,7 @@ void STALL_Detect (uint8_t channel_number)
     break;
   }
   
-  vqi[channel_number]=pVEx->VQIH>>16;                                 /* get new value */
+  vqi[channel_number]=pVEx->VQIH>>16;                                           /* get new value */
 
 }
 
@@ -98,35 +98,35 @@ void StallTask(void* pvParameters)
           if ((old_vqi[i]*JUMP_STALL_DETECT_PERCENTAGE/100>vqi[i])
             || (    (vqi[i]<SystemValues[i].StallDetectValue)
                  && (MotorParameterValues[i].Encoder  == MOTOR_NO_ENCODER)))
-            stall_detected[i]=1;                             /* make filed as stalled - Worker Task will take action */
+            stall_detected[i]=1;                                                /* make filed as stalled - Worker Task will take action */
         if (VE_Omega[i].part.reg<0)
           if ((old_vqi[i]*JUMP_STALL_DETECT_PERCENTAGE/100<vqi[i])
             || (    (vqi[i] > -SystemValues[i].StallDetectValue)
                  && (MotorParameterValues[i].Encoder  == MOTOR_NO_ENCODER)))
-            stall_detected[i]=1;                             /* make filed as stalled - Worker Task will take action */
+            stall_detected[i]=1;                                                /* make filed as stalled - Worker Task will take action */
       }
       old_vqi[i]=vqi[i];
       
-      if (stall_detected[i]==1)                             /* check for stalled field */
+      if (stall_detected[i]==1)                                                 /* check for stalled field */
       {
-        target_speed = MotorSetValues[i].TargetSpeed;       /* remember original target value for restart case */
-        shutdown_mode = SystemValues[i].ShutdownMode;       /* remember original shutdown mode */
-        SystemValues[i].ShutdownMode = 0;                   /* change to short break shutdown -> motro is already not spinning anymore*/   
-        VE_Stop(i);                                         /* Stop the motor */
-        vTaskDelay( 100 / portTICK_RATE_MS );               /* wait a moment to complete shutdown */
-        SystemValues[i].ShutdownMode  = shutdown_mode ;     /* restore original shutdown mode */
-        stall_detected[i]=0;                                /* reset stall flag */
-        if (SystemValues[i].RestartMode == RESTART_MOTOR)   /* system restart mode ? */
+        target_speed = MotorSetValues[i].TargetSpeed;                           /* remember original target value for restart case */
+        shutdown_mode = SystemValues[i].ShutdownMode;                           /* remember original shutdown mode */
+        SystemValues[i].ShutdownMode = 0;                                       /* change to short break shutdown -> motro is already not spinning anymore*/   
+        VE_Stop(i);                                                             /* Stop the motor */
+        vTaskDelay( 100 / portTICK_RATE_MS );                                   /* wait a moment to complete shutdown */
+        SystemValues[i].ShutdownMode  = shutdown_mode ;                         /* restore original shutdown mode */
+        stall_detected[i]=0;                                                    /* reset stall flag */
+        if (SystemValues[i].RestartMode == RESTART_MOTOR)                       /* system restart mode ? */
         {
-          init_delay  = MotorParameterValues[i].InitDelay;  /* remember original init delay */
-          MotorParameterValues[i].InitDelay = INIT_DELAY;   /* set init delay */
-          VE_Start(i);                                      /* restart the motor */
-          MotorSetValues[i].TargetSpeed     = target_speed; /* restore the original target speed */
-          MotorParameterValues[i].InitDelay = init_delay;   /* restore the original init delay */
+          init_delay  = MotorParameterValues[i].InitDelay;                      /* remember original init delay */
+          MotorParameterValues[i].InitDelay = INIT_DELAY;                       /* set init delay */
+          VE_Start(i);                                                          /* restart the motor */
+          MotorSetValues[i].TargetSpeed     = target_speed;                     /* restore the original target speed */
+          MotorParameterValues[i].InitDelay = init_delay;                       /* restore the original init delay */
         }
       }
     }
-    vTaskDelay( 100 / portTICK_RATE_MS );                   /* sleep a while */
+    vTaskDelay( 100 / portTICK_RATE_MS );                                       /* sleep a while */
   }
 }
 #endif // USE_STALL_DETECT

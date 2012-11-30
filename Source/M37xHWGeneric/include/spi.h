@@ -98,7 +98,7 @@ typedef enum
 typedef struct
 {
   uint32_t  speed;
-  uint32_t  mode;                                                     /* !< This member configures the SPI communication speed. */
+  uint32_t  mode;                                                               /* !< This member configures the SPI communication speed. */
 } SPI_InitTypeDef;
 
 /*

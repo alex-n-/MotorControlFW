@@ -28,8 +28,8 @@
 */
 void SPI_Enable(TSB_SC_TypeDef* SPIx)
 {
-  assert_param(IS_SPI_PERIPH(SPIx));                                  /* Check the parameters */
-  SPIx->EN |= EN_SIOE_SET;                                            /* Set SCxEN<SIOE> to enable SPIx */
+  assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
+  SPIx->EN |= EN_SIOE_SET;                                                      /* Set SCxEN<SIOE> to enable SPIx */
 }
 
 /*! \brief  Disable SPI channel
@@ -39,8 +39,8 @@ void SPI_Enable(TSB_SC_TypeDef* SPIx)
 */
 void SPI_Disable(TSB_SC_TypeDef* SPIx)
 {
-  assert_param(IS_SPI_PERIPH(SPIx));                                  /* Check the parameters */
-  SPIx->EN &= EN_SIOE_CLEAR;                                          /* Clear SCxEN<SIOE> to disable SPIx */
+  assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
+  SPIx->EN &= EN_SIOE_CLEAR;                                                    /* Clear SCxEN<SIOE> to disable SPIx */
 }
 
 /*! \brief  Check data available / buffer free 
@@ -93,7 +93,7 @@ void SPI_SWReset(TSB_SC_TypeDef* SPIx)
 {
   uint32_t  tmp = 0U;
 
-  assert_param(IS_SPI_PERIPH(SPIx));                                  /* Check the parameters */
+  assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
 
   /* Write software-reset command */
   tmp = SPIx->MOD2;
@@ -111,8 +111,8 @@ void SPI_SWReset(TSB_SC_TypeDef* SPIx)
 */
 uint8_t SPI_GetRxData(TSB_SC_TypeDef* SPIx)
 {
-  assert_param(IS_SPI_PERIPH(SPIx));                                  /* Check the parameters */
-  return (SPIx->BUF & 0xFFU);                                         /* Return received data */
+  assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
+  return (SPIx->BUF & 0xFFU);                                                   /* Return received data */
 }
 
 /*! \brief  Get error state of the SPI channel
@@ -123,7 +123,7 @@ uint8_t SPI_GetRxData(TSB_SC_TypeDef* SPIx)
 */
 void SPI_SetTxData(TSB_SC_TypeDef* SPIx, uint32_t Data)
 {
-  assert_param(IS_SPI_PERIPH(SPIx));                                  /* Check the parameters */
+  assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
   SPIx->BUF = Data & 0xFFU;
 }
 
@@ -137,19 +137,19 @@ SPI_Err SPI_GetErrState(TSB_SC_TypeDef* SPIx)
   uint8_t tmp = 0U;
   SPI_Err retval = SPI_NO_ERR;
 
-  assert_param(IS_SPI_PERIPH(SPIx));                                  /* Check the parameters */
+  assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
 
   tmp = ((uint8_t) (SPIx->CR & CR_ERROR_MASK));
   switch(tmp)
   {
-  case CR_OERR_FLAG:                                                  /* Check overrun flag */
+  case CR_OERR_FLAG:                                                            /* Check overrun flag */
     retval = SPI_OVERRUN;
     break;
-  case CR_FERR_FLAG:                                                  /* Check framing flag */
+  case CR_FERR_FLAG:                                                            /* Check framing flag */
     retval = SPI_FRAMING_ERR;
     break;
   default:
-    if(tmp != 0U)                                                     /* more than one error */
+    if(tmp != 0U)                                                               /* more than one error */
       retval = SPI_ERRS;
     break;
   }

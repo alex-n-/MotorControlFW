@@ -56,6 +56,15 @@ static  struct StartMotor_a a1;
 static  struct StopMotor_q q2;
 static  struct StopMotor_a a2;
 
+/*! \brief Message Composer
+  *
+  * Generyte a CAN Message out of Group and SubGroup
+  *
+  * @param  Group:      Group of message
+  * @param  SubGroup:   SubGroup of message
+  *
+  * @retval Can Message
+*/
 static can_message Message_Composer(can_group Group, can_sub_group SubGroup)
 {
   can_message message;
@@ -106,8 +115,8 @@ static can_message Message_Composer(can_group Group, can_sub_group SubGroup)
         message.dlc      = 6;
         break;
       case CONFIGURATION_INFORMATION_MAX_VA:                                    /* SubGrp m.2.6: Max Voltage, Current, Acceleration Data */
-        message.Data.w[0]= ChannelValues[USE_CHANNEL].sensivity_voltage_measure; /* Gradient of voltage measurement */
-        message.Data.w[1]= ChannelValues[USE_CHANNEL].sensivity_current_measure; /* Gradient of current measurement */
+        message.Data.w[0]= ChannelValues[USE_CHANNEL].sensitivity_voltage_measure; /* Gradient of voltage measurement */
+        message.Data.w[1]= ChannelValues[USE_CHANNEL].sensitivity_current_measure; /* Gradient of current measurement */
         message.Data.w[2]= MotorParameterValues[USE_CHANNEL].MaxAngAcc;         /* MaxAng */
         message.dlc      = 6;
         break;
@@ -133,15 +142,14 @@ static can_message Message_Composer(can_group Group, can_sub_group SubGroup)
     return message;
 }
 
-/****************************************************************************************
- * Module   : Message Analyzer
- *---------------------------------------------------------------------------------------
- * Function : Analyze the receive buffer and generate action, based on the message ID
- * Input    : Receive Buffer
- * Output   : Result Code
- *            0x00 : Ok
- * Note     : function call like this:  Message_Analyzer(&SPI_Rx_Buffer[0])
- ****************************************************************************************/
+/*! \brief Message Analyzer
+  *
+  * Analyze the receive buffer and generate action, based on the message ID
+  *
+  * @param  message: Receive Buffer
+  *
+  * @retval None
+*/
 static void Message_Analyzer(can_message message)
 {
 #if (defined(__ICCARM__)) /* IAR Compiler - */
@@ -225,6 +233,12 @@ static void Message_Analyzer(can_message message)
   return;
 }
 
+/*! \brief CAN Init
+  *
+  * Initalize CAN Chip
+  *
+  * @retval None
+*/
 static void CAN_Init(void)
 {
   can_message message;
@@ -281,6 +295,12 @@ static void CAN_Init(void)
   MCP2515_Load_CAN_Message(TRANSMITBUFFER_0,message);
 }
 
+/*! \brief CAN Receive
+  *
+  * Receive a CAN Message
+  *
+  * @retval CAN Message
+*/
 static can_message CAN_Receive(void)
 {
   uint8_t     RXStatus;
@@ -308,6 +328,15 @@ static can_message CAN_Receive(void)
   return message;
 }
 
+/*! \brief CAN Send
+  *
+  * Send a CAN Message
+  *
+  * @param  buffer_nr: Buffer number of MCP2515
+  * @param  message:   CAN Message
+  *
+  * @retval None
+*/
 static void CAN_Send(uint8_t buffer_nr, can_message message)
 {
   switch (buffer_nr)
@@ -343,6 +372,12 @@ static void CAN_Send(uint8_t buffer_nr, can_message message)
   }
 }
 
+/*! \brief CAN Send Init Data
+  *
+  * Send System data as described in CAN Protocol specification
+  *
+  * @retval None
+*/
 static void CAN_SendInitData(void)
 {
   can_message message;
@@ -364,6 +399,14 @@ static void CAN_SendInitData(void)
   vTaskDelay( 50 / portTICK_RATE_MS );
 }
 
+/*! \brief Display CAN Message
+  *
+  * Prints out CAN Message (for Debug)
+  *
+  * @param  message:   CAN Message
+  *
+  * @retval None
+*/
 static void Display_CAN_Message(can_message message)
 {
   unsigned char i;
@@ -386,6 +429,12 @@ static const GPIO_InitTypeDef portConfigRX =
   GPIO_PULLDOWN_DISABLE,
 };
 
+/*! \brief CAN Task
+  *
+  * @param  pvParameters: Needed due to FreeRTOS
+  *
+  * @retval None
+*/
 void CanTask( void *pvParameters )
 {
   can_message   message;

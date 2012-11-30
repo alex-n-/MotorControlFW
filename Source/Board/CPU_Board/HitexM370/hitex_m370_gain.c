@@ -20,15 +20,22 @@
 #include "config.h"
 #if (defined BOARD_HITEX_M370)
 
+#include BOARD_BOARD_HEADER_FILE
 #include "amp_cmp.h"
 
+/*! \brief Setup Gain
+  *
+  * Set up the internal gain amplifiers 
+  *
+  * @retval None
+*/
 void BOARD_SetupGain(void)
 {
   /* This settings are completely board (layout) dependant */
-  AMPCMP_setup(CHANNEL_A,GAIN_3_0);
-  AMPCMP_setup(CHANNEL_B,GAIN_3_0);
-  AMPCMP_setup(CHANNEL_C,GAIN_3_0);
-  AMPCMP_setup(CHANNEL_D,GAIN_3_0);
+  AMPCMP_setup(CHANNEL_A,BOARD_GAIN_CURRENT_MEASURE);
+  AMPCMP_setup(CHANNEL_B,BOARD_GAIN_CURRENT_MEASURE);
+  AMPCMP_setup(CHANNEL_C,BOARD_GAIN_CURRENT_MEASURE);
+  AMPCMP_setup(CHANNEL_D,BOARD_GAIN_CURRENT_MEASURE);
 }
 
 #endif

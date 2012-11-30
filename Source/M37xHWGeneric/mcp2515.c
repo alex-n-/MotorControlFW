@@ -494,7 +494,7 @@ void MCP2515_Set_CAN_Filter_Mask(uint32_t Identifier, uint8_t TypeIdentifier, ui
 }
 
 /**
-  * @brief  Inetrrupt handler for the MCP2515
+  * @brief  Interrupt handler for the MCP2515
   * @param  None
   * @retval None
   */
@@ -503,7 +503,6 @@ void INT5_IRQHandler()
   portBASE_TYPE xHigherPriorityTaskWoken;
   xSemaphoreGiveFromISR(CanRXSemaphore, &xHigherPriorityTaskWoken);
   NVIC_DisableIRQ(INT5_IRQn);
-
 }
 
 #endif

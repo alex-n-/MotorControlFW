@@ -20,6 +20,8 @@
 #ifndef I2C_MASTER_BITBANGING
 #define I2C_MASTER_BITBANGING
 
+#include <stdint.h>
+
 #define DEVICE_READ   0x01
 #define DEVICE_WRITE  0x00
 
