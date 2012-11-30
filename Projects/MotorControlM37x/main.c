@@ -19,6 +19,7 @@
 
 /* Standard includes. */
 #include <stdio.h>
+#include <string.h>
 
 /* Scheduler includes. */
 #include "FreeRTOS.h"
@@ -42,17 +43,17 @@
 #include BOARD_LED_HEADER_FILE
 #include TMPM_WDT_HEADER_FILE
 
+#ifdef USE_RGB_LED
+#include BOARD_RGB_LED_HEADER_FILE
+#endif /* USE_RGB_LED */    
+
 #ifdef BOARD_HITEX_M370
 #include "hitex_m370_ui.h"
 #endif /* BOARD_HITEX_M370 */
 
-#ifdef BOARD_M372STK
-#include "m372stk_can.h"
-#endif /* BOARD_M372STK */
-
-#ifdef BOARD_M374STK
-#include "m374stk_can.h"
-#endif /* BOARD_M374STK */
+#ifdef BOARD_CAN_HEADER_FILE
+#include BOARD_CAN_HEADER_FILE
+#endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
 
 static xTaskHandle xSystemInit;                                       /*!< Handle of the init task - for suicide */
 
@@ -91,24 +92,36 @@ void system_init( void *pvParameters )
               |SCB_SHCSR_USGFAULTENA_Msk;
     
   BOARD_SetupHW();                                                    /* Setup HW components on the Board (internal/external) */
+
+  /* Clear all settings */
+  memset(&MotorParameterValues[0], 0,sizeof(MotorParameterValues)); 
+  memset(&PIControl[0],            0,sizeof(PIControl)); 
+  memset(&SystemValues[0],         0,sizeof(SystemValues)); 
+
+  /* Make some usefull basic setup - otherwise system will crash */
+  SystemValues[0].PWMFrequency     = 12500;
+  SystemValues[1].PWMFrequency     = 12500;
   
   /* Read back parameters stored in EEProm */
 #ifdef USE_CONFIG_STORAGE
   ret = config_storage_load_config();
   if (ret)
   {
-    //dprintf("Error reading back data from EEProm\n");
 #ifdef USE_INTERNAL_MOTOR_PARAMS
     SetupInternalMotorParams();                                       /* Use compiled in Parameter setting on error */
 #endif /* USE_INTERNAL_MOTOR_PARAMS */
   }
   else
+  {
 #ifdef USE_LED
     LED_SetState(LED_SIGNAL_CONFIG_READ,LED_ON);                      /* Signal successful read-back */
-#else
-  {}  
 #endif /* USE_LED */
-
+  }
+#ifdef USE_RGB_LED
+    RGB_LED_SetValue(LED_RGB_BLUE);
+    RGB_LED_StoreValue();  
+#endif /* USE_RGB_LED */ 
+  
 #else
   SetupInternalMotorParams();                                         /* When no EEProm - use compiled in parameters */
 #endif
@@ -147,7 +160,7 @@ int main(void)
   
 #ifdef USE_SERIAL_COMMUNICATION  
   if ( xTaskCreate(ProtocolTask,                                      /* Create serial communication protocol task */
-                   (signed char*) "Protocol",
+                   (signed char*) "Comm",
                    PROTOCOL_TASK_STACK_SIZE,
                    NULL,
                    PROTOCOL_TASK_PRIORITY,
@@ -157,7 +170,7 @@ int main(void)
 
 #ifdef USE_LOAD_STATISTICS
   if ( xTaskCreate(SystemLoadTaks,                                    /* Create System Load Task */
-                   (signed char*) "SystemLoad",
+                   (signed char*) "SysLoad",
                    SYSTEM_LOAD_TASK_STACK_SIZE,
                    NULL,
                    SYSTEM_LOAD_TASK_PRIORITY,

@@ -24,6 +24,8 @@
 #include "config.h"
 #include TMPM_HEADER_FILE
 #include TMPM_GPIO_HEADER_FILE
+#include BOARD_BOARD_HEADER_FILE
+#include BOARD_GAIN_HEADER_FILE
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -44,10 +46,15 @@
 #include "turn_control.h"
 #include "external_speed_control.h"
 
-#ifdef USE_LED
 #include BOARD_BOARD_HEADER_FILE
+
+#ifdef USE_LED
 #include BOARD_LED_HEADER_FILE
 #endif /* USE_LED */
+
+#ifdef USE_RGB_LED
+#include BOARD_RGB_LED_HEADER_FILE
+#endif /* USE_RGB_LED */    
 
 #ifdef USE_USER_CALLBACKS
 #include "user_callbacks.h"
@@ -76,6 +83,8 @@ int16_t                 VE_Theta_command[MAX_CHANNEL];                /*< [---] 
 VEStage                 VE_ActualStage[MAX_CHANNEL];                  /*< Actual stage of VE */
 PreCalc                 VE_PreCalc[MAX_CHANNEL];                      /*< Pre calculated values for further computation */
 uint16_t                VE_HzMax[MAX_CHANNEL];                        /*< Scaling factor for calculations */
+uint32_t                VE_a_max[MAX_CHANNEL];                        /*< Scaling factor for calculations */
+uint32_t                VE_v_max[MAX_CHANNEL];                        /*< Scaling factor for calculations */
 
 /*********************************************************************
 ************************ Local Data **********************************
@@ -280,13 +289,13 @@ static void VE_Init(unsigned char channel_number)
     assert_param(0);
     break;
   }
-
+  
   TEE_VEC->EN |= VE_ENABLE;                                           /* VE Enable */
 
   pVEx->FMODE = (channel_number << 6) |                               /* Always set this bits (madatory due to TD) */
                 (channel_number << 4);
 
-  switch (ChannelValues[channel_number].shunt_type)
+  switch (ChannelValues[channel_number].measurement_type)
   {
   case CURRENT_SHUNT_1:
     pVEx->FMODE |=  VE_FMODE_CURR_DETECT_1SHUNT_DOWN |
@@ -322,6 +331,14 @@ static void VE_Init(unsigned char channel_number)
 */
 static void VE_PrecalculateValues(unsigned char channel_number)
 {
+  VE_a_max[channel_number] =   2500 * 1000
+                             / ChannelValues[channel_number].sensitivity_current_measure
+                             * 10
+                             / gaintable[ChannelValues[channel_number].gain_current_measure];
+  
+  VE_v_max[channel_number] =   5000
+                             / ChannelValues[channel_number].sensitivity_voltage_measure;
+    
   VE_HzMax[channel_number]
     =   MotorParameterValues[channel_number].HzLimit                  /* put HzMax scaling factor 20 % over HzLimit */
       + MotorParameterValues[channel_number].HzLimit / 5; 
@@ -333,8 +350,8 @@ static void VE_PrecalculateValues(unsigned char channel_number)
   VE_PreCalc[channel_number].R_mult_amax_div_vmax
     = (int32_t)(           FIXPOINT_15
                 * (int64_t)MotorParameterValues[channel_number].Resistance
-                *          ChannelValues[channel_number].a_max
-                /          ChannelValues[channel_number].v_max
+                *          VE_a_max[channel_number]
+                /          VE_v_max[channel_number]
                 /          1000000);                                  /* Resistance and current are in (mX) */
 
   VE_PreCalc[channel_number].InductanceDropoutFactor
@@ -342,22 +359,22 @@ static void VE_PrecalculateValues(unsigned char channel_number)
                 * (int64_t)MotorParameterValues[channel_number].Inductance
                 *          PAI2
                 /          100000000
-                *          ChannelValues[channel_number].a_max
+                *          VE_a_max[channel_number]
                 *          VE_HzMax[channel_number]
                 /          1000000000
-                /          ChannelValues[channel_number].v_max);
+                /          VE_v_max[channel_number]);
 
   VE_PreCalc[channel_number].PositionKiPreCalculation
     = (int32_t)(           FIXPOINT_15
                 * (int64_t)PIControl[channel_number].Position_Ki
-                *          ChannelValues[channel_number].v_max
+                *          VE_v_max[channel_number]
                 /          VE_HzMax[channel_number]
                 /          SystemValues[channel_number].PWMFrequency);
 
   VE_PreCalc[channel_number].PositionKpPreCalculation
     = (int32_t)(           FIXPOINT_15
                 * (int64_t)PIControl[channel_number].Position_Kp
-                *          ChannelValues[channel_number].v_max
+                *          VE_v_max[channel_number]
                 /          VE_HzMax[channel_number]);
 
   VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax
@@ -368,12 +385,12 @@ static void VE_PrecalculateValues(unsigned char channel_number)
   VE_PreCalc[channel_number].IqLim_normed_to_amax
     = (int16_t)(           FIXPOINT_15
                 * (int64_t)MotorParameterValues[channel_number].IqLim
-                /          ChannelValues[channel_number].a_max);
+                /          VE_a_max[channel_number]);
 
   VE_PreCalc[channel_number].IdLim_normed_to_amax
     = (int32_t)(           FIXPOINT_15
                 * (int64_t)MotorParameterValues[channel_number].IdLim
-                /          ChannelValues[channel_number].a_max);
+                /          VE_a_max[channel_number]);
 
   VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency
     = (int32_t)(           FIXPOINT_16
@@ -390,31 +407,20 @@ static void VE_PrecalculateValues(unsigned char channel_number)
                 /        VE_HzMax[channel_number]
                 /        (PAI2/100000));
 
+  if (VE_PreCalc[channel_number].SpeedUpLimit<1)
+    VE_PreCalc[channel_number].SpeedUpLimit=1;
+  
   /* set start current (Id) command (div 100 for low power range) */
   VE_PreCalc[channel_number].IdCurrentForInitposition
     = (uint16_t)(        FIXPOINT_15
                 *        MotorParameterValues[channel_number].IdStart
-                /        ChannelValues[channel_number].a_max);
+                /        VE_a_max[channel_number]);
 
   /* set start Current (Iq) command (div 100 for low power range) */
   VE_PreCalc[channel_number].IqCurrentForInitposition
     = (uint16_t)(        FIXPOINT_15
                 *        MotorParameterValues[channel_number].IqStart
-                /        ChannelValues[channel_number].a_max);
-}
-
-/*! \brief  Handle dynamic change of parameters
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void VE_HandleParameterChange(unsigned char channel_number)
-{
-  VE_InitParameterDependandValues(channel_number);
-  VE_PrecalculateValues(channel_number);
-  ENC_Init(channel_number);
-  PMD_HandleParameterChange(channel_number);
-  ParameterChange[channel_number]=0;
+                /        VE_a_max[channel_number]);
 }
 
 /*! \brief  Calculate Omega
@@ -523,7 +529,7 @@ static void VE_Calculate_Iq_ref_Current_Control (uint8_t channel_number)
               *(int64_t)( FIXPOINT_16
                         * PIControl[channel_number].Speed_Ki
                         * VE_HzMax[channel_number]
-                        / ChannelValues[channel_number].a_max
+                        / VE_a_max[channel_number]
                         / SystemValues[channel_number].PWMFrequency));
 
   VE_Iq_reference_I[channel_number].value += VE_Temp_I;             /* integrate to Iq(reference) */
@@ -538,7 +544,7 @@ static void VE_Calculate_Iq_ref_Current_Control (uint8_t channel_number)
               *(int64_t)( FIXPOINT_16
                         * PIControl[channel_number].Speed_Kp
                         * VE_HzMax[channel_number]
-                        / ChannelValues[channel_number].a_max));
+                        / VE_a_max[channel_number]));
 
   /* add the proportional part and and divide for correction */
   VE_Iq_reference[channel_number] = (int16_t)((VE_Iq_reference_I[channel_number].value + VE_Temp_P)>>16);
@@ -669,7 +675,7 @@ static void collect_data_for_display (uint8_t channel_number)
   /* VE_Iq_reference_I[channel_number].part.reg is integrate part of the current - */
   /* normalized to A_MAX and FIXPOINT_15 */
   VE_Current = (uint32_t)( abs(VE_Iq_reference_I[channel_number].part.reg)
-                         * ChannelValues[channel_number].a_max / FIXPOINT_15 );
+                         * VE_a_max[channel_number] / FIXPOINT_15 );
 
   /* Calculate actual rpm */
   /* VE_Omega (-> av_out) is electrical speed normalized with HzMax and FIXPOINT_15 */
@@ -696,7 +702,6 @@ static void collect_data_for_display (uint8_t channel_number)
   MotorStateValues[channel_number].Torque       = MotorParameterValues[channel_number].TorqueFactor
                                                   * VE_Current
                                                   / 10;
-
 }
 
 static void VE_PMD_NormalOutput(uint8_t channel_number)
@@ -743,6 +748,22 @@ static void VE_PMD_SwitchOff(uint8_t channel_number)
   pVEPMDx->OUTCR = 0;
 }
 
+/*! \brief  Handle dynamic change of parameters
+  *
+  * @param  channel_number: channel to work on
+  * @retval None
+*/
+static void VE_HandleParameterChange(unsigned char channel_number)
+{
+  VE_InitParameterDependandValues(channel_number);
+  VE_PrecalculateValues(channel_number);
+  ENC_Init(channel_number);
+  PMD_HandleParameterChange(channel_number);
+  VE_Calculate_Id_ref(channel_number);
+  
+  ParameterChange[channel_number]=0;
+}
+
 /*! \brief  Emergency Stage
   *
   * Shut down the Motor as fast as possible
@@ -759,6 +780,9 @@ static void VE_Stage_Emergency(uint8_t channel_number)
   MotorStateValues[channel_number].ActualSpeed  = 0;
   MotorStateValues[channel_number].Current      = 0;
   MotorStateValues[channel_number].Torque       = 0;
+#ifdef USE_RGB_LED
+  RGB_LED_SetValue(LED_RGB_RED);
+#endif /* USE_RGB_LED */ 
 }
 
 /*! \brief  Stop Stage
@@ -820,7 +844,6 @@ static void VE_Stage_Initposition(uint8_t channel_number)
   switch(VE_ActualStage[channel_number].sub)
   {                                                                   /* initial substage */
   case Substage_Step0:
-    //PMD_NormalOutput(channel_number);
     VE_PMD_NormalOutput(channel_number);    
     VE_Id_command[channel_number]    = 0;                             /* Id is zero */
     VE_Theta_command[channel_number] = 0;                             /* set position */
@@ -859,14 +882,8 @@ static void VE_Stage_Force(uint8_t channel_number)
   switch(VE_ActualStage[channel_number].sub)
   {
   case Substage_Step0:                                                /* initial substage */
-
-    VE_DisableIRQ(channel_number);
     VE_Id_command[channel_number] = abs(VE_PreCalc[channel_number].IdCurrentForInitposition);
-    VE_EnableIRQ(channel_number);
-
-    VE_ActualStage[channel_number].sub = Substage_Step1;
     /*  No break. Continue to the next statements.  */
-  case Substage_Step1:                                                /* continuous stage */
     /* If reach minimum frequency, it change to cStepEnd */
     if(abs(VE_Omega_command[channel_number].part.reg) >= VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
       VE_ActualStage[channel_number].sub = Substage_StepEnd;          /* limit exceeded -> final stage active */
@@ -1084,25 +1101,31 @@ static void IRQ_Common(uint8_t channel_number)
     break;
   }
 
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+#endif
 #ifdef BOARD_VDC_CHANNEL_0                                            /* If there is no measurement channel for VDC, we have to give a constant value */
   if (channel_number==0)
-    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_0/BOARD_V_MAX_CHANNEL_0;  /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
+    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_0/VE_v_max[channel_number];  /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
 #endif
-#ifdef BOARD_VDC_CHANNEL_1                                            /* If there is no measurement channel for VDC, we have to give a constant value */
-  if (channel_number==1)
-    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_1/BOARD_V_MAX_CHANNEL_1;  /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
-#endif
-
 #ifdef BOARD_VDC_CHANNEL_0_HV_COMMUNICATION                           /* Galvanic isolation prevents direct measurement - use HV communication instead */
   if (channel_number==0)
-    pVEx->VDC =HV_Communication_GetValue(channel_number)<<5;          /* ADC valus from Device is 10 bit - max is 0x3ff - blown up to 15 bit */
+    pVEx->VDC = HV_Communication_GetValue(0)<<5;                      /* ADC valus from Device is 10 bit - max is 0x3ff - blown up to 15 bit */
+#endif
+
+#include "pwr_undefine.h"
+#include BOARD_PWR_HEADER_FILE_1
+#ifdef BOARD_VDC_CHANNEL_1                                            /* If there is no measurement channel for VDC, we have to give a constant value */
+  if (channel_number==1)
+    pVEx->VDC =(0xfff<<3)*BOARD_VDC_CHANNEL_1/VE_v_max[channel_number];  /* ADC valus is 12 bit - max is 0xfff - blown up to 15 bit */
 #endif
 #ifdef BOARD_VDC_CHANNEL_1_HV_COMMUNICATION                           /* Galvanic isolation prevents direct measurement - use HV communication instead */
   if (channel_number==1)
-    pVEx->VDC =HV_Communication_GetValue(channel_number)<<5;          /* ADC valus from Device 10 bit - max is 0x3ff - blown up to 15 bit */
+    pVEx->VDC = HV_Communication_GetValue(0)<<5;                      /* ADC valus from Device 10 bit - max is 0x3ff - blown up to 15 bit */
 #endif
+#include "pwr_undefine.h"
 
-  if ( (ChannelValues[channel_number].shunt_type==CURRENT_SENSOR_2)
+  if ( (ChannelValues[channel_number].measurement_type==CURRENT_SENSOR_2)
      &&(ChannelValues[channel_number].sensor_direction==CURRENT_SENSOR_NORMAL) )
   {
     pVEx->ID = (unsigned long)(-1 * (signed long)pVEx->ID);           /* Invert for 2 Sensor solution */
@@ -1162,7 +1185,7 @@ static void IRQ_Common(uint8_t channel_number)
   /*****************************************/
   case Stage_ZeroCurrentMeasure:
     VE_StageCounter[channel_number]++;
-    if(VE_StageCounter[channel_number] >= 2)                          /* check timeout - 2 times on 1/PWM_Frequency */
+    if(VE_StageCounter[channel_number] >= 4)                          /* check timeout - 2 times on 1/PWM_Frequency */
     {
       if (VE_Theta[channel_number].value == 0)                        /* first time of startup or nit shutdown gentle mode */
         VE_ActualStage[channel_number].main = Stage_Initposition;     /* set next stage */
@@ -1186,6 +1209,15 @@ static void IRQ_Common(uint8_t channel_number)
     pVEx->IDREF = VE_Id_command[channel_number];                      /* Set Id */
     pVEx->IQREF = 0x00u;                                              /* Set Iq=0 */
     pVEx->THETA = VE_Theta[channel_number].part.reg;                  /* Theta set */
+#ifdef USE_MOTOR_DISCONNECT_DETECTION    
+    if( ( abs(pVEx->IAADC-pVEx->IA0)
+        + abs(pVEx->IBADC-pVEx->IB0)
+        + abs(pVEx->IBADC-pVEx->IC0) ) < 0x50 )
+    {
+      MotorErrorField[channel_number].Error |= VE_NOMOTOR;
+      VE_ActualStage[channel_number].main = Stage_Emergency;
+    }
+#endif /* USE_MOTOR_DISCONNECT_DETECTION */ 
     break;
   /*****************************************/
   /********** ChangeUp Stage ***************/
@@ -1384,6 +1416,10 @@ static void complete_shutdown(uint8_t channel_number)
 #ifdef USE_LED
   LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_OFF);        /* Clear FOC signal Led */
 #endif
+#ifdef USE_RGB_LED
+  RGB_LED_RestoreValue();  
+#endif /* USE_RGB_LED */ 
+  
   MotorStateValues[channel_number].ActualSpeed  = 0;                  /* Clear GUI Values (but don't Error Flag) */
   MotorStateValues[channel_number].TargetSpeed  = 0;
   MotorStateValues[channel_number].Current      = 0;
@@ -1407,9 +1443,10 @@ static void complete_shutdown(uint8_t channel_number)
 */
 void VETask(void* pvParameters)
 {
-  long channel_number = (long) pvParameters;
-  portTickType xLastWakeTime;
-  const portTickType xPeriod = ( VE_PERIOD_TIME / portTICK_RATE_MS );
+  long           channel_number = (long) pvParameters;
+  portTickType   xLastWakeTime;
+  const          portTickType xPeriod = ( VE_PERIOD_TIME / portTICK_RATE_MS );
+  static uint8_t state = 0;
 
   xLastWakeTime = xTaskGetTickCount();
 
@@ -1418,20 +1455,30 @@ void VETask(void* pvParameters)
     VE_Loop(channel_number);
     vTaskDelayUntil( &xLastWakeTime, xPeriod );
 
-#ifdef USE_LED
+    if (state!=VE_ActualStage[channel_number].main)
     {
-      static uint8_t state = 0;
-      if (state!=VE_ActualStage[channel_number].main)
+      state = VE_ActualStage[channel_number].main;
+      if (VE_ActualStage[channel_number].main == Stage_FOC)
       {
-        state = VE_ActualStage[channel_number].main;
-        if (VE_ActualStage[channel_number].main == Stage_FOC)
-          LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_ON);
-        else
-          LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_OFF);
+#ifdef USE_LED
+        LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_ON);
+#endif /* USE_LED */
+#ifdef USE_RGB_LED
+        RGB_LED_SetValue(LED_RGB_WHITE);
+#endif /* USE_RGB_LED */ 
+      }
+      else
+      {
+#ifdef USE_LED
+        LED_SetState(LED_SIGNAL_VE_RUN_BASE+channel_number,LED_OFF);
+#endif /* USE_LED */
+#ifdef USE_RGB_LED
+        RGB_LED_RestoreValue();  
+#endif /* USE_RGB_LED */
       }
     }
-#endif
-    if ((MotorErrorField[channel_number].Error & VE_OVERTEMPERATURE )!=0)
+
+  if ((MotorErrorField[channel_number].Error & VE_OVERTEMPERATURE )!=0)
       complete_shutdown(channel_number);
 
     if (VE_PerformShutdown[channel_number]==1)

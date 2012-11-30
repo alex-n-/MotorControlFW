@@ -26,6 +26,10 @@
 #include TMPM_UART_HEADER_FILE
 #include TMPM_GPIO_HEADER_FILE
 
+#ifdef USE_RGB_LED
+#include BOARD_RGB_LED_HEADER_FILE
+#endif /* USE_RGB_LED */    
+
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
@@ -527,6 +531,10 @@ void ProtocolTask( void *pvParameters )
 #ifdef USE_LED
     LED_Toggle(LED_SIGNAL_SERIAL_COMMUNICATION_RUNNING);              /* Tollgle LED for signal working to outside */
 #endif
+#ifdef USE_RGB_LED
+    RGB_LED_ToggleValue(LED_RGB_GREEN);
+#endif /* USE_RGB_LED */ 
+    
 #ifdef USE_BLUETOOTH2
     if (g_bt_disable_discoverability > 0) {
       g_bt_disable_discoverability--;

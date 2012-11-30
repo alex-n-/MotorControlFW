@@ -29,8 +29,9 @@
 
 #include "debug.h"
 #include "i2c_master_bitbanging.h"
-#include "tmpm372_tmrb.h"
-#include "tmpm372_gpio.h"
+#include TMPM_TIMER_HEADER_FILE
+#include TMPM_GPIO_HEADER_FILE
+#include BOARD_BOARD_HEADER_FILE
 
 static uint8_t started = 0;
 

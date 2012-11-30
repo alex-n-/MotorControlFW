@@ -23,8 +23,6 @@
 #include "config.h"
 #ifdef USE_DSO
 
-#include BOARD_BOARD_HEADER_FILE
-
 #include "debug.h"
 #include "dso.h"
 #include "motorctrl.h"

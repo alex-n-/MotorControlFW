@@ -400,4 +400,6 @@ extern FRACTIONAL           VE_Omega_command[MAX_CHANNEL];
 extern PreCalc              VE_PreCalc[MAX_CHANNEL];
 extern VEStage              VE_ActualStage[MAX_CHANNEL];
 extern uint16_t             VE_HzMax[MAX_CHANNEL];
+extern uint32_t             VE_v_max[MAX_CHANNEL];
+extern uint32_t             VE_a_max[MAX_CHANNEL];
 #endif /* _VE_DEFINE_H_ */

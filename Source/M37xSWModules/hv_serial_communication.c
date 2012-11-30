@@ -21,10 +21,25 @@
 
 #include "config.h"
 
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+#endif
+#undef BOARD_DEAD_TIME
+#undef BOARD_SENSITIVITY_VOLTAGE_MEASURE
+#undef BOARD_SENSITIVITY_CURRENT_MEASURE
+#undef BOARD_MEASUREMENT_TYPE
+#undef BOARD_SENSOR_DIRECTION
+#undef BOARD_POLL
+#undef BOARD_POLH
+#include BOARD_PWR_HEADER_FILE_1
+
 #ifdef USE_HV_COMMUNICATION
 
-#include "tmpm370_tmrb.h"
-#include "tmpm370_gpio.h"
+#include "motorctrl.h"
+#include "debug.h"
+
+#include TMPM_TIMER_HEADER_FILE
+#include TMPM_GPIO_HEADER_FILE
 
 #include "hv_serial_communication.h"
 
@@ -35,6 +50,11 @@
 
 #define SYNC_BYTE0 0xa5
 #define SYNC_BYTE1 0x5a
+
+#ifdef USE_TEMPERATURE_CONTROL
+static uint16_t OvertempCmpValue = 0x3ff;
+static uint16_t ClearTempCmpValue= 0x3ff;
+#endif /* USE_TEMPERATURE_CONTROL */
 
 static TMRB_InitTypeDef timerTMBRConfig =
 {
@@ -53,17 +73,26 @@ static const GPIO_InitTypeDef portConfigHV_RX =
   GPIO_PULLDOWN_DISABLE,
 };
 
-static unsigned int   received_adc_value[2];
-static unsigned char  buffer[BUFFER_SIZE];
-static unsigned char  qin = 0;
+static uint16_t received_adc_value[2];
+static uint8_t  buffer[BUFFER_SIZE];
+static uint8_t  qin = 0;
 
-static unsigned char check_transmission = 0;
-static unsigned char waiting_for_stop_bit = 0;
-static unsigned char transmitted_rx_bit;
-static unsigned char rx_ready = 0;
-static unsigned char rx_ctr;
-static unsigned char bits_left_transmission;
-static unsigned char internal_rx_buffer;
+static uint8_t  check_transmission = 0;
+static uint8_t  waiting_for_stop_bit = 0;
+static uint8_t  transmitted_rx_bit;
+static uint8_t  rx_ready = 0;
+static uint8_t  rx_ctr;
+static uint8_t  bits_left_transmission;
+static uint8_t  internal_rx_buffer;
+
+uint8_t ReadBit(void)
+{
+#ifdef USE_HV_COMMUNICATION_INVERT
+  return (~GPIO_ReadDataBit(GPIO_PK,GPIO_BIT_1) & 0x1);
+#else  
+  return GPIO_ReadDataBit(GPIO_PK,GPIO_BIT_1);
+#endif /* USE_HV_COMMUNICATION_INVERT */
+}
 
 void INTTB00_IRQHandler(void)
 {
@@ -96,7 +125,7 @@ void INTTB00_IRQHandler(void)
   {
     if ( rx_ready==FALSE )
     {
-      start_bit = GPIO_ReadDataBit(GPIO_PK,GPIO_BIT_1);
+      start_bit = ReadBit();
       if ( start_bit==0 )     // Test for Start Bit
       {
         rx_ready = 1;
@@ -111,7 +140,7 @@ void INTTB00_IRQHandler(void)
       if ( --rx_ctr<=0 )
       {   // rcv
         rx_ctr = 3;
-        flag_in = GPIO_ReadDataBit(GPIO_PK,GPIO_BIT_1);
+        flag_in = ReadBit();
         if ( flag_in )
           internal_rx_buffer |= transmitted_rx_bit;
         transmitted_rx_bit <<= 1;
@@ -123,16 +152,43 @@ void INTTB00_IRQHandler(void)
   
   if (check_transmission==1)
   {
+    static uint8_t overtemperature_detected;
+    
     check_transmission=0;
     if ( (buffer[2]==(buffer[4]^0xff))
       && (buffer[3]==(buffer[5]^0xff)) )
       received_adc_value[buffer[2]>>7]=((buffer[2]&0x3)<<8)|buffer[3];
+
+#ifdef USE_TEMPERATURE_CONTROL
+    if ( (received_adc_value[1]>OvertempCmpValue)
+      && (overtemperature_detected==0)
+      && (SystemValues[1].Overtemperature!=0) )
+    {
+      overtemperature_detected=1;
+      MotorErrorField[1].Error |= VE_OVERTEMPERATURE;
+    }
+    if ( (received_adc_value[1]<ClearTempCmpValue)
+      && (overtemperature_detected==1)
+      && (SystemValues[1].Overtemperature!=0) )
+    {
+      overtemperature_detected=0;
+      MotorErrorField[1].Error &= ~VE_OVERTEMPERATURE;
+    }
+#endif /* USE_TEMPERATURE_CONTROL */    
   }
 }
 
+#ifdef USE_TEMPERATURE_CONTROL
+void HV_Communication_ConfigureTemperatureControl(uint16_t overtemp, uint16_t cleartemp)
+{
+  OvertempCmpValue = overtemp;
+  ClearTempCmpValue= cleartemp;
+}
+#endif /* USE_TEMPERATURE_CONTROL */    
+
 uint16_t HV_Communication_GetValue(uint8_t channel_number)
 {
-  assert_param(channel_number>1);
+  assert_param(channel_number<2);
   
   return received_adc_value[channel_number];
 }

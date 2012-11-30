@@ -54,7 +54,6 @@ Parameter Definition
 #define CONTROL_SPEED_KP          30                 /* [mA/Hz]          - Speed Control Proportional gain */
 
 /* System Parameter */
-#define	SYSTEM_DEAD_TIME          2500               /* [ns]             - Dead time of output switching polarity unit (steps of 100 ns)  */
 #define SYSTEM_PWM_FREQUENCY      12500              /* [Hz]             - PWM Frequency */
 #define SYSTEM_SHUTDOWN_MODE      SHUTDOWN_GENTLE    /* NONE             - Shutdown Mode for the VE */
 #define SYSTEM_RESTART_MODE       SWITCH_OFF_MOTOR   /* NONE             - Restart Motor to Target Speed when Motor stalled detected */

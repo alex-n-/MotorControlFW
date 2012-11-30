@@ -19,9 +19,10 @@
 #include <stdint.h>
 #include <stdio.h>
 
-#ifdef DEBUG
-
+#include "config.h"
 #include "debug.h"
+
+#ifdef DEBUG
 
 /*! \brief  assert failed printout
   *

@@ -29,13 +29,7 @@
 
 #include "config.h"
 
-#ifdef BOARD_HITEX_M370
-#define configTOTAL_HEAP_SIZE           ((size_t) (2800))
-#endif /* BOARD_HITEX_M370 */
-
-#if (defined BOARD_M374STK || defined BOARD_M372STK || defined BOARD_M37SIGMA)
-#define configTOTAL_HEAP_SIZE           ((size_t) (2200))
-#endif
+#define configTOTAL_HEAP_SIZE           ((size_t) (2780))
 
 #ifdef USE_LOAD_STATISTICS
 #define configUSE_IDLE_HOOK             1

@@ -22,6 +22,7 @@
 #define _HV_SERIAL_COMMUNICATION_H_
 
 uint16_t HV_Communication_GetValue(uint8_t channel_number);
+void HV_Communication_ConfigureTemperatureControl(uint16_t overtemp, uint16_t cleartemp);
 void HV_SerialCommunicationInit( void );
 
 #endif /* _HV_SERIAL_COMMUNICATION_H_ */

@@ -140,6 +140,8 @@ extern "C" {
     FC_Result FC_WritePage(uint32_t PageAddr, uint32_t * Data);
     FC_Result FC_EraseBlock(uint32_t BlockAddr);
     FC_Result FC_EraseChip(void);
+    uint32_t FC_BlockNumToAddr(uint8_t BlockNum);
+    int FC_GetNumPages(uint8_t BlockNum);
 
 /** @} */
 /* End of group FC_Exported_FunctionPrototypes */

@@ -346,8 +346,8 @@ extern "C" {
     ADC_Result ADC_GetConvertResult(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx);
     void ADC_SelectPMDTrgProgNum(TSB_AD_TypeDef * ADx, PMD_TRG_PROG_SELx SELx,
                                  uint8_t MacroProgNum);
-    void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, PMD_TrgProgINTTypeDef * TrgProgINT);
-    void ADC_SetPMDTrg(TSB_AD_TypeDef * ADx, PMD_TrgTypeDef * PMDTrg);
+    void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, const PMD_TrgProgINTTypeDef * TrgProgINT);
+    void ADC_SetPMDTrg(TSB_AD_TypeDef * ADx, const PMD_TrgTypeDef * PMDTrg);
     void ADC_SetTimerTrg(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx, uint8_t MacroAINx);
     void ADC_SetSWTrg(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx, uint8_t MacroAINx);
     void ADC_SetConstantTrg(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx, uint8_t MacroAINx);

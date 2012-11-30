@@ -366,13 +366,11 @@ static void PMD_IOInit(unsigned char channel_number)
             );
   GPIO_EnableFuncReg(USE_Port, GPIO_FUNC_REG_1, GPIO_BIT_6);
 
-#ifdef USE_OVERVOLTAGE_SIGNAL
   GPIO_Init(USE_Port,
             GPIO_BIT_7,
             &GPIO_Init_Struct_Input
             );
   GPIO_EnableFuncReg(USE_Port, GPIO_FUNC_REG_1, GPIO_BIT_7);
-#endif /* USE_OVERVOLTAGE_SIGNAL */
 }
 
 /*! \brief  Normal output for the PMD Signals
@@ -518,7 +516,7 @@ void PMD_HandleParameterChange(uint8_t channel_number)
   }
 
   pPMD->MDPRD = (T0/SystemValues[channel_number].PWMFrequency);
-  pPMD->DTR   = SystemValues[channel_number].DeadTime / 100;
+  pPMD->DTR   = ChannelValues[channel_number].DeadTime / 100;
   
 }
 
@@ -571,9 +569,9 @@ void PMD_Init (uint8_t channel_number)
                    ChannelValues[channel_number].poll<<2 |
                    ChannelValues[channel_number].polh<<3 ;
 
-  pPMD->DTR      = SystemValues[channel_number].DeadTime / 100;
+  pPMD->DTR      = ChannelValues[channel_number].DeadTime / 100;
                                                           /* Set Dead Time Register(100ns@80MHz) */
-  switch(ChannelValues[channel_number].shunt_type)
+  switch(ChannelValues[channel_number].measurement_type)
   {
   case CURRENT_SHUNT_1:
     pPMD->TRGCR  = PMD_TRG_1SHUNT;                         /* Trigger Control Register */

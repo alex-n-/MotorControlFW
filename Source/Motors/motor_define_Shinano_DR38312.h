@@ -54,11 +54,10 @@ Parameter Definition
 #define CONTROL_SPEED_KP          40                /* [mA/Hz]          - Speed Control Proportional gain */
 
 /* System Parameter */
-#define	SYSTEM_DEAD_TIME          2500              /* [ns]             - Dead time of output switching polarity unit (steps of 100 ns) */
 #define SYSTEM_PWM_FREQUENCY      12500             /* [Hz]             - PWM Frequency */
 #define SYSTEM_SHUTDOWN_MODE      SHUTDOWN_GENTLE   /* NONE             - Shutdown Mode for the VE */
 #define SYSTEM_RESTART_MODE       RESTART_MOTOR     /* NONE             - Restart Motor to Target Speed when Motor stalled detected */
-#define SYSTEM_STALL_VALUE        1200              /* NONE             - Stall detect value as vqi in stall_detect.c */
+#define SYSTEM_STALL_VALUE        800               /* NONE             - Stall detect value as vqi in stall_detect.c */
 #define SYSTEM_OVERTEMP_VALUE     40                /* [Degrees Celsius]- Motor switch off when temerature exceeded (0 means switch off) */
 #define SYSTEM_SPEED_CONTROL_MODE 0                 /* NONE             - 0 - No speed control / 1 - ADC / 2 - PWM */
 

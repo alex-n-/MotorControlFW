@@ -27,34 +27,32 @@
 #define MOTOR_ENCODER_RESOLUTION 12
 #define MOTOR_RESOLUTION_MULT 1
 #define MOTOR_ANGULAR_ACC_MAX 250 /* rad/sec^2 */
-#define MOTOR_TORQUE_MAX 498 /* mNm/A * 10 */
+#define MOTOR_TORQUE_MAX 498 /* mNm/A */
 #define MOTOR_RESISTANCE 295 /* mOhm */
 #define MOTOR_INDUCTANCE 455 /* uH */
-#define MOTOR_HZ_MAX 120 /* Hz */
-#define MOTOR_HZ_LIMIT 100 /* Hz */
+#define MOTOR_HZ_LIMIT 80 /* Hz */
 #define MOTOR_HZ_CHANGE 20 /* Hz */
 #define MOTOR_INIT_DELAY 100 /* ms */
-#define MOTOR_IQ_START 1100 /* mA */
-#define MOTOR_ID_START 1100 /* mA */
+#define MOTOR_IQ_START 1500 /* mA */
+#define MOTOR_ID_START 1500 /* mA */
 #define MOTOR_IQ_LIM 1800 /* mA */
 #define MOTOR_ID_LIM 1800 /* mA */
-#define MOTOR_I_ERROR 3300 /* mA */
 #define MOTORID "Dematec BL5040B"
 
 #define CONTROL_ID_KI 40 /* V/As */
 #define CONTROL_ID_KP 20 /* V/A */
 #define CONTROL_IQ_KI 40 /* V/As */
 #define CONTROL_IQ_KP 20 /* V/A */
-#define CONTROL_POSITION_KI 900 /* Hz/Vs * 1000 */
-#define CONTROL_POSITION_KP 3000 /* Hz/V * 1000 */
-#define CONTROL_SPEED_KI 20 /* mA/Hz*s */
+#define CONTROL_POSITION_KI 0 /* Hz/Vs */
+#define CONTROL_POSITION_KP 10 /* Hz/V */
+#define CONTROL_SPEED_KI 3 /* mA/Hz*s */
 #define CONTROL_SPEED_KP 40 /* mA/Hz */
 
-#define SYSTEM_DEAD_TIME 1400 /* ns */
 #define SYSTEM_PWM_FREQUENCY 12500 /* HZ */
 #define SYSTEM_SHUTDOWN_MODE 2
 #define SYSTEM_RESTART_MODE 1
-#define SYSTEM_STALL_VALUE 1200
-#define SYSTEM_OVERTEMP_VALUE 40
+#define SYSTEM_STALL_VALUE 180
+#define SYSTEM_OVERTEMP_VALUE 50
+#define SYSTEM_SPEED_CONTROL_MODE 0
 
 #endif

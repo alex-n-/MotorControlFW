@@ -79,6 +79,7 @@ typedef enum {
   VE_OVERTEMPERATURE  = (1<<0),                                       /*!< Over temperature detected */  
   VE_EMERGENCY        = (1<<1),                                       /*!< Emergency Signal Detected */
   VE_OVERVOLTAGE      = (1<<2),                                       /*!< Overvoltage Signal Detected */
+  VE_NOMOTOR          = (1<<3),
 } VE_ERROR;
 
 /*! \brief Parameter Changed Flags.
@@ -150,11 +151,11 @@ typedef __packed struct
  */
 typedef __packed struct
 {
-  uint32_t  a_max;                                                    /*!< [mA]             - Input current(Iabc) at ADC =0xFFF0 */
-  uint8_t   gain_current;                                             /*!< NONE             - Gain setting for current measurement */
-  uint16_t  v_max;                                                    /*!< [V]              - Input voltage(Vdc)   at ADC =0xFFF0 */
-  uint8_t   gain_vdc;                                                 /*!< NONE             - Gain setting for VDC measurement */
-  uint8_t   shunt_type;                                               /*!< NONE             - Enum Type (SHUNT_TYPE_1 = 1,SHUNT_TYPE_3 = 3) */
+  uint16_t  DeadTime;                                                 /*!< [ns]             - Dead time of output switching polarity unit (steps of 100 ns) */
+  uint16_t  sensitivity_current_measure;                              /*!< [mV/A]           - Input current(Iabc) at ADC =0xFFF0 */
+  uint16_t  sensitivity_voltage_measure;                              /*!< [mV/V]           - Input voltage(Vdc)   at ADC =0xFFF0 */
+  uint8_t   gain_current_measure;                                     /*!< NONE             - Gain setting for current measurement with 3 input lines (3Shunt ro 2Sensor) */
+  uint8_t   measurement_type;                                         /*!< NONE             - Enum Type (SHUNT_TYPE_1 = 1,SHUNT_TYPE_3 = 3) */
   uint8_t   sensor_direction;                                         /*!< NONE             - Direction of the current sensors */  
   uint8_t   poll;                                                     /*!< NONE             - Active state for lower side FETs */
   uint8_t   polh;                                                     /*!< NONE             - Active state for lower side FETs */
@@ -166,7 +167,6 @@ typedef __packed struct
  */
 typedef __packed struct
 {
-  uint16_t  DeadTime;                                                 /*!< [ns]             - Dead time of output switching polarity unit (steps of 100 ns) */
   uint16_t  PWMFrequency;                                             /*!< [Hz]             - PWM Frequency */
   uint8_t   ShutdownMode;                                             /*!< NONE             - Shutdown Mode for the VE */
   uint8_t   RestartMode;                                              /*!< NONE             - Restart behaviour */

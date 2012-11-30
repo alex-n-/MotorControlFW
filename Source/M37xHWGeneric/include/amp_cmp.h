@@ -36,6 +36,18 @@ typedef enum
   GAIN_10_0,                                                          /*!< Gain of +10.0 */
 } M370_GAIN;
 
+/* Gain as number multiplied by 10 */
+static const unsigned int gaintable[]={
+  15,
+  25,
+  30,
+  35,
+  40,
+  60,
+  80,
+  100,
+};
+
 /*! \brief Channel selection of internal aplifier/comperator. 
  *
  *  This enumaration is for selecting the different channel possibilities.

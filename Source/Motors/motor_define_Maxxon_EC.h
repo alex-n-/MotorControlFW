@@ -48,7 +48,6 @@
 #define CONTROL_SPEED_KI 5 /* mA/Hz*s */
 #define CONTROL_SPEED_KP 15 /* mA/Hz */
 
-#define SYSTEM_DEAD_TIME 2500 /* ns */
 #define SYSTEM_PWM_FREQUENCY 12500 /* HZ */
 #define SYSTEM_SHUTDOWN_MODE 2
 #define SYSTEM_RESTART_MODE 1

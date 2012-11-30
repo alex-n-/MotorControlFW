@@ -26,6 +26,7 @@
 #include TMPM_GPIO_HEADER_FILE
 #include TMPM_ADC_HEADER_FILE
 #include TMPM_TIMER_HEADER_FILE
+#include BOARD_BOARD_HEADER_FILE
 
 #include "external_speed_control.h"
 #include "ve.h"
@@ -79,8 +80,16 @@ static const GPIO_InitTypeDef portConfigOutput =
 */
 void SPEED_CONTROL_ADC_HANDLER(void)
 {
-    ADC_Result  result;
+    static uint8_t counter;
+    ADC_Result      result;
 
+    /* This function is called every 26ms */
+    /* Limit update frequency to 100 ms */
+    if (counter++ < 4)
+      return;
+    
+    counter = 0;
+    
     if ((SystemValues[1].ExternalSpeedCtrl==ESC_ADC) && (INIT_Done==1))
     {
       result=ADC_GetConvertResult(SPEED_CONTROL_ADC_CHANNEL, SPEED_CONTROL_ADC_REG);
@@ -122,12 +131,16 @@ void SPEED_CONTROL_ADC_HANDLER(void)
   *
   * @retval None
 */    
-void SPEED_CONTROL_PWM_HANDLER(void)
-{
+
     int16_t         ratio;
     uint16_t        counter0,counter1;
     static uint16_t counter2;
     int16_t         total,low;
+
+
+void SPEED_CONTROL_PWM_HANDLER(void)
+{
+    static uint16_t counter;
 
     counter0 = TMRB_GetCaptureValue(SPEED_CONTROL_PWM_TMRB, TMRB_CAPTURE_0);
     counter1 = TMRB_GetCaptureValue(SPEED_CONTROL_PWM_TMRB, TMRB_CAPTURE_1);
@@ -136,7 +149,14 @@ void SPEED_CONTROL_PWM_HANDLER(void)
     total = counter1-counter2;
 
     counter2 = TMRB_GetUpCntValue  (SPEED_CONTROL_PWM_TMRB);
-        
+
+    /* This function is called every 125us @8kHz */
+    /* Limit update frequency to 100 ms */
+    if (counter++ < 800)
+      return;
+    
+    counter = 0;
+    
     if ( (total<0) || (low<0) )
       return;
     

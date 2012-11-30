@@ -20,16 +20,26 @@
 #include "config.h"
 #include TMPM_ADC_HEADER_FILE
 #include BOARD_BOARD_HEADER_FILE
-#include BOARD_SPI_HEADER_FILE
 #include BOARD_LED_HEADER_FILE
 #include BOARD_GAIN_HEADER_FILE
-#ifndef BOARD_HITEX_M370
+
+#ifndef BOARD_M37SIGMA
+#include BOARD_SPI_HEADER_FILE
+#endif /* BOARD_M37SIGMA */
+
+#ifdef USE_RGB_LED
+#include BOARD_RGB_LED_HEADER_FILE
+#endif /* USE_RGB_LED */
+
+
+#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) )
 #include BOARD_PGA_HEADER_FILE
-#endif
+#endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
 
 #ifdef BOARD_HITEX_M370
 #include "hitex_m370_lcd.h"
 #include "hitex_m370_keypad.h"
+#include "hitex_m370_gain.h"
 #endif /* BOARD_HITEX_M370 */
 
 #include "board.h"
@@ -39,6 +49,7 @@
 #include "motorctrl.h"
 #include "i2c_master_bitbanging.h"
 #include "external_speed_control.h"
+#include "hv_serial_communication.h"
 
 uint8_t   BoardRevision = 0;
 uint8_t   INIT_Done     = 0;
@@ -56,44 +67,56 @@ void BOARD_SetupHW(void)
   SystemCoreClockUpdate();
   T0 = SystemCoreClock / (a << ((TSB_CG->SYSCR >> 8) & 7U));
   
-  SPI_DeviceInit(SPI_10_MHZ);                                         /* Init SPI Channel */
-
-  BoardRevision = BOARD_Detect_Revision();
+#ifndef BOARD_M37SIGMA
+  SPI_DeviceInit(SPI_10_MHZ);                                                   /* Init SPI Channel */
+#endif /* BOARD_M37SIGMA */
+  BOARD_SetupGain();                                                            /* Set up the gain for current measure */
   
-#ifdef MOTOR_CHANNEL_0                                                /* Set up Board dependant values */
-  ChannelValues[0].a_max            = BOARD_A_MAX_CHANNEL_0;
-  ChannelValues[0].gain_current     = BOARD_GAIN_CURRENT_0;
-  ChannelValues[0].v_max            = BOARD_V_MAX_CHANNEL_0;
-  ChannelValues[0].gain_vdc         = BOARD_GAIN_IDCBUS_0;
-  ChannelValues[0].shunt_type       = BOARD_SHUNT_TYPE_CHANNEL_0;
-  ChannelValues[0].sensor_direction = BOARD_SENSOR_DIRECTION_0;
-  ChannelValues[0].poll             = BOARD_POLL_0;
-  ChannelValues[0].polh             = BOARD_POLH_0;
+  BoardRevision = BOARD_Detect_Revision();
+
+#ifdef MOTOR_CHANNEL_0                                                          /* Set up Board dependant values */
+#include BOARD_PWR_HEADER_FILE_0
+  ChannelValues[0].DeadTime                    = BOARD_DEAD_TIME;
+  ChannelValues[0].gain_current_measure        = BOARD_GAIN_CURRENT_MEASURE;
+  ChannelValues[0].measurement_type            = BOARD_MEASUREMENT_TYPE;
+  ChannelValues[0].sensitivity_voltage_measure = BOARD_SENSITIVITY_VOLTAGE_MEASURE;
+  ChannelValues[0].sensitivity_current_measure = BOARD_SENSITIVITY_CURRENT_MEASURE;
+
+#ifdef BOARD_SENSOR_DIRECTION
+  ChannelValues[0].sensor_direction            = BOARD_SENSOR_DIRECTION;
+#endif /* BOARD_SENSOR_DIRECTION */  
+  ChannelValues[0].poll                        = BOARD_POLL;
+  ChannelValues[0].polh                        = BOARD_POLH;
+#include "pwr_undefine.h"
 #endif /* MOTOR_CHANNEL_0 */ 
+
 #ifdef MOTOR_CHANNEL_1
-  ChannelValues[1].a_max            = BOARD_A_MAX_CHANNEL_1;
-  ChannelValues[1].gain_current     = BOARD_GAIN_CURRENT_1;
-  ChannelValues[1].v_max            = BOARD_V_MAX_CHANNEL_1;
-  ChannelValues[1].gain_vdc         = BOARD_GAIN_IDCBUS_1;
-  ChannelValues[1].shunt_type       = BOARD_SHUNT_TYPE_CHANNEL_1;
-  ChannelValues[1].sensor_direction = BOARD_SENSOR_DIRECTION_1;
-  ChannelValues[1].poll             = BOARD_POLL_1;
-  ChannelValues[1].polh             = BOARD_POLH_1;
+#include BOARD_PWR_HEADER_FILE_1
+  ChannelValues[1].DeadTime                    = BOARD_DEAD_TIME;
+  ChannelValues[1].gain_current_measure        = BOARD_GAIN_CURRENT_MEASURE;
+  ChannelValues[1].measurement_type            = BOARD_MEASUREMENT_TYPE;
+  ChannelValues[1].sensitivity_voltage_measure = BOARD_SENSITIVITY_VOLTAGE_MEASURE;
+  ChannelValues[1].sensitivity_current_measure = BOARD_SENSITIVITY_CURRENT_MEASURE;
+    
+#ifdef BOARD_SENSOR_DIRECTION
+  ChannelValues[1].sensor_direction            = BOARD_SENSOR_DIRECTION;
+#endif /* BOARD_SENSOR_DIRECTION */
+  ChannelValues[1].poll                        = BOARD_POLL;
+  ChannelValues[1].polh                        = BOARD_POLH;
+#include "pwr_undefine.h"
 #endif /* MOTOR_CHANNEL_1 */
   
 #ifdef USE_LED
-  LED_Init();                                                         /* Init LED Ports */
+  LED_Init();                                                                   /* Init LED Ports */
 #endif /* USE_LED */
   
 #ifdef USE_KEYPAD  
-  KEYPAD_Init();                                                      /* Init Keypad Port */
+  KEYPAD_Init();                                                                /* Init Keypad Port */
 #endif /* USE_KEYPAD */
   
 #ifdef USE_LCD  
-  LCD_Init();                                                         /* Init LCD */
-#endif /* USE_LCD */ 
-  
-  BOARD_SetupGain();                                                  /* Set up the gain for current measure */
+  LCD_Init();                                                                   /* Init LCD */
+#endif /* USE_LCD */   
   
 #ifdef USE_HV_COMMUNICATION
   HV_SerialCommunicationInit();
@@ -101,20 +124,24 @@ void BOARD_SetupHW(void)
 
 #ifdef USE_I2C_MASTER
   I2C_Init();
-#endif  
+#endif /* USE_I2C_MASTER */
+
+#ifdef USE_RGB_LED
+  RGB_LED_Init();
+#endif /* USE_RGB_LED */  
 }
 
 void BOARD_SetupHW2(void)
 {
 #ifdef __TMPM_370__  
-  ADC_Init(0,(CURRENT_MEASUREMENT)ChannelValues[0].shunt_type);       /* enable, configure the ADC */
+  ADC_Init(0,(CURRENT_MEASUREMENT)ChannelValues[0].measurement_type);           /* enable, configure the ADC */
   PMD_Init(0);
 #endif /* __TMPM_370__ */
 
-  ADC_Init(1,(CURRENT_MEASUREMENT)ChannelValues[1].shunt_type);       /* enable, configure the ADC */
+  ADC_Init(1,(CURRENT_MEASUREMENT)ChannelValues[1].measurement_type);           /* enable, configure the ADC */
   PMD_Init(1);
   
-  INIT_Done=1;                                                        /* Allow other tasks to access the HW */
+  INIT_Done=1;                                                                  /* Allow other tasks to access the HW */
 
 #ifdef USE_EXTERNAL_SPEED_CONTROL  
   EXTERNAL_SPEED_CONTROL_Init();

@@ -33,12 +33,6 @@
 */
 void SetupInternalMotorParams(void)
 {
-  /* Clear all settings */
-  memset(&MotorParameterValues[0], 0,sizeof(MotorParameterValues)); 
-  memset(&PIControl[0],            0,sizeof(PIControl)); 
-  memset(&SystemValues[0],         0,sizeof(SystemValues)); 
-
-
   /* Setup compiled in values for Motor 0 */ 
 #ifdef MOTOR_CHANNEL_0
 #include MOTOR_CHANNEL_0
@@ -69,7 +63,6 @@ void SetupInternalMotorParams(void)
   PIControl[0].Speed_Ki               = CONTROL_SPEED_KI;
   PIControl[0].Speed_Kp               = CONTROL_SPEED_KP;
 
-  SystemValues[0].DeadTime            = SYSTEM_DEAD_TIME;
   SystemValues[0].PWMFrequency        = SYSTEM_PWM_FREQUENCY;
   SystemValues[0].ShutdownMode        = SYSTEM_SHUTDOWN_MODE;
   SystemValues[0].RestartMode         = SYSTEM_RESTART_MODE;
@@ -113,7 +106,6 @@ void SetupInternalMotorParams(void)
   PIControl[1].Speed_Ki               = CONTROL_SPEED_KI;
   PIControl[1].Speed_Kp               = CONTROL_SPEED_KP;
 
-  SystemValues[1].DeadTime            = SYSTEM_DEAD_TIME;
   SystemValues[1].PWMFrequency        = SYSTEM_PWM_FREQUENCY;
   SystemValues[1].ShutdownMode        = SYSTEM_SHUTDOWN_MODE;
   SystemValues[1].RestartMode         = SYSTEM_RESTART_MODE;

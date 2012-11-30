@@ -6975,7 +6975,7 @@
         </option>
         <option>
           <name>MemFile</name>
-          <state>$TOOLKIT_DIR$\CONFIG\debugger\Toshiba\TMPM372FWUG.ddf</state>
+          <state>$TOOLKIT_DIR$\CONFIG\debugger\Toshiba\TMPM373FWDUG.ddf</state>
         </option>
         <option>
           <name>RunToEnable</name>
@@ -7075,7 +7075,7 @@
         </option>
         <option>
           <name>OverrideDefFlashBoard</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OCImagesOffset1</name>
@@ -7428,11 +7428,11 @@
         <debug>1</debug>
         <option>
           <name>JLinkSpeed</name>
-          <state>32</state>
+          <state>100</state>
         </option>
         <option>
           <name>CCJLinkDoLogfile</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCJLinkLogFile</name>
@@ -7476,7 +7476,7 @@
         </option>
         <option>
           <name>CCJLinkSpeedRadioV2</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCUSBDevice</name>
@@ -7534,7 +7534,7 @@
         <option>
           <name>CCJLinkResetList</name>
           <version>6</version>
-          <state>7</state>
+          <state>12</state>
         </option>
         <option>
           <name>CCJLinkInterfaceCmdLine</name>
@@ -7603,11 +7603,11 @@
         </option>
         <option>
           <name>CCSwoClockEdit</name>
-          <state>500</state>
+          <state>100</state>
         </option>
         <option>
           <name>OCJLinkTraceSource</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OCJLinkTraceSourceDummy</name>
@@ -8583,7 +8583,7 @@
         <debug>0</debug>
         <option>
           <name>JLinkSpeed</name>
-          <state>32</state>
+          <state>100</state>
         </option>
         <option>
           <name>CCJLinkDoLogfile</name>
@@ -8631,7 +8631,7 @@
         </option>
         <option>
           <name>CCJLinkSpeedRadioV2</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCUSBDevice</name>
@@ -8689,7 +8689,7 @@
         <option>
           <name>CCJLinkResetList</name>
           <version>6</version>
-          <state>7</state>
+          <state>10</state>
         </option>
         <option>
           <name>CCJLinkInterfaceCmdLine</name>
@@ -8758,7 +8758,7 @@
         </option>
         <option>
           <name>CCSwoClockEdit</name>
-          <state>500</state>
+          <state>100</state>
         </option>
         <option>
           <name>OCJLinkTraceSource</name>

@@ -20,10 +20,6 @@
 #ifndef I2C_MASTER_BITBANGING
 #define I2C_MASTER_BITBANGING
 
-#define I2C_PORT  GPIO_PD
-#define I2C_SCL   GPIO_BIT_4
-#define I2C_SDA   GPIO_BIT_6
-
 #define DEVICE_READ   0x01
 #define DEVICE_WRITE  0x00
 

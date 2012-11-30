@@ -176,6 +176,36 @@ uint8_t FC_AddrToBlockNum(uint32_t Addr)
   */
 
 /**
+  * @brief  Convert block number to address
+  * @param  BlockNum
+  * @retval Addr
+  *
+  */
+uint32_t FC_BlockNumToAddr(uint8_t BlockNum)
+{
+    static int BlockOffsets[] = { 0x10000, 0x8000, 0x0, 0x4000 };
+
+    assert_param(IS_FC_BLOCK_NUM(BlockNum));
+
+    return FLASH_START_ADDR + BlockOffsets[BlockNum];
+}
+
+/**
+  * @brief  Retrieve size of block
+  * @param  BlockNum
+  * @retval Size
+  *
+  */
+int FC_GetNumPages(uint8_t BlockNum)
+{
+    static int BlockSizes[] = { 256, 128, 64, 64, };
+
+    assert_param(IS_FC_BLOCK_NUM(BlockNum));
+
+    return BlockSizes[BlockNum];
+}
+
+/**
   * @brief  Set the value of SECBIT register.
   * @param  NewState: The value of SECBIT register.
   *   This parameter can be one of the following values:
@@ -227,6 +257,13 @@ FunctionalState FC_GetSecurityBit(void)
   * @retval BUSY or DONE.
   *
   */
+#ifdef __ICCARM__
+#pragma optimize=none
+__ramfunc 
+#endif
+#ifdef __KEIL__
+#pragma O0
+#endif
 WorkState FC_GetBusyState(void)
 {
     uint32_t tmp = 0U;
@@ -421,6 +458,40 @@ FC_Result FC_EraseBlockProtectState(uint8_t BlockGroup)
     return retval;
 }
 
+#ifdef __ICCARM__
+#pragma optimize=none
+__ramfunc 
+#endif
+#ifdef __KEIL__
+#pragma O0
+#endif
+static FC_Result __FC_WritePage(uint32_t PageAddr, uint32_t * Data)
+{
+    uint32_t counter = FC_WRITE_PAGE_OVER_TIME;
+    volatile uint32_t *addr1 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC1_ADDR);
+    volatile uint32_t *addr2 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC2_ADDR);
+    volatile uint32_t *addr3 = (uint32_t *) PageAddr;
+    uint32_t i = 0U;
+    uint32_t *source = Data;
+
+    *addr1 = (uint32_t) 0x000000AA; /* bus cycle 1 */
+    *addr2 = (uint32_t) 0x00000055; /* bus cycle 2 */
+    *addr1 = (uint32_t) 0x000000A0; /* bus cycle 3 */
+    for (i = 0U; i < FC_PAGE_SIZE; i++) {   /* bus cycle 4~67 */
+        *addr3 = *source;
+        source++;
+    }
+    __DSB();
+
+    while (BUSY == FC_GetBusyState()) {     /* check if FLASH is busy with overtime counter */
+        if (!(counter--)) { /* check overtime */
+            return FC_ERROR_OVER_TIME;
+        }
+    }
+    
+    return FC_SUCCESS;
+}
+
 /**
   * @brief  Write data to the specified page.
   * @param  PageAddr: The page start address.
@@ -431,14 +502,7 @@ FC_Result FC_EraseBlockProtectState(uint8_t BlockGroup)
   */
 FC_Result FC_WritePage(uint32_t PageAddr, uint32_t * Data)
 {
-    FC_Result retval = FC_SUCCESS;
-    volatile uint32_t *addr1 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC1_ADDR);
-    volatile uint32_t *addr2 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC2_ADDR);
-    volatile uint32_t *addr3 = (uint32_t *) PageAddr;
-    uint32_t counter = FC_WRITE_PAGE_OVER_TIME;
-    uint32_t i = 0U;
-    uint32_t *source = Data;
-    uint8_t BlockNum = 0U;
+    uint8_t BlockNum = FC_BLOCK_4;
 
     assert_param(IS_FC_ADDR(PageAddr)); /* Check whether it is in the flash address range */
     assert_param(IS_FC_PAGE_ADDR(PageAddr));    /* Check whether it is a page start address */
@@ -447,28 +511,41 @@ FC_Result FC_WritePage(uint32_t PageAddr, uint32_t * Data)
     BlockNum = FC_AddrToBlockNum(PageAddr);
 
     if (ENABLE == FC_GetBlockProtectState(BlockNum)) {
-        retval = FC_ERROR_PROTECTED;
-    } else {
-        *addr1 = (uint32_t) 0x000000AA; /* bus cycle 1 */
-        *addr2 = (uint32_t) 0x00000055; /* bus cycle 2 */
-        *addr1 = (uint32_t) 0x000000A0; /* bus cycle 3 */
-        for (i = 0U; i < FC_PAGE_SIZE; i++) {   /* bus cycle 4~67 */
-            *addr3 = *source;
-            source++;
-        }
-        __DSB();
+        return FC_ERROR_PROTECTED;
+    }
+    
+    return __FC_WritePage(PageAddr, Data);
+}
 
-        while (BUSY == FC_GetBusyState()) {     /* check if FLASH is busy with overtime counter */
-            if (!(counter--)) { /* check overtime */
-                retval = FC_ERROR_OVER_TIME;
-                break;
-            } else {
-                /* Do nothing */
-            }
+#ifdef __ICCARM__
+#pragma optimize=none
+__ramfunc 
+#endif
+#ifdef __KEIL__
+#pragma O0
+#endif
+static FC_Result __FC_EraseBlock(uint32_t BlockAddr)
+{
+    uint32_t counter = FC_ERASE_BLOCK_OVER_TIME;
+    volatile uint32_t *addr1 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC1_ADDR);
+    volatile uint32_t *addr2 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC2_ADDR);
+    volatile uint32_t *BA = (uint32_t *) (BlockAddr & FC_BLOCK_ADDR_MASK);
+    
+    *addr1 = (uint32_t) 0x000000AA; /* bus cycle 1 */
+    *addr2 = (uint32_t) 0x00000055; /* bus cycle 2 */
+    *addr1 = (uint32_t) 0x00000080; /* bus cycle 3 */
+    *addr1 = (uint32_t) 0x000000AA; /* bus cycle 4 */
+    *addr2 = (uint32_t) 0x00000055; /* bus cycle 5 */
+    *BA = (uint32_t) 0x00000030;    /* bus cycle 6 */
+    __DSB();
+
+    while (BUSY == FC_GetBusyState()) {     /* check if FLASH is busy with overtime counter */
+        if (!(counter--)) { /* check overtime */
+            return FC_ERROR_OVER_TIME;
         }
     }
-
-    return retval;
+    
+    return FC_SUCCESS;
 }
 
 /**
@@ -479,39 +556,17 @@ FC_Result FC_WritePage(uint32_t PageAddr, uint32_t * Data)
   */
 FC_Result FC_EraseBlock(uint32_t BlockAddr)
 {
-    FC_Result retval = FC_SUCCESS;
-    volatile uint32_t *addr1 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC1_ADDR);
-    volatile uint32_t *addr2 = (uint32_t *) (FLASH_START_ADDR + FC_CMD_BC2_ADDR);
-    volatile uint32_t *BA = (uint32_t *) (BlockAddr & FC_BLOCK_ADDR_MASK);
-    uint32_t counter = FC_ERASE_BLOCK_OVER_TIME;
-    uint8_t BlockNum = 0U;
+    uint8_t BlockNum = FC_BLOCK_4;
 
     assert_param(IS_FC_ADDR(BlockAddr));        /* Check whether it is in the flash address range */
 
     BlockNum = FC_AddrToBlockNum(BlockAddr);
 
     if (ENABLE == FC_GetBlockProtectState(BlockNum)) {
-        retval = FC_ERROR_PROTECTED;
-    } else {
-        *addr1 = (uint32_t) 0x000000AA; /* bus cycle 1 */
-        *addr2 = (uint32_t) 0x00000055; /* bus cycle 2 */
-        *addr1 = (uint32_t) 0x00000080; /* bus cycle 3 */
-        *addr1 = (uint32_t) 0x000000AA; /* bus cycle 4 */
-        *addr2 = (uint32_t) 0x00000055; /* bus cycle 5 */
-        *BA = (uint32_t) 0x00000030;    /* bus cycle 6 */
-        __DSB();
-
-        while (BUSY == FC_GetBusyState()) {     /* check if FLASH is busy with overtime counter */
-            if (!(counter--)) { /* check overtime */
-                retval = FC_ERROR_OVER_TIME;
-                break;
-            } else {
-                /* Do nothing */
-            }
-        }
+        return FC_ERROR_PROTECTED;
     }
-
-    return retval;
+    
+    return __FC_EraseBlock(BlockAddr);
 }
 
 /**

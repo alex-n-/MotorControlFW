@@ -62,12 +62,32 @@ int StartMotor(struct StartMotor_q* q, struct StartMotor_a* a)
   * @param  a: Answer   for  Serial Protocol
   * @retval Success
 */
+extern uint8_t g_config_storage[CONFIG_STORAGE_PAGE_SIZE];
+
 int StopMotor(struct StopMotor_q* q, struct StopMotor_a* a)
 {
   dprintf("%s(%d) called\n", __func__,q->motor_nr);
 
   memset(a, 0, sizeof(*a));
 
+#ifdef USE_CONFIG_STORAGE  
+  memset(&g_config_storage[0], 0xcc, CONFIG_STORAGE_PAGE_SIZE);
+  vTaskList((signed char*)&g_config_storage[0]);
+  printf("Name          State   Prio  StackLeft  Number\n*********************************************");
+#if (defined(__ICCARM__)) /* IAR Compiler - */
+#pragma diag_suppress = Pe167
+#elif defined __KEIL__
+#pragma diag_suppress = 167
+#endif
+  puts(&g_config_storage[0]);
+#if (defined(__ICCARM__)) /* IAR Compiler - */
+#pragma diag_suppress = Pe167
+#elif defined __KEIL__
+#pragma diag_suppress = 167
+#endif 
+#endif /* USE_CONFIG_STORAGE */
+  
+  
   return VE_Stop(q->motor_nr);
 }
   

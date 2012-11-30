@@ -49,7 +49,6 @@
 #undef  CONTROL_SPEED_KP
 
 /* System Parameter */
-#undef  SYSTEM_DEAD_TIME
 #undef  SYSTEM_PWM_FREQUENCY
 #undef  SYSTEM_SHUTDOWN_MODE
 #undef  SYSTEM_RESTART_MODE

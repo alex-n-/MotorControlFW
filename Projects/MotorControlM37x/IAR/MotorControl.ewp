@@ -302,8 +302,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -1229,8 +1229,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -2158,8 +2158,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -2432,7 +2432,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -2440,7 +2440,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>MotorControl.srec</state>
+          <state>MotorControl.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -2448,7 +2448,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -3085,8 +3085,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -4014,9 +4014,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -4942,9 +4941,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -5668,7 +5666,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>TMPM372FWUG	Toshiba TMPM372FWUG</state>
+          <state>TMPM373FWDUG	Toshiba TMPM373FWDUG</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -5738,11 +5736,13 @@
         <option>
           <name>CCDefines</name>
           <state>BOARD_M37SIGMA</state>
-          <state>__TMPM_372__</state>
+          <state>__TMPM_373__</state>
           <state>DEBUG</state>
           <state>_IARCMSIS_</state>
           <state>USE_I2C_MASTER</state>
+          <state>USE_RGB_LED</state>
           <state>USE_EXTERNAL_SPEED_CONTROL</state>
+          <state>USE_RW_BOARD_SETTINGS</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -5874,10 +5874,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -6150,15 +6148,15 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>MotorControl.srec</state>
+          <state>M37Sigma.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -6166,7 +6164,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -6671,9 +6669,10 @@
         <option>
           <name>CCDefines</name>
           <state>BOARD_M37SIGMA</state>
-          <state>__TMPM_372__</state>
+          <state>__TMPM_373__</state>
           <state>USE_I2C_MASTER</state>
           <state>USE_EXTERNAL_SPEED_CONTROL</state>
+          <state>USE_RW_BOARD_SETTINGS</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -6805,10 +6804,8 @@
           <state>$PROJ_DIR$\</state>
           <state>$PROJ_DIR$\..</state>
           <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include</state>
-          <state>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
           <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
@@ -7081,15 +7078,15 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>0</state>
+          <state>2</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>MotorControl.srec</state>
+          <state>M37Sigma.bin</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -7097,7 +7094,7 @@
         </option>
         <option>
           <name>OOCObjCopyEnable</name>
-          <state>0</state>
+          <state>1</state>
         </option>
       </data>
     </settings>
@@ -7438,224 +7435,184 @@
   <group>
     <name>Board</name>
     <group>
-      <name>HitexM370</name>
-      <excluded>
-        <configuration>Debug - M374STK</configuration>
-        <configuration>Release - M374STK</configuration>
-        <configuration>Debug - M372STK</configuration>
-        <configuration>Release - M372STK</configuration>
-        <configuration>Debug - M37Sigma</configuration>
-        <configuration>Release - M37Sigma</configuration>
-      </excluded>
+      <name>Baseboard</name>
       <group>
-        <name>include</name>
+        <name>M374Baseboard</name>
+        <excluded>
+          <configuration>Debug - HitexM370</configuration>
+          <configuration>Release - HitexM370</configuration>
+          <configuration>Debug - M37Sigma</configuration>
+          <configuration>Release - M37Sigma</configuration>
+        </excluded>
+        <group>
+          <name>include</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include\m374stk_board.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include\m374stk_can.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include\m374stk_gain.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include\m374stk_led.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include\m374stk_pga.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include\m374stk_spi_device.h</name>
+          </file>
+        </group>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_board.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_board.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_gain.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_can.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_keypad.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_eeprom.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_lcd.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_gain.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_led.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_led.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_spi_device.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_pga.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\include\hitex_m370_ui.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\m374stk_spi_device.c</name>
         </file>
       </group>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_board.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_eeprom.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_gain.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_keypad.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_lcd.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_led.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_spi_device.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\HitexM370\hitex_m370_ui.c</name>
-      </file>
     </group>
     <group>
-      <name>M327STK</name>
-      <excluded>
-        <configuration>Debug - HitexM370</configuration>
-        <configuration>Release - HitexM370</configuration>
-        <configuration>Debug - M374STK</configuration>
-        <configuration>Release - M374STK</configuration>
-        <configuration>Debug - M37Sigma</configuration>
-        <configuration>Release - M37Sigma</configuration>
-      </excluded>
+      <name>CPU Board</name>
       <group>
-        <name>include</name>
+        <name>HitexM370</name>
+        <excluded>
+          <configuration>Debug - M374STK</configuration>
+          <configuration>Release - M374STK</configuration>
+          <configuration>Debug - M372STK</configuration>
+          <configuration>Release - M372STK</configuration>
+          <configuration>Debug - M37Sigma</configuration>
+          <configuration>Release - M37Sigma</configuration>
+        </excluded>
+        <group>
+          <name>include</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_board.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_gain.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_keypad.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_lcd.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_led.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_spi_device.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include\hitex_m370_ui.h</name>
+          </file>
+        </group>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include\m372stk_board.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_board.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include\m372stk_can.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_eeprom.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include\m372stk_gain.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_gain.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include\m372stk_led.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_keypad.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include\m372stk_pga.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_lcd.c</name>
         </file>
         <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\include\m372stk_spi_device.h</name>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_led.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_spi_device.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_ui.c</name>
         </file>
       </group>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_board.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_can.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_eeprom.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_gain.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_led.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_pga.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M372STK\m372stk_spi_device.c</name>
-      </file>
+      <group>
+        <name>M37Sigma</name>
+        <excluded>
+          <configuration>Debug - HitexM370</configuration>
+          <configuration>Release - HitexM370</configuration>
+          <configuration>Debug - M374STK</configuration>
+          <configuration>Release - M374STK</configuration>
+          <configuration>Debug - M372STK</configuration>
+          <configuration>Release - M372STK</configuration>
+        </excluded>
+        <group>
+          <name>include</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include\m37sigma_board.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include\m37sigma_gain.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include\m37sigma_led.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include\m37sigma_rgb_led.h</name>
+          </file>
+        </group>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\m37sigma_board.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\m37sigma_gain.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\m37sigma_led.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\m37sigma_rgb_led.c</name>
+        </file>
+      </group>
     </group>
     <group>
-      <name>M374STK</name>
-      <excluded>
-        <configuration>Debug - HitexM370</configuration>
-        <configuration>Release - HitexM370</configuration>
-        <configuration>Debug - M372STK</configuration>
-        <configuration>Release - M372STK</configuration>
-        <configuration>Debug - M37Sigma</configuration>
-        <configuration>Release - M37Sigma</configuration>
-      </excluded>
-      <group>
-        <name>include</name>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include\m374stk_board.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include\m374stk_can.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include\m374stk_gain.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include\m374stk_led.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include\m374stk_pga.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\include\m374stk_spi_device.h</name>
-        </file>
-      </group>
+      <name>Powerboard</name>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_board.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\hitex_m370_pwr_hv.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_can.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\hitex_m370_pwr_lv.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_eeprom.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m374pwr_hv.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_gain.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m374pwr_lv.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_led.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m37Sigma_pwr.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_pga.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m37x_ipm_power_ver1.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M374STK\m374stk_spi_device.c</name>
-      </file>
-    </group>
-    <group>
-      <name>M37Sigma</name>
-      <excluded>
-        <configuration>Debug - HitexM370</configuration>
-        <configuration>Release - HitexM370</configuration>
-        <configuration>Debug - M374STK</configuration>
-        <configuration>Release - M374STK</configuration>
-        <configuration>Debug - M372STK</configuration>
-        <configuration>Release - M372STK</configuration>
-      </excluded>
-      <group>
-        <name>include</name>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_board.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_can.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_gain.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_i2c_eeprom.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_led.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_pga.h</name>
-        </file>
-        <file>
-          <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\include\m37sigma_spi_device.h</name>
-        </file>
-      </group>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_board.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m37x_ipm_power_ver2.h</name>
       </file>
       <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_can.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_gain.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_i2c_eeprom.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_led.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_pga.c</name>
-      </file>
-      <file>
-        <name>$PROJ_DIR$\..\..\..\Source\Board\M37Sigma\m37sigma_spi_device.c</name>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\pwr_undefine.h</name>
       </file>
     </group>
   </group>
@@ -7839,6 +7796,8 @@
             <configuration>Release - HitexM370</configuration>
             <configuration>Debug - M374STK</configuration>
             <configuration>Release - M374STK</configuration>
+            <configuration>Debug - M37Sigma</configuration>
+            <configuration>Release - M37Sigma</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm372_adc.c</name>
@@ -7877,8 +7836,6 @@
             <configuration>Release - M374STK</configuration>
             <configuration>Debug - M372STK</configuration>
             <configuration>Release - M372STK</configuration>
-            <configuration>Debug - M37Sigma</configuration>
-            <configuration>Release - M37Sigma</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm373_adc.c</name>
@@ -7978,6 +7935,8 @@
         <configuration>Release - HitexM370</configuration>
         <configuration>Debug - M374STK</configuration>
         <configuration>Release - M374STK</configuration>
+        <configuration>Debug - M37Sigma</configuration>
+        <configuration>Release - M37Sigma</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM372.s</name>
@@ -8001,8 +7960,6 @@
         <configuration>Release - M374STK</configuration>
         <configuration>Debug - M372STK</configuration>
         <configuration>Release - M372STK</configuration>
-        <configuration>Debug - M37Sigma</configuration>
-        <configuration>Release - M37Sigma</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM373.s</name>
@@ -8237,6 +8194,2018 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\board.c</name>
+      <configuration>
+        <name>Debug - HitexM370</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>1</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_HITEX_M370</state>
+              <state>__TMPM_370__</state>
+              <state>DEBUG</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Release - HitexM370</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>0</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_HITEX_M370</state>
+              <state>__TMPM_370__</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Debug - M374STK</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>1</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M374STK</state>
+              <state>__TMPM_374__</state>
+              <state>DEBUG</state>
+              <state>_IARCMSIS_</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Release - M374STK</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>0</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M374STK</state>
+              <state>__TMPM_374__</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Debug - M372STK</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>1</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M372STK</state>
+              <state>__TMPM_372__</state>
+              <state>DEBUG</state>
+              <state>_IARCMSIS_</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Release - M372STK</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>0</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M372STK</state>
+              <state>__TMPM_372__</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Debug - M37Sigma</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>1</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M37SIGMA</state>
+              <state>__TMPM_372__</state>
+              <state>DEBUG</state>
+              <state>_IARCMSIS_</state>
+              <state>USE_I2C_MASTER</state>
+              <state>USE_RGB_LED</state>
+              <state>USE_EXTERNAL_SPEED_CONTROL</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
+      <configuration>
+        <name>Release - M37Sigma</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>0</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M37SIGMA</state>
+              <state>__TMPM_372__</state>
+              <state>USE_I2C_MASTER</state>
+              <state>USE_EXTERNAL_SPEED_CONTROL</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082,Pe177</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>1111111</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\M37Sigma\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>3</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\compiled_in_motor.c</name>

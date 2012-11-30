@@ -51,12 +51,11 @@
 #define CONTROL_SPEED_KP          20                    /* mA/Hz */
 
 /* System Parameter */
-#define SYSTEM_DEAD_TIME          2500                  /* ns */
 #define SYSTEM_PWM_FREQUENCY      12500                 /* HZ */
 #define SYSTEM_SHUTDOWN_MODE      2
 #define SYSTEM_RESTART_MODE       SWITCH_OFF_MOTOR      /* NONE             - Restart Motor to Target Speed when Motor stalled detected */
 #define SYSTEM_STALL_VALUE        0                     /* NONE             - Stall detect value as vqi in stall_detect.c */
-#define SYSTEM_OVERTEMP_VALUE     0                     /* [Degrees Celsius]- Motor switch off when temerature exceeded (0 means switch off) */
+#define SYSTEM_OVERTEMP_VALUE     40                     /* [Degrees Celsius]- Motor switch off when temerature exceeded (0 means switch off) */
 #define SYSTEM_SPEED_CONTROL_MODE 0                     /* NONE             - 0 - No speed control / 1 - ADC / 2 - PWM */
 
 #endif

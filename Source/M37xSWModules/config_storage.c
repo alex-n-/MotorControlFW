@@ -45,7 +45,7 @@ extern ChannelDependandValues ChannelValues[MAX_CHANNEL];
 large, because it's directly used by the storage write function to
 read/write one block. the config storage is only allowed to use 
 CONFIG_STORAGE_MAX_ITEM_SIZE bytes of this memory, though. */
-static uint8_t g_config_storage[CONFIG_STORAGE_PAGE_SIZE];
+uint8_t g_config_storage[CONFIG_STORAGE_PAGE_SIZE];
 
 /*! \brief  Read config from storage
   *
