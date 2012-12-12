@@ -20,70 +20,25 @@
 
 #define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
+#define VISHAY_NTCLE100E3103JB0
 
 #define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
-//#define USE_CURRENT_SENSORS                                                   /* Make use of Current Sensors instead of Shunts */
+//#define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
 
 /* BOARD PARAMETER */
-#define BOARD_DEAD_TIME                         1600                            /* [us]             - Dead time for IGBTs */
+#define BOARD_DEAD_TIME                         500                             /* [us]             - Dead time for IGBTs */
 
 #ifdef USE_CURRENT_SENSORS
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       xxx                             /* [mV/A]           - Sensivity of current measurement circuit */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       185                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SENSOR_2                /* NONE */
 #define BOARD_SENSOR_DIRECTION                  0
 #else
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       xxx                             /* [mV/V]           - Sensivity of voltage measurement circuit  */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       298                             /* [mV/A]           - Sensivity of voltage measurement circuit  */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SHUNT_1                 /* NONE */
 #endif /* USE_CURRENT_SENSORS */
 
-#define BOARD_SENSITIVITY_VOLTAGE_MEASURE       xxx                             /* [mV/V]           - Sensivity of voltage measurement circuit  */
+#define BOARD_SENSITIVITY_VOLTAGE_MEASURE       10                              /* [mV/V]           - Sensivity of voltage measurement circuit  */
 
 #define BOARD_POLL                              1                               /* NONE             - Low  Side FETs high active */
 #define BOARD_POLH                              1                               /* NONE             - High Side FETs high active */
-
-#ifdef USE_TEMPERATURE_CONTROL
-/* Temperature Table for Vishay NTCLE100E3103JB0 */
-
-typedef struct {
-  uint16_t  adc;
-  int8_t    temperature;
-} temp_table;
-
-static const temp_table temperature[]={
-                                  {0xF87,-40},
-                                  {0xF5B,-35},
-                                  {0xF22,-30},
-                                  {0xED9,-25},
-                                  {0xE7E,-20},
-                                  {0xE0F,-15},
-                                  {0xD89,-10},
-                                  {0xCEE, -5},
-                                  {0xC3D,  0},
-                                  {0xB78,  5},
-                                  {0xAA4, 10},
-                                  {0x9C6, 15},
-                                  {0x8E2, 20},
-                                  {0x800, 25},
-                                  {0x723, 30},
-                                  {0x652, 35},
-                                  {0x590, 40},
-                                  {0x4DE, 45},
-                                  {0x43D, 50},
-                                  {0x3AE, 55},
-                                  {0x330, 60},
-                                  {0x2C2, 65},
-                                  {0x263, 70},
-                                  {0x210, 75},
-                                  {0x1C9, 80},
-                                  {0x18C, 85},
-                                  {0x157, 90},
-                                  {0x12A, 95},
-                                  {0x104,100},
-                                  {0x0E3,105},
-                                  {0x0C6,110},
-                                  {0x0AE,115},
-                                  {0x098,120},
-                                  {0x086,125},
-                                };
-#endif /*USE_TEMPERATURE_CONTROL */

@@ -18,8 +18,8 @@
  */
 #include <stdint.h> 
 
-//#define USE_EMERGENCY_SIGNAL
-//#define USE_OVERVOLTAGE_SIGNAL
+#define USE_EMERGENCY_SIGNAL
+#define USE_OVERVOLTAGE_SIGNAL
 
 #define BOARD_DEAD_TIME                         400                             /* [us]             - Dead time for FETs */
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       316                             /* [mV/A]           - Sensivity of current measurement circuit */
@@ -27,5 +27,3 @@
 #define BOARD_SENSITIVITY_VOLTAGE_MEASURE       91                              /* [mV/V]           - Sensivity of voltage measurement circuit  */
 #define BOARD_POLL                              1                               /* NONE             - Low  Side FETs high active */
 #define BOARD_POLH                              1                               /* NONE             - High Side FETs high active */
-
-#define BOARD_VDC_CHANNEL_1                     24

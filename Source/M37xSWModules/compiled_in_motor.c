@@ -69,6 +69,8 @@ void SetupInternalMotorParams(void)
   SystemValues[0].StallDetectValue    = SYSTEM_STALL_VALUE;
   SystemValues[0].Overtemperature     = SYSTEM_OVERTEMP_VALUE;
   SystemValues[0].ExternalSpeedCtrl   = SYSTEM_SPEED_CONTROL_MODE;
+  SystemValues[0].SW_Overvoltage      = SYSTEM_SW_OVERVOLTAGE;
+  SystemValues[0].SW_Undervoltage     = SYSTEM_SW_UNDERVOLTAGE;
 
   /* A little bit tricky - undef all defines to be able to load the same
     define again, or ause an other define, but having the same naming */
@@ -112,6 +114,8 @@ void SetupInternalMotorParams(void)
   SystemValues[1].StallDetectValue    = SYSTEM_STALL_VALUE;
   SystemValues[1].Overtemperature     = SYSTEM_OVERTEMP_VALUE;
   SystemValues[1].ExternalSpeedCtrl   = SYSTEM_SPEED_CONTROL_MODE;
+  SystemValues[1].SW_Overvoltage      = SYSTEM_SW_OVERVOLTAGE;
+  SystemValues[1].SW_Undervoltage     = SYSTEM_SW_UNDERVOLTAGE;
 
 #include "motor_undefine.h"
 #endif

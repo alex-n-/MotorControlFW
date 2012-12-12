@@ -33,7 +33,7 @@ static unsigned char system_load;
 #if defined ( __CC_ARM   )
 	#define MAX_IDLE_COUNTER_NO_LOAD 1470000
 #elif (defined (__ICCARM__))
-	#define MAX_IDLE_COUNTER_NO_LOAD 2850000
+	#define MAX_IDLE_COUNTER_NO_LOAD 3062000
 #elif (defined (__GNUC__))
 	#define MAX_IDLE_COUNTER_NO_LOAD 2830000
 #else

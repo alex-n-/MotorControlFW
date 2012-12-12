@@ -56,19 +56,19 @@ static TMRB_InitTypeDef timerTMBRConfigPWM =
   0xffff,
 };
 
-static const GPIO_InitTypeDef portConfigInput =
+static const GPIO_InitTypeDef portConfigInputPD =
 {
   GPIO_INPUT_MODE,
-  GPIO_PULLUP_ENABLE,
+  GPIO_PULLUP_DISABLE,
   GPIO_OPEN_DRAIN_DISABLE,
-  GPIO_PULLDOWN_DISABLE,
+  GPIO_PULLDOWN_ENABLE,
 };
 
 static const GPIO_InitTypeDef portConfigOutput =
 {
   GPIO_OUTPUT_MODE,
   GPIO_PULLUP_ENABLE,
-  GPIO_OPEN_DRAIN_DISABLE,
+  GPIO_OPEN_DRAIN_ENABLE,
   GPIO_PULLDOWN_DISABLE,
 };
 
@@ -140,8 +140,6 @@ void SPEED_CONTROL_ADC_HANDLER(void)
 
 void SPEED_CONTROL_PWM_HANDLER(void)
 {
-    static uint16_t counter;
-
     counter0 = TMRB_GetCaptureValue(SPEED_CONTROL_PWM_TMRB, TMRB_CAPTURE_0);
     counter1 = TMRB_GetCaptureValue(SPEED_CONTROL_PWM_TMRB, TMRB_CAPTURE_1);
     
@@ -150,13 +148,6 @@ void SPEED_CONTROL_PWM_HANDLER(void)
 
     counter2 = TMRB_GetUpCntValue  (SPEED_CONTROL_PWM_TMRB);
 
-    /* This function is called every 125us @8kHz */
-    /* Limit update frequency to 100 ms */
-    if (counter++ < 800)
-      return;
-    
-    counter = 0;
-    
     if ( (total<0) || (low<0) )
       return;
     
@@ -205,8 +196,12 @@ void EXTERNAL_SPEED_CONTROL_Init( void )
 {
   GPIO_Init(SPEED_CONTROL_CWCCW_PORT,                                           /*< Configure Port for CW/CCW selection */
             SPEED_CONTROL_CWCCW_PIN,
-            &portConfigInput);
+            &portConfigInputPD);
 
+  GPIO_Init(SPEED_CONTROL_PWM_PORT,                                             /* Configure Port for PWM speed control */
+            SPEED_CONTROL_PWM_PIN,
+            &portConfigInputPD);
+  
   GPIO_Init(SPEED_CONTROL_FAULT_PORT,                                           /*< Configure Port for fault signaling */
             SPEED_CONTROL_FAULT_PIN,
             &portConfigOutput);
@@ -215,9 +210,6 @@ void EXTERNAL_SPEED_CONTROL_Init( void )
             SPEED_CONTROL_FG_PIN,
             &portConfigOutput);
 
-  GPIO_Init(SPEED_CONTROL_PWM_PORT,                                             /* Configure Port for PWM speed control */
-            SPEED_CONTROL_PWM_PIN,
-            &portConfigInput);
   GPIO_EnableFuncReg(SPEED_CONTROL_PWM_PORT,
                      GPIO_FUNC_REG_1,
                      SPEED_CONTROL_PWM_PIN);

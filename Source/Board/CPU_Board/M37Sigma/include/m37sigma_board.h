@@ -27,14 +27,21 @@
 #define AIN_3PHASE_U                            ADC_AIN9
 #define AIN_3PHASE_V                            ADC_AIN10
 #define AIN_3PHASE_W                            ADC_AIN11 
-#define AIN_3PHASE_VDC                          ADC_AIN12
 
-#define AIN_1PHASE_CURRENT                      ADC_AIN9
-#define AIN_1PHASE_VDC                          ADC_AIN12
+#define AIN_1PHASE_CURRENT                      ADC_AIN8
 
 #define AIN_2PHASE_V                            ADC_AIN10
 #define AIN_2PHASE_W                            ADC_AIN11
-#define AIN_2PHASE_VDC                          ADC_AIN12 
+
+#define AIN_VDC1                                ADC_AIN12 
+
+/* Information for SW Over/Undervoltage Detection */
+#define VDC_MEASURE1_REG                        ADC_REG0
+#define VDC_MEASURE_TIMES                       5
+
+/* Information for Temperature Control */
+#define TEMPERATURE_ADC1                        TSB_ADB
+#define TEMPERATURE_REG1                        ADC_REG3
 
 /* Specification of serial port for serial protocol task */
 #define SERIAL_COMMUNICATION_CHANNEL            UART0                           /* SIO channel used for UART */
@@ -51,6 +58,7 @@
 #define HSDSO_CHANNEL                           UART1                           /* SIO channel used for UART */
 #define HSDSO_PORT                              GPIO_PA                         /* Port of SIO */
 #define HSDSO_TX                                GPIO_BIT_5                      /* Bit for TX */
+#define HSDSO_FUNC_REG                          GPIO_FUNC_REG_1                 /* Function Register for switching to UART mode */
 #define HSDSO_TX_IRQ_HANDLER                    INTTX1_IRQHandler               /* Name of TX IRQ handler */
 #define HSDSO_TX_IRQ                            INTTX1_IRQn                     /* Name of TX IRQ number */
 
@@ -85,17 +93,14 @@
 /* Specification for I2C Bitbanging Driver */
 #define I2C_PORT                                GPIO_PA
 #define I2C_SCL                                 GPIO_BIT_4
-#define I2C_SDA                                 GPIO_BIT_5
+#define I2C_SDA                                 GPIO_BIT_6
 
 /* Signaling of different states */
 #define LED_SIGNAL_CONFIG_READ                  LED_NO_0              /* Led Number for signaling config succesful read from EEProm */
 #define LED_SIGNAL_SERIAL_COMMUNICATION_RUNNING LED_NO_1              /* Led Number for signaling serial communication protocol active */
-#define LED_SIGNAL_CAN_COMMUNICATION_RUNNING    LED_NO_2              /* Led Number for signaling can communication protocol active */
-#define LED_SIGNAL_VE_RUN_BASE                  LED_NO_3              /* Led base Number for VE is in FOC */
+#define LED_SIGNAL_VE_RUN_BASE                  LED_NO_1              /* Led base Number for VE is in FOC */
+#define LED_SIGNAL_xxxxxxxxxxxxxxxxxxxxxxxx     LED_NO_3              /* Led Number for signaling  */
 
-void    BOARD_SetupHW                   (void);
 uint8_t BOARD_Detect_Revision           (void);
-void    BOARD_ConfigureADCforTemperature(uint8_t channel_number);
-int8_t  BOARD_GetTemperature            (uint8_t channel_number);
-uint8_t JTAGProbeDetect                 (void);
+
 #endif /* _BOARD_M37SIGMA_H_ */

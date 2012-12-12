@@ -86,9 +86,10 @@ int config_storage_load_config(void)
   ptr += sizeof(PIControlSettings);
   memcpy(&SystemValues[MOTOR_CHANNEL_FOR_STORAGE], ptr, sizeof(SystemDependandValues));
   ptr += sizeof(SystemDependandValues);
+#ifdef USE_RW_BOARD_SETTINGS
   memcpy(&ChannelValues[MOTOR_CHANNEL_FOR_STORAGE], ptr, sizeof(ChannelDependandValues));
   ptr += sizeof(ChannelDependandValues);
-  
+#endif /* USE_RW_BOARD_SETTINGS */  
   lprintf("LEN %d\n", LEN);
   return 0;
 }
@@ -119,8 +120,10 @@ int config_storage_save_config(void)
   ptr += sizeof(PIControlSettings);
   memcpy(ptr, &SystemValues[MOTOR_CHANNEL_FOR_STORAGE], sizeof(SystemDependandValues));
   ptr += sizeof(SystemDependandValues);
+#ifdef USE_RW_BOARD_SETTINGS
   memcpy(ptr, &ChannelValues[MOTOR_CHANNEL_FOR_STORAGE], sizeof(ChannelDependandValues));
   ptr += sizeof(ChannelDependandValues);
+#endif /* USE_RW_BOARD_SETTINGS */  
   
   /* store crc8 after all data */
   *ptr++ = crc(&g_config_storage[0], CONFIG_STORAGE_LEN-1);

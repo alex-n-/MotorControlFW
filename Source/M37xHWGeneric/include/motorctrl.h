@@ -80,6 +80,8 @@ typedef enum {
   VE_EMERGENCY        = (1<<1),                                                 /*!< Emergency Signal Detected */
   VE_OVERVOLTAGE      = (1<<2),                                                 /*!< Overvoltage Signal Detected */
   VE_NOMOTOR          = (1<<3),
+  VE_SWUNDERVOLTAGE   = (1<<4),
+  VE_SWOVERVOLTAGE    = (1<<5),
 } VE_ERROR;
 
 /*! \brief Parameter Changed Flags.
@@ -87,9 +89,12 @@ typedef enum {
  *  This enumeration is for the different uploaded parameter sets
  */
 typedef enum {
-  VE_CHANGE_MOTOR_PARAMS  = (1<<0),                                             /*!< New motor parameter set */  
-  VE_CHANGE_PI_PARAMS     = (1<<1),                                             /*!< New PI control parameter set */
-  VE_CHANGE_SYSTEM_PARAMS = (1<<2),                                             /*!< New system values parameter set */
+  VE_CHANGE_MOTOR_PARAMS      = (1<<0),                                         /*!< New motor parameter set */  
+  VE_CHANGE_PI_PARAMS         = (1<<1),                                         /*!< New PI control parameter set */
+  VE_CHANGE_SYSTEM_PARAMS_VE  = (1<<2),                                         /*!< New system values parameter set */
+  VE_CHANGE_SYSTEM_PARAMS_PMD = (1<<2),                                         /*!< New system values parameter set */
+  VE_CHANGE_BOARD_PARAMS_VE   = (1<<3),                                         /*!< New system values parameter set */
+  VE_CHANGE_BOARD_PARAMS_PMD  = (1<<3),                                         /*!< New system values parameter set */
 } VE_CHANGED_VALUE;
 
 /*! \brief External Speed control flags.
@@ -174,6 +179,8 @@ typedef __packed struct
   int8_t    Overtemperature;                                                    /*!< [Degree Celsius] - Shutdown if temperature exceeds this temperature setting */
   uint8_t   can_id;                                                             /*!< NONE             - CAN ID of Board */
   uint8_t   ExternalSpeedCtrl;                                                  /*!< NONE             - Enum Type (ESC_NONE = 0, ESC_ADC = 1, ESC_PWM = 2) */
+  uint16_t  SW_Overvoltage;                                                     /*!< [V]              - Voltage for SW Overvolage detection */
+  uint16_t  SW_Undervoltage;                                                    /*!< [V]              - Voltage for SW Undervoltage detection */
 } __attribute__((packed)) SystemDependandValues;
 
 

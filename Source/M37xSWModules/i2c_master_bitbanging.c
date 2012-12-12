@@ -39,7 +39,7 @@ static uint16_t arbitration_lost_count = 0;
 static const GPIO_InitTypeDef portConfigI2C =
 {
   GPIO_IO_MODE_NONE,
-  GPIO_PULLUP_ENABLE,
+  GPIO_PULLUP_DISABLE,
   GPIO_OPEN_DRAIN_ENABLE,
   GPIO_PULLDOWN_DISABLE,
 };
@@ -288,6 +288,10 @@ void I2C_Init(void)
 {
   GPIO_Init(I2C_PORT,
             I2C_SCL,
+            &portConfigI2C);
+
+  GPIO_Init(I2C_PORT,
+            I2C_SDA,
             &portConfigI2C);
 }
 

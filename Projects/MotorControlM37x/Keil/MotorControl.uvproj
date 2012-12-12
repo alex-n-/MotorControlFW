@@ -3115,6 +3115,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -3209,6 +3214,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -6438,6 +6448,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -6532,6 +6547,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -9605,6 +9625,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -9699,6 +9724,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -12757,6 +12787,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -12851,6 +12886,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -16411,6 +16451,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -16505,6 +16550,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -20119,6 +20169,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -20213,6 +20268,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -23779,6 +23839,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -23873,6 +23938,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -27385,6 +27455,11 @@
               <FileType>1</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</FilePath>
             </File>
+            <File>
+              <FileName>temperature_control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\temperature_control.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -27479,6 +27554,11 @@
               <FileName>external_speed_control.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\..\..\Source\M37xSWModules\include\external_speed_control.h</FilePath>
+            </File>
+            <File>
+              <FileName>temperature_control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\..\..\Source\M37xSWModules\include\temperature_control.h</FilePath>
             </File>
           </Files>
         </Group>

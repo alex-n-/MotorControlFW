@@ -49,7 +49,7 @@ void LED_Init(void)
 {
 #ifndef DEBUG
   int i;
-  
+
   GPIO_Init(GPIO_PB, GPIO_BIT_3
                    | GPIO_BIT_4
                    | GPIO_BIT_5

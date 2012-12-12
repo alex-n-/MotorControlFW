@@ -29,11 +29,11 @@
 
 #include "config.h"
 
-#ifdef __TMPM_370__
-#define configTOTAL_HEAP_SIZE           ((size_t) (3000))
+#ifndef BOARD_M37SIGMA
+#define configTOTAL_HEAP_SIZE           ((size_t) (3050))
 #else
 #define configTOTAL_HEAP_SIZE           ((size_t) (2700))
-#endif
+#endif /* !BOARD_M37SIGMA */
 
 #ifdef USE_LOAD_STATISTICS
 #define configUSE_IDLE_HOOK             1
@@ -59,9 +59,10 @@
 #define configUSE_ALTERNATIVE_API       0
 #define configCHECK_FOR_STACK_OVERFLOW  2
 #define configUSE_RECURSIVE_MUTEXES     0
-#define configQUEUE_REGISTRY_SIZE       200
+#define configQUEUE_REGISTRY_SIZE       50
 #define configGENERATE_RUN_TIME_STATS   0
-
+#define configUSE_MALLOC_FAILED_HOOK    1
+   
 /*
  * Set the following definitions to 1 to include the API function, or zero to
  * exclude the API function

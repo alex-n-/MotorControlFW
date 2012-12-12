@@ -16,12 +16,21 @@
  * FOR SUCH DAMAGE IS BASED UPON WARRANTY, CONTRACT, TORT, NEGLIGENCE OR
  * OTHERWISE. (C)Copyright TOSHIBA CORPORATION 2011 All rights reserved
  */
+
+/******************************************************************************/
+/*                                                                            */
+/*                           This is a Glyn Powerboad                         */
+/*        - please get in contact with Glyn for further information           */ 
+/*                                                                            */
+/******************************************************************************/
+
 #include <stdint.h> 
 
 #define HV_JUPERED
 
 #define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
+#define MITSUBISHI_PS219B4_AS
 
 #define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
@@ -41,43 +50,3 @@
 #else
 #define BOARD_SENSITIVITY_VOLTAGE_MEASURE       84                              /* [mV/V]           - Sensivity of voltage measurement circuit  */
 #endif 
-
-#ifdef USE_TEMPERATURE_CONTROL
-/* Temperature Table for Mitsubishi PS219B4-AS */
-
-typedef struct {
-  uint16_t  adc;
-  int8_t    temperature;
-} temp_table;
-
-static const temp_table temperature[]={
-                                    {0x00F,-15},
-                                    {0x029,-10},
-                                    {0x043, -5},
-                                    {0x05E,  0},
-                                    {0x078,  5},
-                                    {0x092, 10},
-                                    {0x0AC, 15},
-                                    {0x0C7, 20},
-                                    {0x0E1, 25},
-                                    {0x0FB, 30},
-                                    {0x115, 35},
-                                    {0x130, 40},
-                                    {0x14A, 45},
-                                    {0x164, 50},
-                                    {0x17E, 55},
-                                    {0x199, 60},
-                                    {0x1B3, 65},
-                                    {0x1CD, 70},
-                                    {0x1E7, 75},
-                                    {0x202, 80},
-                                    {0x21C, 85},
-                                    {0x236, 90},
-                                    {0x250, 95},
-                                    {0x26B,100},
-                                    {0x285,105},
-                                    {0x29F,110},
-                                    {0x2BA,115},
-                                    {0x2D4,120},
-                                  };
-#endif /*USE_TEMPERATURE_CONTROL */

@@ -242,7 +242,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>1</IsCurrentTarget>
+        <IsCurrentTarget>0</IsCurrentTarget>
       </OPTFL>
       <CpuCode>12</CpuCode>
       <Books>
@@ -1260,7 +1260,7 @@
       <OPTFL>
         <tvExp>1</tvExp>
         <tvExpOptDlg>0</tvExpOptDlg>
-        <IsCurrentTarget>0</IsCurrentTarget>
+        <IsCurrentTarget>1</IsCurrentTarget>
       </OPTFL>
       <CpuCode>12</CpuCode>
       <Books>
@@ -1587,7 +1587,7 @@
       <Focus>0</Focus>
       <ColumnNumber>17</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>112</TopLine>
+      <TopLine>113</TopLine>
       <CurrentLine>120</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\Board\CPU_Board\M37Sigma\m37sigma_rgb_led.c</PathWithFileName>
@@ -1727,8 +1727,8 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>102</TopLine>
-      <CurrentLine>110</CurrentLine>
+      <TopLine>1</TopLine>
+      <CurrentLine>1</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_board.c</PathWithFileName>
       <FilenameWithoutPath>hitex_m370_board.c</FilenameWithoutPath>
@@ -1755,7 +1755,7 @@
       <Focus>0</Focus>
       <ColumnNumber>51</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>8</TopLine>
+      <TopLine>17</TopLine>
       <CurrentLine>38</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\Board\CPU_Board\HitexM370\hitex_m370_gain.c</PathWithFileName>
@@ -2070,7 +2070,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>164</TopLine>
+      <TopLine>165</TopLine>
       <CurrentLine>172</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\CMSIS\TX03_CMSIS\startup\arm\startup_TMPM370.s</PathWithFileName>
@@ -2112,7 +2112,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>164</TopLine>
+      <TopLine>165</TopLine>
       <CurrentLine>172</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\CMSIS\TX03_CMSIS\startup\arm\startup_TMPM374.s</PathWithFileName>
@@ -2406,7 +2406,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>164</TopLine>
+      <TopLine>165</TopLine>
       <CurrentLine>172</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\CMSIS\TX03_CMSIS\startup\arm\startup_TMPM372.s</PathWithFileName>
@@ -2546,7 +2546,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>164</TopLine>
+      <TopLine>165</TopLine>
       <CurrentLine>172</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\CMSIS\TX03_CMSIS\startup\arm\startup_TMPM373.s</PathWithFileName>
@@ -3624,7 +3624,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>1121</TopLine>
+      <TopLine>1122</TopLine>
       <CurrentLine>1129</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\M37xHWGeneric\ve.c</PathWithFileName>
@@ -3694,7 +3694,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>482</TopLine>
+      <TopLine>483</TopLine>
       <CurrentLine>490</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\M37xHWGeneric\pmd.c</PathWithFileName>
@@ -3851,7 +3851,7 @@
 
   <Group>
     <GroupName>M37xSWModules</GroupName>
-    <tvExp>0</tvExp>
+    <tvExp>1</tvExp>
     <tvExpOptDlg>0</tvExpOptDlg>
     <cbSel>0</cbSel>
     <File>
@@ -3876,7 +3876,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>25</TopLine>
+      <TopLine>26</TopLine>
       <CurrentLine>33</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\M37xSWModules\action.c</PathWithFileName>
@@ -3946,7 +3946,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>323</TopLine>
+      <TopLine>324</TopLine>
       <CurrentLine>331</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\M37xSWModules\dso.c</PathWithFileName>
@@ -4105,6 +4105,20 @@
       <bDave2>0</bDave2>
       <PathWithFileName>..\..\..\Source\M37xSWModules\i2c_master_bitbanging.c</PathWithFileName>
       <FilenameWithoutPath>i2c_master_bitbanging.c</FilenameWithoutPath>
+    </File>
+    <File>
+      <GroupNumber>14</GroupNumber>
+      <FileNumber>0</FileNumber>
+      <FileType>1</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\Source\M37xSWModules\temperature_control.c</PathWithFileName>
+      <FilenameWithoutPath>temperature_control.c</FilenameWithoutPath>
     </File>
   </Group>
 
@@ -4365,6 +4379,20 @@
       <PathWithFileName>..\..\..\Source\M37xSWModules\include\external_speed_control.h</PathWithFileName>
       <FilenameWithoutPath>external_speed_control.h</FilenameWithoutPath>
     </File>
+    <File>
+      <GroupNumber>15</GroupNumber>
+      <FileNumber>0</FileNumber>
+      <FileType>5</FileType>
+      <tvExp>0</tvExp>
+      <Focus>0</Focus>
+      <ColumnNumber>0</ColumnNumber>
+      <tvExpOptDlg>0</tvExpOptDlg>
+      <TopLine>0</TopLine>
+      <CurrentLine>0</CurrentLine>
+      <bDave2>0</bDave2>
+      <PathWithFileName>..\..\..\Source\M37xSWModules\include\temperature_control.h</PathWithFileName>
+      <FilenameWithoutPath>temperature_control.h</FilenameWithoutPath>
+    </File>
   </Group>
 
   <Group>
@@ -4576,7 +4604,7 @@
       <Focus>0</Focus>
       <ColumnNumber>0</ColumnNumber>
       <tvExpOptDlg>0</tvExpOptDlg>
-      <TopLine>127</TopLine>
+      <TopLine>128</TopLine>
       <CurrentLine>135</CurrentLine>
       <bDave2>0</bDave2>
       <PathWithFileName>..\main.c</PathWithFileName>

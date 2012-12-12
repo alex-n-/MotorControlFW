@@ -45,6 +45,7 @@
 #include "encoder.h"
 #include "config_storage.h"
 #include "motorctrl.h"
+#include "temperature_control.h"
 #include "board.h"
 
 /*! \brief  Start Motor
@@ -207,6 +208,7 @@ int SetChannelDependand   (struct SetChannelDependand_q* q,   struct SetChannelD
 #ifdef USE_RW_BOARD_SETTINGS  
   memset(a, 0, sizeof(*a));
   memcpy(&ChannelValues[q->motor_nr], &q->ChannelSettings, sizeof(q->ChannelSettings));
+  ParameterChange[q->motor_nr] |= VE_CHANGE_BOARD_PARAMS_VE | VE_CHANGE_BOARD_PARAMS_PMD ;
   return 0;
 #else
   return -1;
@@ -227,7 +229,7 @@ int SetSystemDependand  (struct SetSystemDependand_q* q,  struct SetSystemDepend
 
   memcpy(&SystemValues[q->motor_nr], &q->SystemSettings, sizeof(SystemValues[q->motor_nr]));
 
-  ParameterChange[q->motor_nr] |= VE_CHANGE_SYSTEM_PARAMS;
+  ParameterChange[q->motor_nr] |= VE_CHANGE_SYSTEM_PARAMS_VE | VE_CHANGE_SYSTEM_PARAMS_PMD;
   memset(a, 0, sizeof(*a));
 
   return 0;
@@ -595,7 +597,7 @@ int GetTemperature      (struct GetTemperature_q* q,      struct GetTemperature_
   memset(a, 0, sizeof(*a));
 
 #ifdef USE_TEMPERATURE_CONTROL
-  a->temperature = BOARD_GetTemperature(q->motor_nr);
+  a->temperature = TEMPERATURE_GetActualTemperature(q->motor_nr);
   ret = 0;
 #endif
 

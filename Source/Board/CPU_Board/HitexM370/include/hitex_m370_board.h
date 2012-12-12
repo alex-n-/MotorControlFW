@@ -26,10 +26,24 @@
 #define AIN_3PHASE_U                            ADC_AIN14
 #define AIN_3PHASE_V                            ADC_AIN13
 #define AIN_3PHASE_W                            ADC_AIN12 
-#define AIN_3PHASE_VDC                          ADC_AIN8
 
 #define AIN_1PHASE_CURRENT                      ADC_AIN16
-#define AIN_1PHASE_VDC                          ADC_AIN4
+
+#define AIN_VDC0                                ADC_AIN8
+#define AIN_VDC1                                ADC_AIN4
+
+/* Information for SW Over/Undervoltage Detection */
+#define VDC_MEASURE0_REG                        ADC_REG0
+#define VDC_MEASURE1_REG                        ADC_REG0
+#define VDC_MEASURE_TIMES                       5
+
+/* Information for Temperature Control */
+#define TEMPERATURE_ADC0                        TSB_ADB
+#define TEMPERATURE_REG0                        ADC_REG9
+
+#define TEMPERATURE_ADC1                        TSB_ADB
+#define TEMPERATURE_REG1                        ADC_REG10
+
 
 /* SPI Channel used on the Board */
 #define BOARD_SPI_CHANNEL                       SPI0                            /* SIO channel used on board for SPI */
@@ -68,6 +82,7 @@
 #define HSDSO_CHANNEL                           UART3                           /* SIO channel used for UART */
 #define HSDSO_PORT                              GPIO_PF                         /* Port of SIO */
 #define HSDSO_TX                                GPIO_BIT_3                      /* Bit for TX */
+#define HSDSO_FUNC_REG                          GPIO_FUNC_REG_2                 /* Function Register for switching to UART mode */
 #define HSDSO_TX_IRQ_HANDLER                    INTTX3_IRQHandler               /* Name of TX IRQ handler */
 #define HSDSO_TX_IRQ                            INTTX3_IRQn                     /* Name of TX IRQ number */
 
@@ -76,9 +91,6 @@
 #define LED_SIGNAL_SERIAL_COMMUNICATION_RUNNING LED_NO_1                        /* Led Number for signaling serial communication protocol active */
 #define LED_SIGNAL_VE_RUN_BASE                  LED_NO_2                        /* Led base Number for VE is in FOC */
 
-void    BOARD_SetupHW                   (void);
 uint8_t BOARD_Detect_Revision           (void);
-void    BOARD_ConfigureADCforTemperature(uint8_t channel_number);
-int8_t  BOARD_GetTemperature            (uint8_t channel_number);
 
 #endif /* _BOARD_HITEX_M370_H_ */

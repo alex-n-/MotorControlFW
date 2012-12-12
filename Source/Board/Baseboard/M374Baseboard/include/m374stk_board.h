@@ -29,14 +29,21 @@
 #define AIN_3PHASE_U                            ADC_AIN9
 #define AIN_3PHASE_V                            ADC_AIN10
 #define AIN_3PHASE_W                            ADC_AIN11 
-#define AIN_3PHASE_VDC                          ADC_AIN12
 
 #define AIN_1PHASE_CURRENT                      ADC_AIN2
-#define AIN_1PHASE_VDC                          ADC_AIN12
 
 #define AIN_2PHASE_V                            ADC_AIN10
 #define AIN_2PHASE_W                            ADC_AIN11
-#define AIN_2PHASE_VDC                          ADC_AIN12 
+
+#define AIN_VDC1                                ADC_AIN12 
+
+/* Information for SW Over/Undervoltage Detection */
+#define VDC_MEASURE1_REG                        ADC_REG11
+
+/* Information for Temperature Control */
+#define TEMPERATURE_ADC1                        TSB_ADB
+#define TEMPERATURE_REG1                        ADC_REG3
+#define VDC_MEASURE_TIMES                       5
 
 /* Specification of serial port for serial protocol task */
 #define SERIAL_COMMUNICATION_CHANNEL            UART0                           /* SIO channel used for UART */
@@ -61,36 +68,37 @@
 #define HSDSO_CHANNEL                           UART3                           /* SIO channel used for UART */
 #define HSDSO_PORT                              GPIO_PF                         /* Port of SIO */
 #define HSDSO_TX                                GPIO_BIT_3                      /* Bit for TX */
+#define HSDSO_FUNC_REG                          GPIO_FUNC_REG_2                 /* Function Register for switching to UART mode */
 #define HSDSO_TX_IRQ_HANDLER                    INTTX3_IRQHandler               /* Name of TX IRQ handler */
 #define HSDSO_TX_IRQ                            INTTX3_IRQn                     /* Name of TX IRQ number */
 
 /* Specification for external Speed Control */
-#define ESC_CHANNEL                     1
+#define ESC_CHANNEL                             1
 
-#define SPEED_CONTROL_ADC_PORT          GPIO_PJ
-#define SPEED_CONTROL_ADC_PIN           GPIO_BIT_1
-#define SPEED_CONTROL_ADC_CHANNEL       TSB_ADB
-#define SPEED_CONTROL_ADC_REG           ADC_REG4
-#define SPEED_CONTROL_ADC_HANDLER       INTADBTMR_IRQHandler
-#define SPEED_CONTROL_ADC_IRQ           INTADBTMR_IRQn
+#define SPEED_CONTROL_ADC_PORT                  GPIO_PJ
+#define SPEED_CONTROL_ADC_PIN                   GPIO_BIT_1
+#define SPEED_CONTROL_ADC_CHANNEL               TSB_ADB
+#define SPEED_CONTROL_ADC_REG                   ADC_REG4
+#define SPEED_CONTROL_ADC_HANDLER               INTADBTMR_IRQHandler
+#define SPEED_CONTROL_ADC_IRQ                   INTADBTMR_IRQn
 
-#define SPEED_CONTROL_PWM_PORT          GPIO_PA
-#define SPEED_CONTROL_PWM_PIN           GPIO_BIT_7
-#define SPEED_CONTROL_PWM_TMRB          TSB_TB4
+#define SPEED_CONTROL_PWM_PORT                  GPIO_PA
+#define SPEED_CONTROL_PWM_PIN                   GPIO_BIT_7
+#define SPEED_CONTROL_PWM_TMRB                  TSB_TB4
 
-#define SPEED_CONTROL_PWM_HANDLER       INTCAP41_IRQHandler
-#define SPEED_CONTROL_PWM_IRQ           INTCAP41_IRQn
-#define SPEED_CONTROL_PWM_HANDLER2      INTTB41_IRQHandler
-#define SPEED_CONTROL_PWM_IRQ2          INTTB41_IRQn
+#define SPEED_CONTROL_PWM_HANDLER               INTCAP41_IRQHandler
+#define SPEED_CONTROL_PWM_IRQ                   INTCAP41_IRQn
+#define SPEED_CONTROL_PWM_HANDLER2              INTTB41_IRQHandler
+#define SPEED_CONTROL_PWM_IRQ2                  INTTB41_IRQn
 
-#define SPEED_CONTROL_CWCCW_PORT        GPIO_PA
-#define SPEED_CONTROL_CWCCW_PIN         GPIO_BIT_2
+#define SPEED_CONTROL_CWCCW_PORT                GPIO_PA
+#define SPEED_CONTROL_CWCCW_PIN                 GPIO_BIT_2
 
-#define SPEED_CONTROL_FAULT_PORT        GPIO_PA
-#define SPEED_CONTROL_FAULT_PIN         GPIO_BIT_1
+#define SPEED_CONTROL_FAULT_PORT                GPIO_PA
+#define SPEED_CONTROL_FAULT_PIN                 GPIO_BIT_1
 
-#define SPEED_CONTROL_FG_PORT           GPIO_PA
-#define SPEED_CONTROL_FG_PIN            GPIO_BIT_3
+#define SPEED_CONTROL_FG_PORT                   GPIO_PA
+#define SPEED_CONTROL_FG_PIN                    GPIO_BIT_3
 
 /* Signaling of different states */
 #define LED_SIGNAL_CONFIG_READ                  LED_NO_2                        /* Led Number for signaling config succesful read from EEProm */
@@ -98,10 +106,7 @@
 #define LED_SIGNAL_CAN_COMMUNICATION_RUNNING    LED_NO_4                        /* Led Number for signaling can communication protocol active */
 #define LED_SIGNAL_VE_RUN_BASE                  LED_NO_4                        /* Led base Number for VE is in FOC */
 
-void    BOARD_SetupHW                   (void);
 uint8_t BOARD_Detect_Revision           (void);
-void    BOARD_ConfigureADCforTemperature(uint8_t channel_number);
-int8_t  BOARD_GetTemperature            (uint8_t channel_number);
 
 #endif /* _BOARD_M374STK_H_ */
 

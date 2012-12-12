@@ -39,5 +39,6 @@ typedef enum
   CURRENT_SENSOR_INVERTED = 1,                                                  /*!< Channel is using 3-shunt solution */
 } CURRENT_SENSOR_ORIENTATION;
 
+void ADC_OverUndervoltageDetect(uint8_t channel_number);
 void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type);
 #endif

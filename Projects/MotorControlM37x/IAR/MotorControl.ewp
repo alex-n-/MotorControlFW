@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1942,7 +1942,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -7864,7 +7864,13 @@
         <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m37x_ipm_power_ver2.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\powerboard_skeleton.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\pwr_undefine.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\super_mini_dip.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\temperature_measure_table.h</name>
@@ -8357,7 +8363,7 @@
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\adc.c</name>
       <configuration>
-        <name>Debug - HitexM370</name>
+        <name>Debug - M374STK</name>
         <settings>
           <name>ICCARM</name>
           <data>
@@ -8370,9 +8376,10 @@
             </option>
             <option>
               <name>CCDefines</name>
-              <state>BOARD_HITEX_M370</state>
-              <state>__TMPM_370__</state>
+              <state>BOARD_M374STK</state>
+              <state>__TMPM_374__</state>
               <state>DEBUG</state>
+              <state>_IARCMSIS_</state>
             </option>
             <option>
               <name>CCPreprocFile</name>
@@ -8504,7 +8511,7 @@
               <state>$PROJ_DIR$\</state>
               <state>$PROJ_DIR$\..</state>
               <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-              <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\HitexM370\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
               <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
               <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
               <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
@@ -8687,6 +8694,9 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include\storage_backend.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include\temperature_control.h</name>
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include\turn_control.h</name>
@@ -8992,6 +9002,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\storage_flash.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\temperature_control.c</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\turn_control.c</name>

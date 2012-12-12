@@ -413,11 +413,11 @@ static void Display_CAN_Message(can_message message)
   
   if (message.dlc>0)
   {
-    dprintf("MessageID:%x\n",message.MsgID);
-    dprintf("MessageType:%x\n",message.MsgType);
-    dprintf("MessageLength:%x\n",message.dlc);
+    dprintf("MessageID:0x%x\n",message.MsgID);
+    dprintf("MessageType:0x%x\n",message.MsgType);
+    dprintf("MessageLength:0x%x\n",message.dlc);
     for(i=0;i<message.dlc;i++)
-      dprintf("Data: %x\n",message.Data.b[i]&0xff);
+      dprintf("Data:0x%x\n",message.Data.b[i]&0xff);
   }
 }
 
@@ -476,10 +476,11 @@ void CanTask( void *pvParameters )
     message=Message_Composer(STATUS_INFORMATION, STATUS_INFORMATION_SPEED_TORQUE_CURRENT);
     CAN_Send(TRANSMITBUFFER_0,message);
     vTaskDelay(  10 / portTICK_RATE_MS );
+#ifdef USE_TURN_CONTROL    
     message=Message_Composer(STATUS_INFORMATION, STATUS_INFORMATION_TURN_POSITION);
     CAN_Send(TRANSMITBUFFER_0,message);
     vTaskDelay( 100 / portTICK_RATE_MS );
-
+#endif /* USE_TURN_CONTROL */
   }
 }
 

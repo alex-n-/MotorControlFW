@@ -78,6 +78,12 @@ void vApplicationStackOverflowHook(xTaskHandle* pxTask, signed portCHAR* pcTaskN
   for(;;);
 }
 
+void vApplicationMallocFailedHook(void)
+{
+  /* We should never go to this function - check your memory settings */
+  for(;;);
+}
+
 /*! \brief  System Init
   *
   * @param  pvParameters: None
@@ -110,17 +116,21 @@ void system_init( void *pvParameters )
 #ifdef USE_INTERNAL_MOTOR_PARAMS
     SetupInternalMotorParams();                                                 /* Use compiled in Parameter setting on error */
 #endif /* USE_INTERNAL_MOTOR_PARAMS */
+#ifdef USE_RGB_LED
+    RGB_LED_SetValue(0);
+    RGB_LED_StoreValue();  
+#endif /* USE_RGB_LED */ 
   }
   else
   {
 #ifdef USE_LED
     LED_SetState(LED_SIGNAL_CONFIG_READ,LED_ON);                                /* Signal successful read-back */
 #endif /* USE_LED */
-  }
 #ifdef USE_RGB_LED
     RGB_LED_SetValue(LED_RGB_BLUE);
     RGB_LED_StoreValue();  
 #endif /* USE_RGB_LED */ 
+  }
   
 #else
   SetupInternalMotorParams();                                                   /* When no EEProm - use compiled in parameters */

@@ -70,12 +70,10 @@ static const UART_InitTypeDef uartdefault =
 static void configure_hsdso(void)
 {
   GPIO_Init(HSDSO_PORT, HSDSO_TX, &portConfigTX);
-  GPIO_EnableFuncReg(HSDSO_PORT, GPIO_FUNC_REG_2, HSDSO_TX);
-
+  GPIO_EnableFuncReg(HSDSO_PORT, HSDSO_FUNC_REG, HSDSO_TX);
+    
   UART_SWReset(HSDSO_CHANNEL);
-
   UART_Enable(HSDSO_CHANNEL);
-
   UART_Init(HSDSO_CHANNEL, &uartdefault);
 
   /* custom configuration for 5Mbps config using fsys */

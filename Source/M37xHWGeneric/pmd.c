@@ -373,6 +373,35 @@ static void PMD_IOInit(unsigned char channel_number)
   GPIO_EnableFuncReg(USE_Port, GPIO_FUNC_REG_1, GPIO_BIT_7);
 }
 
+/*! \brief  PMD_HandleParameterChangeSystem
+  *
+  * Handle change in System parameters
+  *
+  * @param  channel_number: channel to use
+  * @retval None  
+*/
+static void PMD_HandleParameterChangeSystem(uint8_t channel_number)
+{
+  TSB_PMD_TypeDef*  pPMD  = NULL;
+
+  switch (channel_number)
+  {
+#ifdef __TMPM_370__
+  case 0:
+    pPMD    = TSB_PMD0;
+    break;
+#endif
+  case 1:
+    pPMD    = TSB_PMD1;
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+
+  pPMD->MDPRD = (T0/SystemValues[channel_number].PWMFrequency);
+}
+
 /*! \brief  Normal output for the PMD Signals
   *
   * Normal state while motor is turning
@@ -473,6 +502,12 @@ void PMD_SwitchOff(unsigned char channel_number)
 */
 void INTPMD0_IRQHandler (void)
 {
+  if ((ParameterChange[0] & VE_CHANGE_SYSTEM_PARAMS_PMD) != 0)
+  {
+    PMD_HandleParameterChangeSystem(0);
+    ParameterChange[0] &= ~VE_CHANGE_SYSTEM_PARAMS_PMD;
+  }
+  
 #ifdef USE_DSO
   DSO_Log (PMD_CALLING , TEE_VE0 );
 #endif
@@ -488,6 +523,12 @@ void INTPMD0_IRQHandler (void)
 */
 void INTPMD1_IRQHandler (void)
 {
+  if ((ParameterChange[1] & VE_CHANGE_SYSTEM_PARAMS_PMD) != 0)
+  {
+    PMD_HandleParameterChangeSystem(1);
+    ParameterChange[1] &= ~VE_CHANGE_SYSTEM_PARAMS_PMD;
+  }
+
 #ifdef USE_DSO
   DSO_Log (PMD_CALLING , TEE_VE1 );
 #endif
@@ -496,7 +537,14 @@ void INTPMD1_IRQHandler (void)
 #endif
 }
 
-void PMD_HandleParameterChange(uint8_t channel_number)
+/*! \brief  PMD_HandleParameterChangeBoard
+  *
+  * Handle change in Board parameters
+  *
+  * @param  channel_number: channel to use
+  * @retval None  
+*/
+void PMD_HandleParameterChangeBoard(uint8_t channel_number)
 {
   TSB_PMD_TypeDef*  pPMD  = NULL;
 
@@ -515,9 +563,90 @@ void PMD_HandleParameterChange(uint8_t channel_number)
     break;
   }
 
-  pPMD->MDPRD = (T0/SystemValues[channel_number].PWMFrequency);
-  pPMD->DTR   = ChannelValues[channel_number].DeadTime / 100;
+  pPMD->MDEN &= ~PMD_ENABLE;
   
+  /* PMD Output Setting Register */
+  pPMD->MDPOT    = PMD_PSYNC_ASYNC |
+                   ChannelValues[channel_number].poll<<2 |
+                   ChannelValues[channel_number].polh<<3 ;
+
+  pPMD->DTR      = ChannelValues[channel_number].DeadTime / 100;
+                                                                                /* Set Dead Time Register(100ns@80MHz) */
+  switch(ChannelValues[channel_number].measurement_type)
+  {
+  case CURRENT_SHUNT_1:
+    pPMD->TRGCR  = PMD_TRG_1SHUNT;                                              /* Trigger Control Register */
+    pPMD->TRGMD  = PMD_EMG_TRG_PROT_ENABLE;                                     /* Trigger Output Mode Setting */
+    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* Trigger Output Select Register */
+    break;
+  case CURRENT_SHUNT_3:
+    pPMD->TRGCR  = PMD_TRG_3SHUNT;                                              /* Trigger is PWM peek */
+    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                                       /* TRG0 change to TRGx (x:Sector No) */
+    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* TRG No = Sector = 0r */
+    break;
+  case CURRENT_SENSOR_2:
+    pPMD->TRGCR  = PMD_TRG_2SENSOR;                                             /* Trigger is PWM peek */
+    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                                       /* TRG0 change to TRGx (x:Sector No) */
+    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* TRG No = Sector = 0r */
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+
+  switch (channel_number)
+  {
+#ifdef __TMPM_370__
+  case 0:
+    NVIC_SetPriority(INTPMD0_IRQn, INTERRUPT_PRIORITY_PMD);
+    NVIC_EnableIRQ(INTPMD0_IRQn);   
+
+#ifdef USE_EMERGENCY_SIGNAL
+    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
+    NVIC_EnableIRQ(INTEMG0_IRQn);
+    PMD_EmergencyReset(channel_number);
+#else
+    PMD_EmergencyDisable(channel_number);
+#endif /* USE_EMERGENCY_SIGNAL */
+    
+#ifdef USE_OVERVOLTAGE_SIGNAL    
+    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
+    NVIC_EnableIRQ(INTOVV0_IRQn);
+//    PMD_OvervoltageEnable(TSB_PMD0);  /* Needed for the 2 times LV board ... real HV has to be tested */
+    PMD_OvervoltageReset(channel_number);
+#else
+    PMD_OvervoltageDetectDisable(channel_number);
+#endif /* USE_OVERVOLTAGE_SIGNAL */
+    break;
+#endif  /* __TMPM_370__ */
+    
+  case 1:
+    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_PMD);
+    NVIC_EnableIRQ(INTPMD1_IRQn);
+
+#ifdef USE_EMERGENCY_SIGNAL
+    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
+    NVIC_EnableIRQ(INTEMG1_IRQn);
+    PMD_EmergencyReset(channel_number);
+#else
+    PMD_EmergencyDisable(channel_number);
+#endif /* USE_EMERGENCY_SIGNAL */
+
+#ifdef USE_OVERVOLTAGE_SIGNAL    
+    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
+    NVIC_EnableIRQ(INTOVV1_IRQn);
+    PMD_OvervoltageEnable(channel_number);
+    PMD_OvervoltageReset(channel_number);
+#else    
+    PMD_OvervoltageDetectDisable(channel_number); 
+#endif /* USE_OVERVOLTAGE_SIGNAL */
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+  
+  pPMD->MDEN |= PMD_ENABLE;
 }
 
 /*! \brief  Initialize the PMD Unit
@@ -559,98 +688,13 @@ void PMD_Init (uint8_t channel_number)
                    PMD_CR_PWM_EXPER_0;
 
   /* PMD Control Register */
-  pPMD->MDPRD    = (T0/SystemValues[channel_number].PWMFrequency);
+  PMD_HandleParameterChangeSystem(channel_number);
                                                                                 /* PWM Period Register */
   pPMD->MODESEL  = PMD_MODE_VE;                                                 /* Mode Select Register */
   pPMD->MDOUT    = 0;                                                           /* PMD Output Control Register */
 
-  /* PMD Output Setting Register */
-  pPMD->MDPOT    = PMD_PSYNC_ASYNC |
-                   ChannelValues[channel_number].poll<<2 |
-                   ChannelValues[channel_number].polh<<3 ;
-
-  pPMD->DTR      = ChannelValues[channel_number].DeadTime / 100;
-                                                                                /* Set Dead Time Register(100ns@80MHz) */
-  switch(ChannelValues[channel_number].measurement_type)
-  {
-  case CURRENT_SHUNT_1:
-    pPMD->TRGCR  = PMD_TRG_1SHUNT;                                              /* Trigger Control Register */
-    pPMD->TRGMD  = PMD_EMG_TRG_PROT_ENABLE;                                     /* Trigger Output Mode Setting */
-    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* Trigger Output Select Register */
-    break;
-  case CURRENT_SHUNT_3:
-    pPMD->TRGCR  = PMD_TRG_3SHUNT;                                              /* Trigger is PWM peek */
-    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                                       /* TRG0 change to TRGx (x:Sector No) */
-    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* TRG No = Sector = 0r */
-    break;
-  case CURRENT_SENSOR_2:
-    pPMD->TRGCR  = PMD_TRG_2SENSOR;                                             /* Trigger is PWM peek */
-    pPMD->TRGMD  = PMD_TRG_MODE_VARIABLE;                                       /* TRG0 change to TRGx (x:Sector No) */
-    pPMD->TRGSEL = PMD_TRGSEL_PMDTRG0;                                          /* TRG No = Sector = 0r */
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
-
-  switch (channel_number)
-  {
-#ifdef __TMPM_370__
-  case 0:
-#if defined USE_DSO || defined USE_HSDO
-    NVIC_SetPriority(INTPMD0_IRQn, INTERRUPT_PRIORITY_PMD);
-    NVIC_EnableIRQ(INTPMD0_IRQn);
-#endif    
-
-#ifdef USE_EMERGENCY_SIGNAL
-    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
-    NVIC_EnableIRQ(INTEMG0_IRQn);
-    PMD_EmergencyReset(channel_number);
-#else
-    PMD_EmergencyDisable(channel_number);
-#endif /* USE_EMERGENCY_SIGNAL */
-    
-#ifdef USE_OVERVOLTAGE_SIGNAL    
-    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
-    NVIC_EnableIRQ(INTOVV0_IRQn);
-//    PMD_OvervoltageEnable(TSB_PMD0);  /* Needed for the 2 times LV board ... real HV has to be tested */
-    PMD_OvervoltageReset(channel_number);
-#else
-    PMD_OvervoltageDetectDisable(channel_number);
-#endif /* USE_OVERVOLTAGE_SIGNAL */
-    break;
-#endif  /* __TMPM_370__ */
-    
-  case 1:
-    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_PMD);
-#if defined USE_DSO || defined USE_HSDO
-    NVIC_EnableIRQ(INTPMD1_IRQn);
-#endif    
-
-#ifdef USE_EMERGENCY_SIGNAL
-    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
-    NVIC_EnableIRQ(INTEMG1_IRQn);
-    PMD_EmergencyReset(channel_number);
-#else
-    PMD_EmergencyDisable(channel_number);
-#endif /* USE_EMERGENCY_SIGNAL */
-
-#ifdef USE_OVERVOLTAGE_SIGNAL    
-    NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_ERROR);
-    NVIC_EnableIRQ(INTOVV1_IRQn);
-    PMD_OvervoltageEnable(channel_number);
-    PMD_OvervoltageReset(channel_number);
-#else    
-    PMD_OvervoltageDetectDisable(channel_number); 
-#endif /* USE_OVERVOLTAGE_SIGNAL */
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
-
-  pPMD->MDEN |= PMD_ENABLE;
-
+  PMD_HandleParameterChangeBoard(channel_number);
+  
   vTaskDelay( 10 / portTICK_RATE_MS );
   normal_operation=1;
 

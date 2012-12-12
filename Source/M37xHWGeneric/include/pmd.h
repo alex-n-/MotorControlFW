@@ -219,11 +219,12 @@
 #define PMD_TRGSEL_NO_PMDTRG0     6                                             /*!< Flag PMD trigger output from PMDTRG6 */
 #define PMD_TRGSEL_NO_PMDTRG1     7                                             /*!< Flag PMD trigger output from PMDTRG7 */
 
-void PMD_ShortBrake             (uint8_t channel_number);
-void PMD_NormalOutput           (uint8_t channel_number);
-void PMD_SwitchOff              (uint8_t channel_number);
-void PMD_HandleParameterChange  (uint8_t channel_number);
-void PMD_OvervoltageReset       (uint8_t channel_number);
-void PMD_EmergencyReset         (uint8_t channel_number);
-void PMD_Init                   (uint8_t channel_number);
+void PMD_ShortBrake                (uint8_t channel_number);
+void PMD_NormalOutput              (uint8_t channel_number);
+void PMD_SwitchOff                 (uint8_t channel_number);
+void PMD_HandleParameterChange     (uint8_t channel_number);
+void PMD_OvervoltageReset          (uint8_t channel_number);
+void PMD_EmergencyReset            (uint8_t channel_number);
+void PMD_HandleParameterChangeBoard(uint8_t channel_number);
+void PMD_Init                      (uint8_t channel_number);
 #endif

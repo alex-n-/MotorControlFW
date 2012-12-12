@@ -16,13 +16,23 @@
  * FOR SUCH DAMAGE IS BASED UPON WARRANTY, CONTRACT, TORT, NEGLIGENCE OR
  * OTHERWISE. (C)Copyright TOSHIBA CORPORATION 2011 All rights reserved
  */
+
+/******************************************************************************/
+/*                                                                            */
+/*                           This is a Glyn Powerboad                         */
+/*        - please get in contact with Glyn for further information           */ 
+/*                                                                            */
+/******************************************************************************/
+
 #include <stdint.h> 
 
 #define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
+#define MITSUBISHI_PS219B4_AS
 
-//#define USE_EMERGENCY_SIGNAL
+#define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
+
 #define USE_HV_COMMUNICATION
 #define USE_HV_COMMUNICATION_INVERT
 

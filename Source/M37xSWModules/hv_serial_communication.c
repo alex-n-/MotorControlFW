@@ -23,12 +23,18 @@
 
 #ifdef BOARD_PWR_HEADER_FILE_0
 #include BOARD_PWR_HEADER_FILE_1
+#ifdef USE_HV_COMMUNICATION
+#define HV_COMM 1
+#endif /* USE_HV_COMMUNICATION */
 #include "pwr_undefine.h"
 #endif 
 #include BOARD_PWR_HEADER_FILE_1
+#ifdef USE_HV_COMMUNICATION
+#define HV_COMM 1
+#endif /* USE_HV_COMMUNICATION */
 #include "pwr_undefine.h"
 
-#ifdef USE_HV_COMMUNICATION
+#ifdef HV_COMM
 
 #include "motorctrl.h"
 #include "debug.h"
@@ -47,8 +53,12 @@
 #define SYNC_BYTE1 0x5a
 
 #ifdef USE_TEMPERATURE_CONTROL
-static uint16_t OvertempCmpValue = 0x3ff;
-static uint16_t ClearTempCmpValue= 0x3ff;
+static uint16_t OvertempCmpValue     = 0x3ff;
+static uint16_t ClearTempCmpValue    = 0x3ff;
+static uint16_t OverVoltageCmpValue  = 0x3ff;
+static uint16_t UnderVoltageCmpValue = 0x0;
+static uint8_t  UndervoltageCount    = 0;
+static uint8_t  OvervoltageCount     = 0;
 #endif /* USE_TEMPERATURE_CONTROL */
 
 static TMRB_InitTypeDef timerTMBRConfig =
@@ -147,7 +157,9 @@ void INTTB00_IRQHandler(void)
   
   if (check_transmission==1)
   {
+#ifdef USE_TEMPERATURE_CONTROL
     static uint8_t overtemperature_detected;
+#endif /* USE_TEMPERATURE_CONTROL */
     
     check_transmission=0;
     if ( (buffer[2]==(buffer[4]^0xff))
@@ -169,9 +181,54 @@ void INTTB00_IRQHandler(void)
       overtemperature_detected=0;
       MotorErrorField[1].Error &= ~VE_OVERTEMPERATURE;
     }
-#endif /* USE_TEMPERATURE_CONTROL */    
+#endif /* USE_TEMPERATURE_CONTROL */
+
+#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+    if ( (received_adc_value[0]>OverVoltageCmpValue)
+      && (SystemValues[1].SW_Overvoltage!=0) )
+      OvervoltageCount++;
+    else
+      OvervoltageCount=0;
+
+    if ( (received_adc_value[0]<UnderVoltageCmpValue)
+      && (SystemValues[1].SW_Undervoltage!=0) )
+      UndervoltageCount++;
+    else
+      UndervoltageCount=0;
+
+    if (UndervoltageCount>5)
+    {
+      MotorErrorField[1].Error |= VE_SWUNDERVOLTAGE;
+      VE_ActualStage[1].main = Stage_Emergency;
+    }
+
+    if (OvervoltageCount>5)
+    {
+      MotorErrorField[1].Error |= VE_SWOVERVOLTAGE;
+      VE_ActualStage[1].main = Stage_Emergency;
+    }
+    
+#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */    
+    
   }
 }
+
+#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+/*! \brief Configure Over-/Under-Voltage Control
+  *
+  * Configure HV serial communication for over-/under-voltage control
+  *
+  * @param  overtemp: overtemperature value
+  * @param  cleartemp: overtemperature clearance value
+  *
+  * @retval None
+*/
+void HV_Communication_OverUndervoltageDetect(uint8_t channel_number)
+{
+  OverVoltageCmpValue = 0x3ff * SystemValues[channel_number].SW_Overvoltage  / VE_v_max[channel_number];
+  UnderVoltageCmpValue= 0x3ff * SystemValues[channel_number].SW_Undervoltage / VE_v_max[channel_number];
+}
+#endif /* USE_TEMPERATURE_CONTROL */    
 
 #ifdef USE_TEMPERATURE_CONTROL
 /*! \brief Configure Temperature Control

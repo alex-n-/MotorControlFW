@@ -35,7 +35,7 @@ EncoderValues                 EncoderData[MAX_CHANNEL];                         
 static const GPIO_InitTypeDef portConfigENC =
 {
   GPIO_INPUT_MODE,
-  GPIO_PULLUP_DISABLE,
+  GPIO_PULLUP_ENABLE,
   GPIO_OPEN_DRAIN_DISABLE,
   GPIO_PULLDOWN_DISABLE,
 };

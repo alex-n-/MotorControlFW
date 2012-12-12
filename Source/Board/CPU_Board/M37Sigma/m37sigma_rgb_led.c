@@ -82,9 +82,9 @@ static void send_led(void)
 {
   unsigned char   rgb_data[3];
     
-  rgb_data[0] = (rgb_value >> 8) & 0xf;
+  rgb_data[2] = (rgb_value >> 8) & 0xf;
   rgb_data[1] = (rgb_value >> 4) & 0xf;
-  rgb_data[2] = (rgb_value >> 0) & 0xf;
+  rgb_data[0] = (rgb_value >> 0) & 0xf;
   
   i2c_led_write(SLAVE_ADDR,rgb_data);
   

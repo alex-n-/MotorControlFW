@@ -32,17 +32,31 @@ extern const PMD_TrgProgINTTypeDef TrgProgINT_3ShuntA;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_3ShuntB;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_1ShuntA;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_1ShuntB;
+#ifdef __TMPM_370__
+extern const PMD_TrgProgINTTypeDef TrgProgINT_2SensorA;
+#endif /* __TMPM_370__ */
 extern const PMD_TrgProgINTTypeDef TrgProgINT_2SensorB;
-extern const PMD_TrgTypeDef PMDTrigger0_3Phase;
-extern const PMD_TrgTypeDef PMDTrigger1_3Phase;
-extern const PMD_TrgTypeDef PMDTrigger2_3Phase;
-extern const PMD_TrgTypeDef PMDTrigger3_3Phase;
-extern const PMD_TrgTypeDef PMDTrigger4_3Phase;
-extern const PMD_TrgTypeDef PMDTrigger5_3Phase;
-extern const PMD_TrgTypeDef PMDTrigger0_1Phase;
-extern const PMD_TrgTypeDef PMDTrigger1_1Phase;
-extern const PMD_TrgTypeDef PMDTrigger0_2Phase;
-extern const PMD_TrgTypeDef PMDTrigger1_2Phase;
+extern const PMD_TrgTypeDef PMDTrigger0_3PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger1_3PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger2_3PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger3_3PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger4_3PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger5_3PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger0_1PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger1_1PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger0_2PhaseA;
+extern const PMD_TrgTypeDef PMDTrigger1_2PhaseA;
+
+extern const PMD_TrgTypeDef PMDTrigger0_3PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger1_3PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger2_3PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger3_3PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger4_3PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger5_3PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger0_1PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger1_1PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger0_2PhaseB;
+extern const PMD_TrgTypeDef PMDTrigger1_2PhaseB;
 
 void BOARD_SetupHW(void);
 void BOARD_SetupHW2(void);

@@ -50,6 +50,7 @@
 #include "i2c_master_bitbanging.h"
 #include "external_speed_control.h"
 #include "hv_serial_communication.h"
+#include "temperature_control.h"
 
 uint8_t   BoardRevision = 0;
 uint8_t   INIT_Done     = 0;
@@ -128,7 +129,8 @@ void BOARD_SetupHW(void)
 
 #ifdef USE_RGB_LED
   RGB_LED_Init();
-#endif /* USE_RGB_LED */  
+#endif /* USE_RGB_LED */
+  
 }
 
 void BOARD_SetupHW2(void)
@@ -136,17 +138,22 @@ void BOARD_SetupHW2(void)
 #ifdef __TMPM_370__  
   ADC_Init(0,(CURRENT_MEASUREMENT)ChannelValues[0].measurement_type);           /* enable, configure the ADC */
   PMD_Init(0);
+#ifdef USE_TEMPERATURE_CONTROL
+  TEMPERATURE_ConfigureADCforTemperature(0);
+#endif
 #endif /* __TMPM_370__ */
 
   ADC_Init(1,(CURRENT_MEASUREMENT)ChannelValues[1].measurement_type);           /* enable, configure the ADC */
   PMD_Init(1);
-  
+#ifdef USE_TEMPERATURE_CONTROL
+  TEMPERATURE_ConfigureADCforTemperature(1);
+#endif
+ 
   INIT_Done=1;                                                                  /* Allow other tasks to access the HW */
 
 #ifdef USE_EXTERNAL_SPEED_CONTROL  
   EXTERNAL_SPEED_CONTROL_Init();
 #endif
-  
 }
 
 #ifdef __TMPM_370__
@@ -215,7 +222,7 @@ const PMD_TrgProgINTTypeDef TrgProgINT_2SensorB =
   PMD_INTNONE,
 };
 
-const PMD_TrgTypeDef PMDTrigger0_3Phase =
+const PMD_TrgTypeDef PMDTrigger0_3PhaseA =
 {      
   PMD_PROG0,
   VE_PHASE_V,
@@ -225,10 +232,10 @@ const PMD_TrgTypeDef PMDTrigger0_3Phase =
   AIN_3PHASE_V,
   AIN_3PHASE_W,
   AIN_3PHASE_U,
-  AIN_3PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger1_3Phase =
+const PMD_TrgTypeDef PMDTrigger1_3PhaseA =
 {      
   PMD_PROG1,
   VE_PHASE_W,
@@ -238,10 +245,10 @@ const PMD_TrgTypeDef PMDTrigger1_3Phase =
   AIN_3PHASE_W,
   AIN_3PHASE_U,
   AIN_3PHASE_V,
-  AIN_3PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger2_3Phase =
+const PMD_TrgTypeDef PMDTrigger2_3PhaseA =
 {      
   PMD_PROG2,
   VE_PHASE_W,
@@ -251,10 +258,10 @@ const PMD_TrgTypeDef PMDTrigger2_3Phase =
   AIN_3PHASE_W,
   AIN_3PHASE_U,
   AIN_3PHASE_V,
-  AIN_3PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger3_3Phase =
+const PMD_TrgTypeDef PMDTrigger3_3PhaseA =
 {      
   PMD_PROG3,
   VE_PHASE_U,
@@ -264,10 +271,10 @@ const PMD_TrgTypeDef PMDTrigger3_3Phase =
   AIN_3PHASE_U,
   AIN_3PHASE_V,
   AIN_3PHASE_W,
-  AIN_3PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger4_3Phase =
+const PMD_TrgTypeDef PMDTrigger4_3PhaseA =
 {      
   PMD_PROG4,
   VE_PHASE_U,
@@ -277,10 +284,10 @@ const PMD_TrgTypeDef PMDTrigger4_3Phase =
   AIN_3PHASE_U,
   AIN_3PHASE_V,
   AIN_3PHASE_W,
-  AIN_3PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger5_3Phase =
+const PMD_TrgTypeDef PMDTrigger5_3PhaseA =
 {      
   PMD_PROG5,
   VE_PHASE_V,
@@ -290,10 +297,10 @@ const PMD_TrgTypeDef PMDTrigger5_3Phase =
   AIN_3PHASE_V,
   AIN_3PHASE_W,
   AIN_3PHASE_U,
-  AIN_3PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger0_1Phase =
+const PMD_TrgTypeDef PMDTrigger0_1PhaseA =
 {      
   PMD_PROG0,
   VE_PHASE_NONE,
@@ -306,7 +313,7 @@ const PMD_TrgTypeDef PMDTrigger0_1Phase =
   AIN_1PHASE_CURRENT
 };
 
-const PMD_TrgTypeDef PMDTrigger1_1Phase =
+const PMD_TrgTypeDef PMDTrigger1_1PhaseA =
 {      
   PMD_PROG1,
   VE_PHASE_ENABLE,
@@ -316,11 +323,11 @@ const PMD_TrgTypeDef PMDTrigger1_1Phase =
   AIN_1PHASE_CURRENT,
   AIN_1PHASE_CURRENT,
   AIN_1PHASE_CURRENT,
-  AIN_1PHASE_VDC
+  AIN_VDC1
 };
 
 #ifndef BOARD_HITEX_M370
-const PMD_TrgTypeDef PMDTrigger0_2Phase =
+const PMD_TrgTypeDef PMDTrigger0_2PhaseA =
 {      
   PMD_PROG0,
   VE_PHASE_W,
@@ -330,10 +337,10 @@ const PMD_TrgTypeDef PMDTrigger0_2Phase =
   AIN_2PHASE_W,
   AIN_2PHASE_V,
   AIN_2PHASE_V,
-  AIN_2PHASE_VDC
+  AIN_VDC1
 };
 
-const PMD_TrgTypeDef PMDTrigger1_2Phase =
+const PMD_TrgTypeDef PMDTrigger1_2PhaseA =
 {      
   PMD_PROG1,
   VE_PHASE_V,
@@ -343,6 +350,138 @@ const PMD_TrgTypeDef PMDTrigger1_2Phase =
   AIN_2PHASE_V,
   AIN_2PHASE_W,
   AIN_2PHASE_V,
-  AIN_2PHASE_VDC
+  AIN_VDC1
+};
+#endif /* BOARD_HITEX_M370 */
+
+const PMD_TrgTypeDef PMDTrigger0_3PhaseB =
+{      
+  PMD_PROG0,
+  VE_PHASE_V,
+  VE_PHASE_W,
+  VE_PHASE_U,
+  VE_PHASE_ENABLE,
+  AIN_3PHASE_V,
+  AIN_3PHASE_W,
+  AIN_3PHASE_U,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger1_3PhaseB =
+{      
+  PMD_PROG1,
+  VE_PHASE_W,
+  VE_PHASE_U,
+  VE_PHASE_V,
+  VE_PHASE_ENABLE,
+  AIN_3PHASE_W,
+  AIN_3PHASE_U,
+  AIN_3PHASE_V,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger2_3PhaseB =
+{      
+  PMD_PROG2,
+  VE_PHASE_W,
+  VE_PHASE_U,
+  VE_PHASE_V,
+  VE_PHASE_ENABLE,
+  AIN_3PHASE_W,
+  AIN_3PHASE_U,
+  AIN_3PHASE_V,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger3_3PhaseB =
+{      
+  PMD_PROG3,
+  VE_PHASE_U,
+  VE_PHASE_V,
+  VE_PHASE_W,
+  VE_PHASE_ENABLE,
+  AIN_3PHASE_U,
+  AIN_3PHASE_V,
+  AIN_3PHASE_W,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger4_3PhaseB =
+{      
+  PMD_PROG4,
+  VE_PHASE_U,
+  VE_PHASE_V,
+  VE_PHASE_W,
+  VE_PHASE_ENABLE,
+  AIN_3PHASE_U,
+  AIN_3PHASE_V,
+  AIN_3PHASE_W,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger5_3PhaseB =
+{      
+  PMD_PROG5,
+  VE_PHASE_V,
+  VE_PHASE_W,
+  VE_PHASE_U,
+  VE_PHASE_ENABLE,
+  AIN_3PHASE_V,
+  AIN_3PHASE_W,
+  AIN_3PHASE_U,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger0_1PhaseB =
+{      
+  PMD_PROG0,
+  VE_PHASE_NONE,
+  VE_PHASE_ENABLE,
+  VE_PHASE_NONE,
+  VE_PHASE_NONE,
+  AIN_1PHASE_CURRENT,
+  AIN_1PHASE_CURRENT,
+  AIN_1PHASE_CURRENT,
+  AIN_1PHASE_CURRENT
+};
+
+const PMD_TrgTypeDef PMDTrigger1_1PhaseB =
+{      
+  PMD_PROG1,
+  VE_PHASE_ENABLE,
+  VE_PHASE_NONE,
+  VE_PHASE_NONE,
+  VE_PHASE_ENABLE,
+  AIN_1PHASE_CURRENT,
+  AIN_1PHASE_CURRENT,
+  AIN_1PHASE_CURRENT,
+  AIN_VDC1
+};
+
+#ifndef BOARD_HITEX_M370
+const PMD_TrgTypeDef PMDTrigger0_2PhaseB =
+{      
+  PMD_PROG0,
+  VE_PHASE_W,
+  VE_PHASE_V,
+  VE_PHASE_U,
+  VE_PHASE_ENABLE,
+  AIN_2PHASE_W,
+  AIN_2PHASE_V,
+  AIN_2PHASE_V,
+  AIN_VDC1
+};
+
+const PMD_TrgTypeDef PMDTrigger1_2PhaseB =
+{      
+  PMD_PROG1,
+  VE_PHASE_V,
+  VE_PHASE_W,
+  VE_PHASE_U,
+  VE_PHASE_ENABLE,
+  AIN_2PHASE_V,
+  AIN_2PHASE_W,
+  AIN_2PHASE_V,
+  AIN_VDC1
 };
 #endif /* BOARD_HITEX_M370 */
