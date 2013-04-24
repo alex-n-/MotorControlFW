@@ -35,7 +35,7 @@
 #define USE_STALL_DETECT                                                        /*!< Activate automatic stall detection */
 #define USE_SW_OVER_UNDER_VOLTAGE_DETECTION                                     /*!< Activate software based under- and over-voltage detection */
 //#define USE_MOTOR_DISCONNECT_DETECTION                                          /*!< Activate automatic motor disconnected */
-//#define USE_CAN                                                                 /*!< Enable CAN communication */
+#define USE_CAN                                                                 /*!< Enable CAN communication */
 //#define USE_TURN_CONTROL                                                        /*!< Activate Turn control for position reaching */
 //#define USE_USER_CALLBACKS                                                      /*!< Make use of VE Clallback Hooks */
 
