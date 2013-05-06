@@ -36,16 +36,16 @@
 
 /* Version information */
 #define FW_VERSION_MAJOR             1                                          /*!< Major number of the firmware */
-#define FW_VERSION_MINOR             9                                          /*!< Minor number of the firmware */
+#define FW_VERSION_MINOR             12                                         /*!< Minor number of the firmware */
 
 /* Stack sizes & task priorities (lower priority value is higher importance) */
 #define INIT_TASK_STACK_SIZE        ((unsigned portSHORT)      50)              /*!< Stack Site for Init Process Task */
-#define SYSTEM_LOAD_TASK_STACK_SIZE ((unsigned portSHORT)      40)              /*!< Stack Site for System Load Task */
+#define SYSTEM_LOAD_TASK_STACK_SIZE ((unsigned portSHORT)      35)              /*!< Stack Site for System Load Task */
 #define VE_TASK_STACK_SIZE          ((unsigned portSHORT)      55)              /*!< Stack Site for Vector Engine Task */
 #define UI_TASK_STACK_SIZE          ((unsigned portSHORT)      80)              /*!< Stack Site for User Interface Task */
 #define PROTOCOL_TASK_STACK_SIZE    ((unsigned portSHORT)     130)              /*!< Stack Site for Serial Protocol Task */
 #define CAN_TASK_STACK_SIZE         ((unsigned portSHORT)     100)              /*!< Stack Site for CAN Communication Task */
-#define STALL_TASK_STACK_SIZE       ((unsigned portSHORT)      65)              /*!< Stack Site for Stall Detection Task */
+#define STALL_TASK_STACK_SIZE       ((unsigned portSHORT)      70)              /*!< Stack Site for Stall Detection Task */
 #define TURN_TASK_STACK_SIZE        ((unsigned portSHORT)      60)              /*!< Stack Site for Turn Task */
 
 #define INIT_TASK_PRIORITY          ((unsigned portBASE_TYPE )  4)              /*!< Task Priority for Init Process */
@@ -149,6 +149,7 @@
 #define BOARD_GAIN_HEADER_FILE    "m37sigma_gain.h"
 #define BOARD_RGB_LED_HEADER_FILE "m37sigma_rgb_led.h"
 
+#undef USE_LED
 #ifndef DEBUG
 #undef USE_INTERNAL_MOTOR_PARAMS
 #endif /* DEBUG */

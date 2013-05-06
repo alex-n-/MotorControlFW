@@ -160,7 +160,7 @@ extern "C" {
     void UART_Disable(TSB_SC_TypeDef * UARTx);
     WorkState UART_GetBufState(TSB_SC_TypeDef * UARTx, uint8_t Direction);
     void UART_SWReset(TSB_SC_TypeDef * UARTx);
-    void UART_Init(TSB_SC_TypeDef * UARTx, UART_InitTypeDef * InitStruct);
+    void UART_Init(TSB_SC_TypeDef * UARTx, const UART_InitTypeDef * InitStruct);
     uint32_t UART_GetRxData(TSB_SC_TypeDef * UARTx);
     void UART_SetTxData(TSB_SC_TypeDef * UARTx, uint32_t Data);
     void UART_DefaultConfig(TSB_SC_TypeDef * UARTx);

@@ -18,11 +18,14 @@
  */
 
 #ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_0 */
+
+#ifdef BOARD_PWR_HEADER_FILE_1
 #include BOARD_PWR_HEADER_FILE_1
 #include "pwr_undefine.h"
-#endif 
-#include BOARD_PWR_HEADER_FILE_1
-#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_1 */
 
 #ifdef USE_TEMPERATURE_CONTROL
 typedef struct {

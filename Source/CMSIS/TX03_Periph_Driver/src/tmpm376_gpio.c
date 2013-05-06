@@ -503,7 +503,7 @@ void GPIO_WriteDataBit(GPIO_Port GPIO_x, uint8_t Bit_x, uint8_t BitValue)
   * @param  GPIO_InitStruct: The structure containing basic GPIO configuration.
   * @retval None
   */
-void GPIO_Init(GPIO_Port GPIO_x, uint8_t Bit_x, GPIO_InitTypeDef * GPIO_InitStruct)
+void GPIO_Init(GPIO_Port GPIO_x, uint8_t Bit_x, const GPIO_InitTypeDef * GPIO_InitStruct)
 {
     uint8_t tmp = 0U;
 

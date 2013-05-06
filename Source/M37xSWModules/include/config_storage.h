@@ -25,9 +25,9 @@
 /* The amount of memory needed to put all configurations settings in on
 chunck of memory. +1 for crc8 at the end. */
 #ifdef USE_RW_BOARD_SETTINGS
-#define CONFIG_STORAGE_LEN (sizeof(MotorParameters) + sizeof(PIControlSettings) + sizeof(SystemDependandValues) + sizeof(ChannelDependandValues) + 1)
+#define CONFIG_STORAGE_LEN (sizeof(FWVersion) + sizeof(MotorParameters) + sizeof(PIControlSettings) + sizeof(SystemDependandValues) + sizeof(ChannelDependandValues) + 1)
 #else
-#define CONFIG_STORAGE_LEN (sizeof(MotorParameters) + sizeof(PIControlSettings) + sizeof(SystemDependandValues) + 1)
+#define CONFIG_STORAGE_LEN (sizeof(FWVersion) + sizeof(MotorParameters) + sizeof(PIControlSettings) + sizeof(SystemDependandValues) + 1)
 #endif /* USE_RW_BOARD_SETTINGS */
 
 #ifdef USE_CONFIG_STORAGE_EEPROM

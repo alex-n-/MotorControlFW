@@ -221,14 +221,14 @@ extern "C" {
                                   ((param) <= TRG_DISABLE(ADC_AIN7)))
 
 #endif
-
-
     typedef enum {
         VE_PHASE_NONE = 0U,
-        VE_PHASE_U = 1U,
-        VE_PHASE_V = 2U,
-        VE_PHASE_W = 3U
+        VE_PHASE_ENABLE = 4U,
+        VE_PHASE_U = 5U,
+        VE_PHASE_V = 6U,
+        VE_PHASE_W = 7U
     } VE_PHASE;
+
 #define IS_VE_PHASE(param)      ((param) <= VE_PHASE_W)
 
 /**
@@ -282,8 +282,8 @@ extern "C" {
     ADC_Result ADC_GetConvertResult(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx);
     void ADC_SelectPMDTrgProgNum(TSB_AD_TypeDef * ADx, PMD_TRG_PROG_SELx SELx,
                                  uint8_t MacroProgNum);
-    void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, PMD_TrgProgINTTypeDef * TrgProgINT);
-    void ADC_SetPMDTrg(TSB_AD_TypeDef * ADx, PMD_TrgTypeDef * PMDTrg);
+    void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, const PMD_TrgProgINTTypeDef * TrgProgINT);
+    void ADC_SetPMDTrg(TSB_AD_TypeDef * ADx, const PMD_TrgTypeDef * PMDTrg);
     void ADC_SetTimerTrg(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx, uint8_t MacroAINx);
     void ADC_SetSWTrg(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx, uint8_t MacroAINx);
     void ADC_SetConstantTrg(TSB_AD_TypeDef * ADx, ADC_REGx ResultREGx, uint8_t MacroAINx);

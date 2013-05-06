@@ -12,7 +12,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -89,7 +89,7 @@
         </option>
         <option>
           <name>OCLastSavedByProductVersion</name>
-          <state>6.40.2.53991</state>
+          <state>6.40.1.53794</state>
         </option>
         <option>
           <name>OCDownloadAttachToProgram</name>
@@ -173,14 +173,6 @@
         </option>
         <option>
           <name>OCDeviceConfigMacroFile</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
           <state>1</state>
         </option>
       </data>
@@ -325,7 +317,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -359,7 +351,7 @@
         </option>
         <option>
           <name>IjetPowerRadio</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IjetDoLogfile</name>
@@ -499,33 +491,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -714,10 +686,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -1145,10 +1113,6 @@
       <plugin>
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>
@@ -1162,7 +1126,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1325,14 +1289,6 @@
           <name>OCDeviceConfigMacroFile</name>
           <state>1</state>
         </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -1475,7 +1431,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1649,33 +1605,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1864,10 +1800,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -2295,10 +2227,6 @@
       <plugin>
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>
@@ -2312,7 +2240,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2389,7 +2317,7 @@
         </option>
         <option>
           <name>OCLastSavedByProductVersion</name>
-          <state>6.50.2.4581</state>
+          <state>6.40.1.53794</state>
         </option>
         <option>
           <name>OCDownloadAttachToProgram</name>
@@ -2473,14 +2401,6 @@
         </option>
         <option>
           <name>OCDeviceConfigMacroFile</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
           <state>1</state>
         </option>
       </data>
@@ -2625,7 +2545,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2659,7 +2579,7 @@
         </option>
         <option>
           <name>IjetPowerRadio</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IjetDoLogfile</name>
@@ -2799,33 +2719,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -3014,10 +2914,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -3285,7 +3181,7 @@
         </option>
         <option>
           <name>CCSTLinkInterfaceRadio</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>CCSTLinkInterfaceCmdLine</name>
@@ -3445,10 +3341,6 @@
       <plugin>
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>
@@ -3462,7 +3354,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -3625,14 +3517,6 @@
           <name>OCDeviceConfigMacroFile</name>
           <state>1</state>
         </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -3775,7 +3659,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -3949,33 +3833,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -4164,10 +4028,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -4595,10 +4455,6 @@
       <plugin>
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>
@@ -4612,7 +4468,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4775,14 +4631,6 @@
           <name>OCDeviceConfigMacroFile</name>
           <state>1</state>
         </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -4925,7 +4773,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4959,7 +4807,7 @@
         </option>
         <option>
           <name>IjetPowerRadio</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IjetDoLogfile</name>
@@ -5099,33 +4947,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -5314,10 +5142,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -5745,10 +5569,6 @@
       <plugin>
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>
@@ -5762,7 +5582,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -5925,14 +5745,6 @@
           <name>OCDeviceConfigMacroFile</name>
           <state>1</state>
         </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -6075,7 +5887,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -6249,33 +6061,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -6464,10 +6256,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -6896,10 +6684,6 @@
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
-      </plugin>
     </debuggerPlugins>
   </configuration>
   <configuration>
@@ -6912,7 +6696,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -7075,14 +6859,6 @@
           <name>OCDeviceConfigMacroFile</name>
           <state>1</state>
         </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -7225,7 +7001,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -7259,7 +7035,7 @@
         </option>
         <option>
           <name>IjetPowerRadio</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>IjetDoLogfile</name>
@@ -7399,33 +7175,13 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -7615,10 +7371,6 @@
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
         </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -8046,10 +7798,6 @@
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
       </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
-      </plugin>
     </debuggerPlugins>
   </configuration>
   <configuration>
@@ -8062,7 +7810,7 @@
       <name>C-SPY</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>25</version>
+        <version>23</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -8225,14 +7973,6 @@
           <name>OCDeviceConfigMacroFile</name>
           <state>1</state>
         </option>
-        <option>
-          <name>OCDebuggerExtraOption</name>
-          <state>1</state>
-        </option>
-        <option>
-          <name>OCAllMTBOptions</name>
-          <state>1</state>
-        </option>
       </data>
     </settings>
     <settings>
@@ -8375,7 +8115,7 @@
       <name>IJET_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>2</version>
+        <version>1</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -8549,38 +8289,18 @@
           <name>OCProbeConfig</name>
           <state></state>
         </option>
-        <option>
-          <name>IjetProbeConfigRadio</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUEnable</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetMultiCPUNumber</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>IjetSelectedCPUBehaviour</name>
-          <state>0</state>
-        </option>
-        <option>
-          <name>ICpuName</name>
-          <state></state>
-        </option>
       </data>
     </settings>
     <settings>
       <name>JLINK_ID</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>15</version>
+        <version>14</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
           <name>JLinkSpeed</name>
-          <state>10</state>
+          <state>100</state>
         </option>
         <option>
           <name>CCJLinkDoLogfile</name>
@@ -8628,7 +8348,7 @@
         </option>
         <option>
           <name>CCJLinkSpeedRadioV2</name>
-          <state>0</state>
+          <state>1</state>
         </option>
         <option>
           <name>CCUSBDevice</name>
@@ -8686,7 +8406,7 @@
         <option>
           <name>CCJLinkResetList</name>
           <version>6</version>
-          <state>10</state>
+          <state>12</state>
         </option>
         <option>
           <name>CCJLinkInterfaceCmdLine</name>
@@ -8764,10 +8484,6 @@
         <option>
           <name>OCJLinkTraceSourceDummy</name>
           <state>0</state>
-        </option>
-        <option>
-          <name>OCJLinkDeviceName</name>
-          <state>1</state>
         </option>
       </data>
     </settings>
@@ -9195,10 +8911,6 @@
       <plugin>
         <file>$EW_DIR$\common\plugins\SymList\SymList.ENU.ewplugin</file>
         <loadFlag>1</loadFlag>
-      </plugin>
-      <plugin>
-        <file>$EW_DIR$\common\plugins\uCProbe\uCProbePlugin.ENU.ewplugin</file>
-        <loadFlag>0</loadFlag>
       </plugin>
     </debuggerPlugins>
   </configuration>

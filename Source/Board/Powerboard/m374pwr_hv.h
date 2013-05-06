@@ -24,10 +24,13 @@
 
 #define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
-//#define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
+#define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
 
 /* BOARD PARAMETER */
-#define BOARD_DEAD_TIME                         500                             /* [us]             - Dead time for IGBTs */
+#define BOARD_NAME_PWR                          "M374PWR HV"
+
+#define BOARD_DEAD_TIME                         500                             /* [ns]             - Dead time for IGBTs */
+#define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
 #ifdef USE_CURRENT_SENSORS
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       185                             /* [mV/A]           - Sensivity of current measurement circuit */

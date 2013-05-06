@@ -36,6 +36,7 @@
 #define lprintf(...)
 #endif
 
+extern FWVersion              FirmwareVersion;
 extern MotorParameters        MotorParameterValues[MAX_CHANNEL];
 extern PIControlSettings      PIControl[MAX_CHANNEL];
 extern SystemDependandValues  SystemValues[MAX_CHANNEL];
@@ -56,9 +57,10 @@ uint8_t g_config_storage[CONFIG_STORAGE_PAGE_SIZE];
 */
 int config_storage_load_config(void)
 {
-  uint8_t *ptr;
-  int ret;
-  uint8_t crc8;
+  uint8_t   *ptr;
+  int       ret;
+  uint8_t   crc8;
+  FWVersion storedFWVersion;
 
   if (CONFIG_STORAGE_LEN > CONFIG_STORAGE_MAX_ITEM_SIZE) {
     dprintf("CONFIG_STORAGE_LEN %ud > CONFIG_STORAGE_MAX_ITEM_SIZE %ud\n", CONFIG_STORAGE_LEN, CONFIG_STORAGE_MAX_ITEM_SIZE);
@@ -80,6 +82,17 @@ int config_storage_load_config(void)
   }
 
   ptr = &g_config_storage[0];
+  
+  memcpy(&storedFWVersion, ptr, sizeof(FWVersion));    
+  ptr += sizeof(FWVersion);
+  
+  if ( (storedFWVersion.fw_version[0] != FirmwareVersion.fw_version[0])
+     ||(storedFWVersion.fw_version[1] != FirmwareVersion.fw_version[1]))
+  {
+    dprintf("Stored FW Version Data missmatch\n");
+    return -1;
+  }
+    
   memcpy(&MotorParameterValues[MOTOR_CHANNEL_FOR_STORAGE], ptr, sizeof(MotorParameters));
   ptr += sizeof(MotorParameters);
   memcpy(&PIControl[MOTOR_CHANNEL_FOR_STORAGE], ptr, sizeof(PIControlSettings));
@@ -114,6 +127,8 @@ int config_storage_save_config(void)
   memset(&g_config_storage[0], 0, sizeof(g_config_storage));
   ptr = &g_config_storage[0];
 
+  memcpy(ptr, &FirmwareVersion, sizeof(FWVersion));    
+  ptr += sizeof(FWVersion);
   memcpy(ptr, &MotorParameterValues[MOTOR_CHANNEL_FOR_STORAGE], sizeof(MotorParameters));
   ptr += sizeof(MotorParameters);
   memcpy(ptr, &PIControl[MOTOR_CHANNEL_FOR_STORAGE], sizeof(PIControlSettings));

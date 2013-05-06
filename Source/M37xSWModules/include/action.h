@@ -468,6 +468,20 @@ DECLARE(GetErrorState_a,
   int8_t Error;                                                                 /*!< Error status of motor */
 );
 
+/*! \brief Get DC-Link Voltage - question
+ *
+ */
+DECLARE(GetDCLinkVoltage_q,
+  uint8_t  motor_nr;                                                            /*!< Motor number */
+);
+
+/*! \brief Get DC-Link Voltage - answer
+ *
+ */
+DECLARE(GetDCLinkVoltage_a,
+  int16_t Voltage;                                                              /*!< Error status of motor */
+);
+
 int StartMotor          (struct StartMotor_q* q,          struct StartMotor_a* a);
 int StopMotor           (struct StopMotor_q* q,           struct StopMotor_a* a);
 int SetMotorParameter   (struct SetMotorParameter_q* q,   struct SetMotorParameter_a* a);
@@ -494,6 +508,7 @@ int DoTurn              (struct DoTurn_q* q,              struct DoTurn_a* a);
 int GetTurnNumber       (struct GetTurnNumber_q* q,       struct GetTurnNumber_a* a);
 int GetTemperature      (struct GetTemperature_q* q,      struct GetTemperature_a* a);
 int GetErrorState       (struct GetErrorState_q* q,       struct GetErrorState_a* a);
+int GetDCLinkVoltage    (struct GetDCLinkVoltage_q* q,    struct GetDCLinkVoltage_a* a);
 
 /* this hack is used to calculate the maximum size of any of the structures.
 if you add a new function with new structures, don't forget to change this 
@@ -528,6 +543,7 @@ __packed union max_ ## x \
   struct GetTemperature_ ## x             i24; \
   struct GetErrorState_ ## x              i25; \
   struct SetChannelDependand_ ## x        i26; \
+  struct GetDCLinkVoltage_ ## x           i27; \
 } __attribute__((packed))
 
 #define MAX_SIZE_Q  sizeof(FIND_MAX_STRUCT(q))

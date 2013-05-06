@@ -23,6 +23,16 @@
 #include TMPM_GPIO_HEADER_FILE
 #include BOARD_BOARD_HEADER_FILE
 
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_0 */
+
+#ifdef BOARD_PWR_HEADER_FILE_1
+#include BOARD_PWR_HEADER_FILE_1
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_0 */
+
 #include "FreeRTOS.h"
 #include "task.h"
 
@@ -51,11 +61,11 @@ static void PMD_OvervoltageDetectDisable(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -95,11 +105,11 @@ void PMD_OvervoltageReset(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -114,6 +124,7 @@ void PMD_OvervoltageReset(uint8_t channel_number)
     pPMDx->MDOUT  = 0;
     pPMDx->EMGCR |= PMD_EMGCR_PROT_REL;
     pPMDx->EMGCR |= PMD_EMGCR_PROT_REL;
+    pPMDx->EMGCR |= 0xf << 8;                                                   /* Filter short pulses */
     
     pPMDx->EMGREL = (uint8_t) (PMD_EMG_KEY >> 8);
     pPMDx->EMGREL = (uint8_t) PMD_EMG_KEY;
@@ -137,11 +148,11 @@ static void PMD_OvervoltageEnable(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -199,11 +210,11 @@ static void PMD_EmergencyDisable(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* #if defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -242,11 +253,11 @@ void PMD_EmergencyReset(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -330,11 +341,11 @@ static void PMD_IOInit(unsigned char channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     USE_Port = GPIO_PC;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     USE_Port = GPIO_PG;
     break;
@@ -386,11 +397,11 @@ static void PMD_HandleParameterChangeSystem(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMD    = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMD    = TSB_PMD1;
     break;
@@ -415,11 +426,11 @@ void PMD_NormalOutput(unsigned char channel_number)
   
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -449,11 +460,11 @@ void PMD_ShortBrake(unsigned char channel_number)
   
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -478,11 +489,11 @@ void PMD_SwitchOff(unsigned char channel_number)
   
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMDx   = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMDx   = TSB_PMD1;
     break;
@@ -550,11 +561,11 @@ void PMD_HandleParameterChangeBoard(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMD    = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMD    = TSB_PMD1;
     break;
@@ -596,7 +607,7 @@ void PMD_HandleParameterChangeBoard(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     NVIC_SetPriority(INTPMD0_IRQn, INTERRUPT_PRIORITY_PMD);
     NVIC_EnableIRQ(INTPMD0_IRQn);   
@@ -618,7 +629,7 @@ void PMD_HandleParameterChangeBoard(uint8_t channel_number)
     PMD_OvervoltageDetectDisable(channel_number);
 #endif /* USE_OVERVOLTAGE_SIGNAL */
     break;
-#endif  /* __TMPM_370__ */
+#endif  /* defined __TMPM_370__ || defined __TMPM_376__ */
     
   case 1:
     NVIC_SetPriority(INTPMD1_IRQn, INTERRUPT_PRIORITY_PMD);
@@ -663,11 +674,11 @@ void PMD_Init (uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pPMD    = TSB_PMD0;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pPMD    = TSB_PMD1;
     break;
@@ -699,5 +710,3 @@ void PMD_Init (uint8_t channel_number)
   normal_operation=1;
 
 }
-
-

@@ -104,7 +104,7 @@ void SPI_SWReset(TSB_SC_TypeDef* SPIx)
 }
 
 
-/*! \brief  Get error state of the SPI channel
+/*! \brief  Get data from SPI channel
   *
   * @param  SPIx:       channel to use
   * @retval Received Data
@@ -115,7 +115,7 @@ uint8_t SPI_GetRxData(TSB_SC_TypeDef* SPIx)
   return (SPIx->BUF & 0xFFU);                                                   /* Return received data */
 }
 
-/*! \brief  Get error state of the SPI channel
+/*! \brief  Send Data on SPI channel
   *
   * @param  SPIx:       channel to use
   * @param  Data:       data to send
@@ -123,7 +123,10 @@ uint8_t SPI_GetRxData(TSB_SC_TypeDef* SPIx)
 */
 void SPI_SetTxData(TSB_SC_TypeDef* SPIx, uint32_t Data)
 {
+  volatile unsigned char wait;
+  
   assert_param(IS_SPI_PERIPH(SPIx));                                            /* Check the parameters */
+  for(wait=0;wait<2;wait++);
   SPIx->BUF = Data & 0xFFU;
 }
 

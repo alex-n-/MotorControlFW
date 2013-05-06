@@ -23,6 +23,22 @@
 #include BOARD_LED_HEADER_FILE
 #include BOARD_GAIN_HEADER_FILE
 
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+#ifdef USE_HV_COMMUNICATION
+#define HV_COMM 1
+#endif /* USE_HV_COMMUNICATION */
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_0 */
+
+#ifdef BOARD_PWR_HEADER_FILE_1
+#include BOARD_PWR_HEADER_FILE_1
+#ifdef USE_HV_COMMUNICATION
+#define HV_COMM 1
+#endif /* USE_HV_COMMUNICATION */
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_1 */
+
 #ifndef BOARD_M37SIGMA
 #include BOARD_SPI_HEADER_FILE
 #endif /* BOARD_M37SIGMA */
@@ -55,6 +71,7 @@
 uint8_t   BoardRevision = 0;
 uint8_t   INIT_Done     = 0;
 uint32_t  T0            = 0;
+FWVersion FirmwareVersion;
 
 /*! \brief  Setup the Board Hardware
   *
@@ -67,6 +84,9 @@ void BOARD_SetupHW(void)
   const uint32_t a = 2U;
   SystemCoreClockUpdate();
   T0 = SystemCoreClock / (a << ((TSB_CG->SYSCR >> 8) & 7U));
+
+  FirmwareVersion.fw_version[0]=FW_VERSION_MAJOR;
+  FirmwareVersion.fw_version[1]=FW_VERSION_MINOR;
   
 #ifndef BOARD_M37SIGMA
   SPI_DeviceInit(SPI_10_MHZ);                                                   /* Init SPI Channel */
@@ -75,7 +95,7 @@ void BOARD_SetupHW(void)
   
   BoardRevision = BOARD_Detect_Revision();
 
-#ifdef MOTOR_CHANNEL_0                                                          /* Set up Board dependant values */
+#ifdef BOARD_PWR_HEADER_FILE_0                                                          /* Set up Board dependant values */
 #include BOARD_PWR_HEADER_FILE_0
   ChannelValues[0].DeadTime                    = BOARD_DEAD_TIME;
   ChannelValues[0].gain_current_measure        = BOARD_GAIN_CURRENT_MEASURE;
@@ -89,9 +109,9 @@ void BOARD_SetupHW(void)
   ChannelValues[0].poll                        = BOARD_POLL;
   ChannelValues[0].polh                        = BOARD_POLH;
 #include "pwr_undefine.h"
-#endif /* MOTOR_CHANNEL_0 */ 
+#endif /* BOARD_PWR_HEADER_FILE_0 */ 
 
-#ifdef MOTOR_CHANNEL_1
+#ifdef BOARD_PWR_HEADER_FILE_1
 #include BOARD_PWR_HEADER_FILE_1
   ChannelValues[1].DeadTime                    = BOARD_DEAD_TIME;
   ChannelValues[1].gain_current_measure        = BOARD_GAIN_CURRENT_MEASURE;
@@ -105,7 +125,7 @@ void BOARD_SetupHW(void)
   ChannelValues[1].poll                        = BOARD_POLL;
   ChannelValues[1].polh                        = BOARD_POLH;
 #include "pwr_undefine.h"
-#endif /* MOTOR_CHANNEL_1 */
+#endif /* BOARD_PWR_HEADER_FILE_1 */
   
 #ifdef USE_LED
   LED_Init();                                                                   /* Init LED Ports */
@@ -135,20 +155,39 @@ void BOARD_SetupHW(void)
 
 void BOARD_SetupHW2(void)
 {
-#ifdef __TMPM_370__  
+#if defined __TMPM_370__  || defined __TMPM_376__
   ADC_Init(0,(CURRENT_MEASUREMENT)ChannelValues[0].measurement_type);           /* enable, configure the ADC */
   PMD_Init(0);
 #ifdef USE_TEMPERATURE_CONTROL
   TEMPERATURE_ConfigureADCforTemperature(0);
 #endif
-#endif /* __TMPM_370__ */
+#ifndef BOARD_VDC_CHANNEL_0 
+#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+#ifdef HV_COMM
+  HV_Communication_OverUndervoltageDetect(0);
+#else
+  ADC_OverUndervoltageDetect(0);
+#endif /* USE_HV_COMMUNICATION */
+#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */
+#endif /* !defined BOARD_VDC_CHANNEL_0 */
+  
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
 
   ADC_Init(1,(CURRENT_MEASUREMENT)ChannelValues[1].measurement_type);           /* enable, configure the ADC */
   PMD_Init(1);
 #ifdef USE_TEMPERATURE_CONTROL
   TEMPERATURE_ConfigureADCforTemperature(1);
 #endif
- 
+#ifndef BOARD_VDC_CHANNEL_1
+#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+#ifdef HV_COMM
+  HV_Communication_OverUndervoltageDetect(1);
+#else
+  ADC_OverUndervoltageDetect(1);
+#endif /* USE_HV_COMMUNICATION */
+#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */
+#endif /* !defined BOARD_VDC_CHANNEL_1 */
+  
   INIT_Done=1;                                                                  /* Allow other tasks to access the HW */
 
 #ifdef USE_EXTERNAL_SPEED_CONTROL  
@@ -156,7 +195,7 @@ void BOARD_SetupHW2(void)
 #endif
 }
 
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
 const PMD_TrgProgINTTypeDef  TrgProgINT_3ShuntA =
 {
   PMD_INTADPDA,
@@ -166,7 +205,7 @@ const PMD_TrgProgINTTypeDef  TrgProgINT_3ShuntA =
   PMD_INTADPDA,
   PMD_INTADPDA,
 };
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
 
 const PMD_TrgProgINTTypeDef  TrgProgINT_3ShuntB =
 {
@@ -178,7 +217,7 @@ const PMD_TrgProgINTTypeDef  TrgProgINT_3ShuntB =
   PMD_INTADPDB,
 }; 
 
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
 const PMD_TrgProgINTTypeDef  TrgProgINT_1ShuntA =
 {
   PMD_INTNONE,
@@ -188,7 +227,7 @@ const PMD_TrgProgINTTypeDef  TrgProgINT_1ShuntA =
   PMD_INTNONE,
   PMD_INTNONE,
 };  
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
 
 const PMD_TrgProgINTTypeDef  TrgProgINT_1ShuntB =
 {
@@ -200,7 +239,7 @@ const PMD_TrgProgINTTypeDef  TrgProgINT_1ShuntB =
   PMD_INTNONE,
 };
 
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
 const PMD_TrgProgINTTypeDef TrgProgINT_2SensorA =
 {
   PMD_INTADPDA,
@@ -210,7 +249,7 @@ const PMD_TrgProgINTTypeDef TrgProgINT_2SensorA =
   PMD_INTNONE,
   PMD_INTNONE,
 };
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
 
 const PMD_TrgProgINTTypeDef TrgProgINT_2SensorB =
 {

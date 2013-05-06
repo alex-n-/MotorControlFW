@@ -25,11 +25,14 @@
 #include BOARD_LED_HEADER_FILE
 
 #ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_0 */
+
+#ifdef BOARD_PWR_HEADER_FILE_1
 #include BOARD_PWR_HEADER_FILE_1
 #include "pwr_undefine.h"
-#endif 
-#include BOARD_PWR_HEADER_FILE_1
-#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_1 */
 
 #include "FreeRTOS.h"
 #include "task.h"
@@ -47,6 +50,11 @@
 #include "motorctrl.h"
 #include "temperature_control.h"
 #include "board.h"
+#include "hv_serial_communication.h"
+
+#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
+extern int32_t VE_TargetSpeed_Backup[MAX_CHANNEL];
+#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
 
 /*! \brief  Start Motor
   *
@@ -70,7 +78,9 @@ int StartMotor(struct StartMotor_q* q, struct StartMotor_a* a)
   * @param  a: Answer   for  Serial Protocol
   * @retval Success
 */
+#ifdef USE_CONFIG_STORAGE
 extern uint8_t g_config_storage[CONFIG_STORAGE_PAGE_SIZE];
+#endif /* USE_CONFIG_STORAGE */
 
 int StopMotor(struct StopMotor_q* q, struct StopMotor_a* a)
 {
@@ -267,6 +277,11 @@ int SetMotorSet         (struct SetMotorSet_q* q,         struct SetMotorSet_a* 
 
   memcpy(&MotorSetValues[q->motor_nr], &q->Set, sizeof(MotorSetValues[q->motor_nr]));
 
+#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
+  VE_TargetSpeed_Backup[q->motor_nr]  = MotorSetValues[q->motor_nr].TargetSpeed;
+  MotorErrorField[q->motor_nr].Error &= ~VE_SPEEDREDUCTION;
+#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
+  
   memset(a, 0, sizeof(*a));
 
   return 0;
@@ -481,7 +496,13 @@ int GetBoardInfo        (struct GetBoardInfo_q* q,        struct GetBoardInfo_a*
 #ifdef USE_EXTERNAL_SPEED_CONTROL
   features |= (1<<6);
 #endif /* USE_EXTERNAL_SPEED_CONTROL */
-  
+#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+  features |= (1<<7);
+#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */
+#ifdef USE_MOTOR_DISCONNECT_DETECTION
+  features |= (1<<8);
+#endif /* USE_MOTOR_DISCONNECT_DETECTION */
+ 
   memset(a,   0, sizeof(*a));
 
   a->values.channels        = BOARD_AVAILABLE_CHANNELS;
@@ -491,7 +512,21 @@ int GetBoardInfo        (struct GetBoardInfo_q* q,        struct GetBoardInfo_a*
   
   memset(a->values.BoardName,0,MAX_LENGTH_BOARD_NAME);
   memcpy(a->values.BoardName,BOARD_NAME,sizeof(BOARD_NAME));
+  
+#ifdef BOARD_PWR_HEADER_FILE_0
+#include BOARD_PWR_HEADER_FILE_0
+  memset(a->values.BoardNamePWR0,0,MAX_LENGTH_BOARD_NAME);
+  memcpy(a->values.BoardNamePWR0,BOARD_NAME_PWR,sizeof(BOARD_NAME_PWR));
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_0 */
 
+#ifdef BOARD_PWR_HEADER_FILE_1
+#include BOARD_PWR_HEADER_FILE_1
+  memset(a->values.BoardNamePWR1,0,MAX_LENGTH_BOARD_NAME);
+  memcpy(a->values.BoardNamePWR1,BOARD_NAME_PWR,sizeof(BOARD_NAME_PWR));
+#include "pwr_undefine.h"
+#endif /* BOARD_PWR_HEADER_FILE_1 */
+  
   return 0;
 }
 
@@ -618,5 +653,55 @@ int GetErrorState       (struct GetErrorState_q* q,       struct GetErrorState_a
 
   a->Error = MotorErrorField[q->motor_nr].Error;
 
+  return 0;
+}
+
+/*! \brief  Get DC-Link Voltage
+  *
+  * Read out the actual DC-Link voltage of the board
+  *
+  * @param  q: Question from Serial Protocol
+  * @param  a: Answer   for  Serial Protocol
+  * @retval Success
+*/
+int GetDCLinkVoltage    (struct GetDCLinkVoltage_q* q,    struct GetDCLinkVoltage_a* a)
+{
+  TEE_VE_TypeDef*     pVEx    = NULL;
+
+  memset(a, 0, sizeof(*a));
+
+  switch (q->motor_nr)
+  {
+#if defined __TMPM_370__  || defined __TMPM_376__
+  case 0:
+    pVEx    = TEE_VE0;
+    break;
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
+  case 1:
+    pVEx    = TEE_VE1;
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+  
+  a->Voltage = 10 * (pVEx->VDC) * VE_v_max[q->motor_nr] / (0xfff<<3);
+
+#ifdef USE_HV_COMMUNICATION
+  a->Voltage = 10 * HV_Communication_GetValue(0)*VE_v_max[q->motor_nr] / 0x3ff;
+#elif defined USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+  a->Voltage = 10 * ADC_GetVDC(q->motor_nr) * 5000 / ChannelValues[q->motor_nr].sensitivity_voltage_measure / 0xfff;
+#endif  
+  
+#ifdef BOARD_VDC_CHANNEL_0
+  if (q->motor_nr == 0)
+    a->Voltage = BOARD_VDC_CHANNEL_0*10;
+#endif  
+
+#ifdef BOARD_VDC_CHANNEL_1
+  if (q->motor_nr == 1)
+    a->Voltage = BOARD_VDC_CHANNEL_1*10;
+#endif  
+  
   return 0;
 }

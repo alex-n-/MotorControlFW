@@ -91,7 +91,9 @@ void vApplicationMallocFailedHook(void)
 */
 void system_init( void *pvParameters )
 {
+#ifdef USE_CONFIG_STORAGE
   int ret;
+#endif /*  USE_CONFIG_STORAGE */
   
   SCB->SHCSR = SCB_SHCSR_MEMFAULTENA_Msk                                        /* enable Fault Interrupts */
               |SCB_SHCSR_BUSFAULTENA_Msk

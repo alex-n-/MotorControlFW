@@ -20,6 +20,10 @@
 #ifndef _USER_CONFIG_H_
 #define _USER_CONFIG_H_
 
+/* Frequency of Control Loop in kHz */
+/* Shall between 1kHz and 10kHz     */
+#define VE_CONTROL_LOOP_FREQUENCY    1                                          /* [kHz] Frequency of MAIN control */
+
 /* FW configuration */
 #define USE_INTERNAL_MOTOR_PARAMS                                               /*!< Use compiled in motor parameters */
 #define USE_LED                                                                 /*!< Activate LED signaling */
@@ -33,9 +37,10 @@
 #define USE_LOAD_STATISTICS                                                     /*!< Activate internal cpu load statistics */
 #define USE_ENCODER                                                             /*!< Use encoder for RPM determination */
 #define USE_STALL_DETECT                                                        /*!< Activate automatic stall detection */
-#define USE_SW_OVER_UNDER_VOLTAGE_DETECTION                                     /*!< Activate software based under- and over-voltage detection */
+//#define USE_SW_OVER_UNDER_VOLTAGE_DETECTION                                     /*!< Activate software based under- and over-voltage detection */
 //#define USE_MOTOR_DISCONNECT_DETECTION                                          /*!< Activate automatic motor disconnected */
-#define USE_CAN                                                                 /*!< Enable CAN communication */
+//#define USE_LOAD_DEPENDANT_SPEED_REDUCTION                                      /*!< Activate load dependant speed reduction */
+//#define USE_CAN                                                                 /*!< Enable CAN communication */
 //#define USE_TURN_CONTROL                                                        /*!< Activate Turn control for position reaching */
 //#define USE_USER_CALLBACKS                                                      /*!< Make use of VE Clallback Hooks */
 

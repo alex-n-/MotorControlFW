@@ -29,12 +29,12 @@
 #ifdef BOARD_PWR_HEADER_FILE_0
 #include BOARD_PWR_HEADER_FILE_0
 #include "pwr_undefine.h"
-#endif
+#endif /* BOARD_PWR_HEADER_FILE_0 */
 
 #ifdef BOARD_PWR_HEADER_FILE_1
 #include BOARD_PWR_HEADER_FILE_1
 #include "pwr_undefine.h"
-#endif
+#endif /* BOARD_PWR_HEADER_FILE_1 */
 
 #include "motorctrl.h"
 #include "temperature_measure_table.h"
@@ -60,11 +60,11 @@ int8_t TEMPERATURE_GetTemperature(uint8_t channel_number)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__    
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     result=ADC_GetConvertResult(TEMPERATURE_ADC0, TEMPERATURE_REG0);
     break;
-#endif /* __TMPM_370__ */    
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */    
   case 1:
     result=ADC_GetConvertResult(TEMPERATURE_ADC1, TEMPERATURE_REG1);
     break;
@@ -101,12 +101,12 @@ void TEMPERATURE_ConfigureADCforTemperature(uint8_t channel_number)
 {
   switch (channel_number)
   {
-#ifdef __TMPM_370__    
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     ADC_SetConstantTrg(TEMPERATURE_ADC0,TEMPERATURE_REG0,TRG_ENABLE(TEMPERATURE_REG0));
     ADC_Start(TEMPERATURE_ADC0,ADC_TRG_CONSTANT);
     break;
-#endif /* __TMPM_370__ */    
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */    
   case 1:
     ADC_SetConstantTrg(TEMPERATURE_ADC1,TEMPERATURE_REG1,TRG_ENABLE(TEMPERATURE_REG1));
     ADC_Start(TEMPERATURE_ADC1,ADC_TRG_CONSTANT);
@@ -128,17 +128,26 @@ void TEMPERATURE_ConfigureADCforTemperature(uint8_t channel_number)
 */
 void TEMPERATURE_CheckOvertemp(uint8_t channel_number)
 {
-  uint8_t temp;
+  static uint8_t counter=0;
+  int8_t temp;
+  
+  if (SystemValues[channel_number].Overtemperature == 0)
+    return;
   
   temp = TEMPERATURE_GetTemperature(channel_number);
   
   if (temp>=SystemValues[channel_number].Overtemperature)
+    counter++;
+  
+  if (counter>5)
     MotorErrorField[channel_number].Error |= VE_OVERTEMPERATURE;
   
   if (   ((MotorErrorField[channel_number].Error & VE_OVERTEMPERATURE) != 0)
       && (temp< (SystemValues[channel_number].Overtemperature-TEMP_SLOPE) ) )
+  {
+    counter=0;
     MotorErrorField[channel_number].Error &= ~VE_OVERTEMPERATURE;
-    
+  }
 }
 
 /*! \brief GetActualTemperature

@@ -28,7 +28,10 @@
 #define USE_OVERVOLTAGE_SIGNAL
 
 /* BOARD PARAMETER */
-#define BOARD_DEAD_TIME                         1400                            /* [us]             - Dead time for FETs */
+#define BOARD_NAME_PWR                          "Hitex M370 HV"
+
+#define BOARD_DEAD_TIME                         1400                            /* [ns]             - Dead time for FETs */
+#define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
 #ifdef HWPATCH_2_TIMES_LV
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       278                             /* [mV/A]           - Sensivity of current measurement circuit */

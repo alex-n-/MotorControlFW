@@ -52,9 +52,14 @@
 /*******************/
 /* BOARD PARAMETER */
 /*******************/
+/*!< Name of the Powerboard (for Display in MotorMind */
+#define BOARD_NAME_PWR                          "Glyn M37x LV PWR"
 
 /*!< Dead time of the MOSFets/IGBTs used on the powerstage */
-//#define BOARD_DEAD_TIME                         xxxx                            /* [us]             - Dead time for IPM */
+//#define BOARD_DEAD_TIME                         xxxx                            /* [ns]             - Dead time for IPM */
+
+/*!< Bootstrap time of the MOSFets/IGBTs used on the powerstage */
+//#define BOARD_BOOTSTRAP_DELAY                     xx                            /* [ms]             - Bootstrap time */
 
 /*!< Sensitivity of the current measurement (current sensors / OpAmp stage) */
 //#define BOARD_SENSITIVITY_CURRENT_MEASURE       xxx                             /* [mV/A]           - Sensivity of current measurement circuit */

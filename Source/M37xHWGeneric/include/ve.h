@@ -25,11 +25,18 @@
 
 #include "config.h"
 #include TMPM_HEADER_FILE
+#include TMPM_TIMER_HEADER_FILE
 
-#define VE_PERIOD_TIME                    1                                     /* [ms]  Cycle time of MAIN control */
+#define VE_CHANNEL0_TMRB                 TSB_TB3                                /* Timer for VE Loop */
+#define VE_CHANNEL0_TMBR_IRQ             INTTB30_IRQn
+#define VE_CHANNEL0_TMBR_IRQ_HANDLER     INTTB30_IRQHandler
 
-#define PAI   314159265                                                         /* Pi     * 100000000 */
-#define PAI2  2 * PAI                                                           /* Pi * 2 * 100000000 */
+#define VE_CHANNEL1_TMRB                 TSB_TB1                                /* Timer for VE Loop */
+#define VE_CHANNEL1_TMBR_IRQ             INTTB10_IRQn
+#define VE_CHANNEL1_TMBR_IRQ_HANDLER     INTTB10_IRQHandler
+
+#define PAI   31416                                                             /* Pi     * 10000 */
+#define PAI2  2 * PAI                                                           /* Pi * 2 * 10000 */
 
 #define SECONDS_PER_MINUTE                60                                    /* One minute has 60 seconds */                                    
 
@@ -316,6 +323,8 @@ typedef union
 enum _mainstage
 {
   Stage_Stop,                                                                   /* control loop is off, no actions pending */
+  Stage_Bootstrap,                                                              /* bootstrap IGBTs */
+  Stage_Brake,                                                                  /* shortbrake Motor */
   Stage_ZeroCurrentMeasure,                                                     /* measure zero current adc value */
   Stage_Initposition,                                                           /* control loop is off, first signals out and in */
   Stage_Force,                                                                  /* forced commutation */
@@ -350,18 +359,19 @@ typedef struct
  */
 typedef struct
 {
-  int16_t WaitTime_Position;
-  int32_t R_mult_amax_div_vmax;                                                 /* fixpoint15 calculation R*I/U */
-  int32_t InductanceDropoutFactor;                                              /* fixpoint15 calculation 2*PI*I*Speed*1000/U */
-  int32_t PositionKiPreCalculation;                                             /* fixpoint15 calculation Ki*Tt*U/f */
-  int32_t PositionKpPreCalculation;                                             /* fixpoint15 calculation Kp*U/f */
-  int16_t ChangeFrq_normed_to_HzMax;                                            /* fixpoint15 calculation HzChange normalized to HzMax */
-  int16_t IqLim_normed_to_amax;                                                 /* fixpoint15 calculation IqLim normalized to a_max */
-  int16_t IdLim_normed_to_amax;                                                 /* fixpoint31 calculation IdLim normalized to a_max */
-  int32_t HzMax_normed_to_PWMFrequency;                                         /* fixpoint   calcualtion HzMax normalized to PWMFrequency */
-  int16_t SpeedUpLimit;
-  int16_t IdCurrentForInitposition;
-  int16_t IqCurrentForInitposition;  
+  uint16_t WaitTime_Position;
+  uint16_t WaitTime_Bootstrap;
+  uint32_t R_mult_amax_div_vmax;                                                /* fixpoint15 calculation R*I/U */
+  uint32_t InductanceDropoutFactor;                                             /* fixpoint15 calculation 2*PI*I*Speed*1000/U */
+  uint32_t PositionKiPreCalculation;                                            /* fixpoint15 calculation Ki*Tt*U/f */
+  uint32_t PositionKpPreCalculation;                                            /* fixpoint15 calculation Kp*U/f */
+  uint16_t ChangeFrq_normed_to_HzMax;                                           /* fixpoint15 calculation HzChange normalized to HzMax */
+  uint16_t IqLim_normed_to_amax;                                                /* fixpoint15 calculation IqLim normalized to a_max */
+  uint16_t IdLim_normed_to_amax;                                                /* fixpoint31 calculation IdLim normalized to a_max */
+  uint32_t HzMax_normed_to_PWMFrequency;                                        /* fixpoint   calcualtion HzMax normalized to PWMFrequency */
+  uint32_t SpeedUpLimit;
+  uint16_t IdCurrentForInitposition;
+  uint16_t IqCurrentForInitposition;  
 } PreCalc;                                                                      /* set of pre-calculations for control loop */
 
 /*! \brief Shutdown mode

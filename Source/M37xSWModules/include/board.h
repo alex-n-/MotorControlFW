@@ -32,9 +32,9 @@ extern const PMD_TrgProgINTTypeDef TrgProgINT_3ShuntA;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_3ShuntB;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_1ShuntA;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_1ShuntB;
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
 extern const PMD_TrgProgINTTypeDef TrgProgINT_2SensorA;
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
 extern const PMD_TrgProgINTTypeDef TrgProgINT_2SensorB;
 extern const PMD_TrgTypeDef PMDTrigger0_3PhaseA;
 extern const PMD_TrgTypeDef PMDTrigger1_3PhaseA;

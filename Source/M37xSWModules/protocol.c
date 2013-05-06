@@ -128,6 +128,7 @@ static const struct rpc functions[] = { MAKE_FUNC(StartMotor),
                                   MAKE_FUNC(GetTemperature),
                                   MAKE_FUNC(GetErrorState),
                                   MAKE_FUNC(SetChannelDependand),
+                                  MAKE_FUNC(GetDCLinkVoltage),
                                 };
 
 

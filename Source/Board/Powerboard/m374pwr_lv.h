@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include "config.h"
 
-#define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
+//#define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
 #define VISHAY_NTCLE100E3103JB0
 
@@ -29,7 +29,10 @@
 //#define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
 
 /* BOARD PARAMETER */
-#define BOARD_DEAD_TIME                         1400                            /* [us]             - Dead time for FETs */
+#define BOARD_NAME_PWR                          "M374PWR LV"
+
+#define BOARD_DEAD_TIME                         1400                            /* [ns]             - Dead time for FETs */
+#define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
 #ifdef USE_CURRENT_SENSORS
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       185                             /* [mV/A]           - Sensivity of current measurement circuit */

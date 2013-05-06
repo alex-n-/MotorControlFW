@@ -456,7 +456,7 @@ void ADC_SelectPMDTrgProgNum(TSB_AD_TypeDef * ADx, PMD_TRG_PROG_SELx SELx, uint8
   *         Refer the members of PMD_TrgProgINTTypeDef in .h file for more detail usage.
   * @retval None
   */
-void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, PMD_TrgProgINTTypeDef * TrgProgINT)
+void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, const PMD_TrgProgINTTypeDef * TrgProgINT)
 {
     /* Check the parameters */
     assert_param(IS_ADC_UNIT(ADx));
@@ -487,7 +487,7 @@ void ADC_SetPMDTrgProgINT(TSB_AD_TypeDef * ADx, PMD_TrgProgINTTypeDef * TrgProgI
   *         Refer to the members of PMD_TrgTypeDef in .h file for more detail usage. 
   * @retval None
   */
-void ADC_SetPMDTrg(TSB_AD_TypeDef * ADx, PMD_TrgTypeDef * PMDTrg)
+void ADC_SetPMDTrg(TSB_AD_TypeDef * ADx, const PMD_TrgTypeDef * PMDTrg)
 {
     uint32_t tmp = 0U;
     uint32_t dat = 0U;

@@ -29,7 +29,7 @@
 #include "motorctrl.h"
 
 
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
 static ADC_MonitorTypeDef UndervoltageA = { ADC_CMPCR_0,
                                             VDC_MEASURE0_REG,
                                             VDC_MEASURE_TIMES,
@@ -40,7 +40,7 @@ static ADC_MonitorTypeDef OvervoltageA  = { ADC_CMPCR_1,
                                             VDC_MEASURE_TIMES,
                                             ADC_LARGER_THAN_CMP_REG,
                                             0};
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
 
 static ADC_MonitorTypeDef UndervoltageB = { ADC_CMPCR_0,
                                             VDC_MEASURE1_REG,
@@ -53,7 +53,7 @@ static ADC_MonitorTypeDef OvervoltageB  = { ADC_CMPCR_1,
                                             ADC_LARGER_THAN_CMP_REG,
                                             0};
 
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
 void INTADACPA_IRQHandler(void)
 {
   ADC_DisableMonitor(TSB_ADA,ADC_CMPCR_0);
@@ -66,7 +66,7 @@ void INTADACPB_IRQHandler(void)
   MotorErrorField[0].Error |= VE_SWOVERVOLTAGE;
   VE_ActualStage[0].main = Stage_Emergency;
 }
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
 
 void INTADBCPA_IRQHandler(void)
 {
@@ -91,7 +91,7 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
 {
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     if (SystemValues[channel_number].SW_Undervoltage != 0)
     {
@@ -99,6 +99,8 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
       ADC_SetMonitor(TSB_ADA, &UndervoltageA);
       NVIC_EnableIRQ(INTADACPA_IRQn);
     }
+    else
+      NVIC_DisableIRQ(INTADACPA_IRQn);
 
     if (SystemValues[channel_number].SW_Overvoltage != 0)
     {
@@ -106,25 +108,31 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
       ADC_SetMonitor(TSB_ADA, &OvervoltageA);
       NVIC_EnableIRQ(INTADACPB_IRQn);
     }
+    else
+      NVIC_DisableIRQ(INTADACPB_IRQn);
 
     ADC_SetConstantTrg(TSB_ADA,VDC_MEASURE0_REG,TRG_ENABLE(AIN_VDC0));
     ADC_Start(TSB_ADA,ADC_TRG_CONSTANT);
    break;
-#endif /* __TMPM_370__ */
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     if (SystemValues[channel_number].SW_Undervoltage != 0)
     {
-      UndervoltageB.CmpValue = 0xfff * SystemValues[channel_number].SW_Undervoltage / VE_v_max[channel_number];
+      UndervoltageB.CmpValue = 0xfff * SystemValues[channel_number].SW_Undervoltage * ChannelValues[channel_number].sensitivity_voltage_measure / 5000 ;
       ADC_SetMonitor(TSB_ADB, &UndervoltageB);
       NVIC_EnableIRQ(INTADBCPA_IRQn);
     }
+    else
+      NVIC_DisableIRQ(INTADBCPA_IRQn);
 
     if (SystemValues[channel_number].SW_Overvoltage != 0)
     {
-      OvervoltageB.CmpValue  = 0xfff * SystemValues[channel_number].SW_Overvoltage  / VE_v_max[channel_number];
+      OvervoltageB.CmpValue  = 0xfff * SystemValues[channel_number].SW_Overvoltage  * ChannelValues[channel_number].sensitivity_voltage_measure / 5000;
       ADC_SetMonitor(TSB_ADB, &OvervoltageB);
       NVIC_EnableIRQ(INTADBCPB_IRQn);
     }
+    else
+      NVIC_DisableIRQ(INTADBCPB_IRQn);
 
     ADC_SetConstantTrg(TSB_ADB,VDC_MEASURE1_REG,TRG_ENABLE(AIN_VDC1));
     ADC_Start(TSB_ADB,ADC_TRG_CONSTANT);
@@ -134,6 +142,34 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
     break;
   }
 }
+
+/*! \brief  Get VDC voltage value
+  *
+  * @param  channel_number:  channel read
+  * @retval None  
+*/
+uint16_t ADC_GetVDC(uint8_t channel_number)
+{
+  ADC_Result         result;
+  
+  switch (channel_number)
+  {
+#if defined __TMPM_370__ || defined __TMPM_376__
+  case 0:
+    result=ADC_GetConvertResult(TSB_ADA, VDC_MEASURE0_REG);
+   break;
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
+  case 1:
+    result=ADC_GetConvertResult(TSB_ADB, VDC_MEASURE1_REG);
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+  
+  return result.Bit.ADResult;
+}
+
 
 /*! \brief  Initialize the ADC
   *
@@ -147,11 +183,11 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     pADC    = TSB_ADA;
     break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     pADC    = TSB_ADB;
     break;
@@ -167,7 +203,7 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
   case CURRENT_SHUNT_3:
     switch (channel_number)
     {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
     case 0:
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL0 ,TRG_ENABLE(PMD_PROG0));
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL1 ,TRG_ENABLE(PMD_PROG1));
@@ -183,7 +219,7 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
       ADC_SetPMDTrg(pADC, &PMDTrigger4_3PhaseA);
       ADC_SetPMDTrg(pADC, &PMDTrigger5_3PhaseA);
       break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
     case 1:
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL6 ,TRG_ENABLE(PMD_PROG0));
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL7 ,TRG_ENABLE(PMD_PROG1));
@@ -209,7 +245,7 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
   case CURRENT_SHUNT_1:
     switch (channel_number)
     {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
     case 0:
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL0,TRG_ENABLE(PMD_PROG0));
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL1,TRG_ENABLE(PMD_PROG1));
@@ -217,7 +253,7 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
       ADC_SetPMDTrg(pADC, &PMDTrigger0_1PhaseA);
       ADC_SetPMDTrg(pADC, &PMDTrigger1_1PhaseA);
       break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
     case 1:
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL6,TRG_ENABLE(PMD_PROG0));
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL7,TRG_ENABLE(PMD_PROG1));
@@ -235,7 +271,7 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
   case CURRENT_SENSOR_2:
     switch (channel_number)
     {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__ || defined __TMPM_376__
     case 0:
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL0 ,TRG_ENABLE(PMD_PROG0));
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL1 ,TRG_ENABLE(PMD_PROG1));
@@ -248,7 +284,7 @@ void ADC_Init (uint8_t channel_number, CURRENT_MEASUREMENT mesurement_type)
       ADC_SetPMDTrg(pADC, &PMDTrigger1_2PhaseA);
       break;
       break;
-#endif
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
     case 1:
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL6 ,TRG_ENABLE(PMD_PROG0));
       ADC_SelectPMDTrgProgNum(pADC, PMD_TRG_PROG_SEL7 ,TRG_ENABLE(PMD_PROG1));

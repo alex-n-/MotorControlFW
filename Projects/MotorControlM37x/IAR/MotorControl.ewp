@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.2.53991</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1015,7 +1015,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1942,7 +1942,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.1.4445</state>
+          <state>6.50.3.4744</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -2871,7 +2871,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -3798,7 +3798,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -4727,7 +4727,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -5654,7 +5654,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -6148,7 +6148,7 @@
         <option>
           <name>OOCOutputFormat</name>
           <version>2</version>
-          <state>2</state>
+          <state>1</state>
         </option>
         <option>
           <name>OCOutputOverride</name>
@@ -6156,7 +6156,7 @@
         </option>
         <option>
           <name>OOCOutputFile</name>
-          <state>M37Sigma.bin</state>
+          <state>Sigma1_09.hex</state>
         </option>
         <option>
           <name>OOCCommandLineProducer</name>
@@ -6587,7 +6587,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.40.1.53794</state>
+          <state>6.50.1.4445</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -7864,6 +7864,9 @@
         <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m37x_ipm_power_ver2.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\m37xlv_power.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\powerboard_skeleton.h</name>
       </file>
       <file>
@@ -8004,6 +8007,39 @@
           </file>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm374_wdt.h</name>
+          </file>
+        </group>
+        <group>
+          <name>tmpm375</name>
+        </group>
+        <group>
+          <name>tmpm376</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_adc.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_cg.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_fc.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_gpio.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_ofd.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_tmrb.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_uart.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_vltd.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc\tmpm376_wdt.h</name>
           </file>
         </group>
         <file>
@@ -8164,6 +8200,59 @@
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm374_wdt.c</name>
           </file>
         </group>
+        <group>
+          <name>tmpm375</name>
+          <excluded>
+            <configuration>Debug - HitexM370</configuration>
+            <configuration>Release - HitexM370</configuration>
+            <configuration>Debug - M374STK</configuration>
+            <configuration>Release - M374STK</configuration>
+            <configuration>Debug - M372STK</configuration>
+            <configuration>Release - M372STK</configuration>
+            <configuration>Debug - M37Sigma</configuration>
+            <configuration>Release - M37Sigma</configuration>
+          </excluded>
+        </group>
+        <group>
+          <name>tmpm376</name>
+          <excluded>
+            <configuration>Debug - HitexM370</configuration>
+            <configuration>Release - HitexM370</configuration>
+            <configuration>Debug - M374STK</configuration>
+            <configuration>Release - M374STK</configuration>
+            <configuration>Debug - M372STK</configuration>
+            <configuration>Release - M372STK</configuration>
+            <configuration>Debug - M37Sigma</configuration>
+            <configuration>Release - M37Sigma</configuration>
+          </excluded>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_adc.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_cg.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_fc.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_gpio.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_ofd.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_tmrb.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_uart.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_vltd.c</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_wdt.c</name>
+          </file>
+        </group>
       </group>
     </group>
     <group>
@@ -8256,6 +8345,44 @@
       </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\TMPM374.h</name>
+      </file>
+    </group>
+    <group>
+      <name>tmpm375</name>
+      <excluded>
+        <configuration>Debug - HitexM370</configuration>
+        <configuration>Release - HitexM370</configuration>
+        <configuration>Debug - M374STK</configuration>
+        <configuration>Release - M374STK</configuration>
+        <configuration>Debug - M372STK</configuration>
+        <configuration>Release - M372STK</configuration>
+        <configuration>Debug - M37Sigma</configuration>
+        <configuration>Release - M37Sigma</configuration>
+      </excluded>
+    </group>
+    <group>
+      <name>tmpm376</name>
+      <excluded>
+        <configuration>Debug - HitexM370</configuration>
+        <configuration>Release - HitexM370</configuration>
+        <configuration>Debug - M374STK</configuration>
+        <configuration>Release - M374STK</configuration>
+        <configuration>Debug - M372STK</configuration>
+        <configuration>Release - M372STK</configuration>
+        <configuration>Debug - M37Sigma</configuration>
+        <configuration>Release - M37Sigma</configuration>
+      </excluded>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM376.s</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\system_TMPM376.c</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\system_TMPM376.h</name>
+      </file>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\TMPM376.h</name>
       </file>
     </group>
     <file>
@@ -8362,6 +8489,36 @@
     </group>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\adc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\amp_cmp.c</name>
+      <excluded>
+        <configuration>Debug - M374STK</configuration>
+        <configuration>Release - M374STK</configuration>
+        <configuration>Debug - M372STK</configuration>
+        <configuration>Release - M372STK</configuration>
+        <configuration>Debug - M37Sigma</configuration>
+        <configuration>Release - M37Sigma</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\encoder.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\mcp2515.c</name>
+      <excluded>
+        <configuration>Debug - HitexM370</configuration>
+        <configuration>Release - HitexM370</configuration>
+      </excluded>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\pmd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\spi.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\ve.c</name>
       <configuration>
         <name>Debug - M374STK</name>
         <settings>
@@ -8615,36 +8772,6 @@
         </settings>
       </configuration>
     </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\amp_cmp.c</name>
-      <excluded>
-        <configuration>Debug - M374STK</configuration>
-        <configuration>Release - M374STK</configuration>
-        <configuration>Debug - M372STK</configuration>
-        <configuration>Release - M372STK</configuration>
-        <configuration>Debug - M37Sigma</configuration>
-        <configuration>Release - M37Sigma</configuration>
-      </excluded>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\encoder.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\mcp2515.c</name>
-      <excluded>
-        <configuration>Debug - HitexM370</configuration>
-        <configuration>Release - HitexM370</configuration>
-      </excluded>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\pmd.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\spi.c</name>
-    </file>
-    <file>
-      <name>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\ve.c</name>
-    </file>
   </group>
   <group>
     <name>M37xSWModules</name>
@@ -8707,6 +8834,256 @@
     </group>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\action.c</name>
+      <configuration>
+        <name>Release - M374STK</name>
+        <settings>
+          <name>ICCARM</name>
+          <data>
+            <version>28</version>
+            <wantNonLocal>0</wantNonLocal>
+            <debug>0</debug>
+            <option>
+              <name>CCOptimizationNoSizeConstraints</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDefines</name>
+              <state>BOARD_M374STK</state>
+              <state>__TMPM_374__</state>
+            </option>
+            <option>
+              <name>CCPreprocFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocComments</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPreprocLine</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMnemonics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListCMessages</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssFile</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCListAssSource</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCEnableRemarks</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagSuppress</name>
+              <state>Pa050,Pa082</state>
+            </option>
+            <option>
+              <name>CCDiagRemark</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagWarning</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCDiagError</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCObjPrefix</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCAllowList</name>
+              <version>1</version>
+              <state>0000000</state>
+            </option>
+            <option>
+              <name>CCDebugInfo</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IEndianMode</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IExtraOptionsCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IExtraOptions</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CCLangConformance</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCSignedPlainChar</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCRequirePrototypes</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCMultibyteSupport</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCDiagWarnAreErr</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCompilerRuntimeInfo</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IFpuProcessor</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>OutputFile</name>
+              <state>$FILE_BNAME$.o</state>
+            </option>
+            <option>
+              <name>CCLibConfigHeader</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>PreInclude</name>
+              <state></state>
+            </option>
+            <option>
+              <name>CompilerMisraOverride</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCIncludePath2</name>
+              <state>$PROJ_DIR$\</state>
+              <state>$PROJ_DIR$\..</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+            </option>
+            <option>
+              <name>CCStdIncCheck</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCCodeSection</name>
+              <state>.text</state>
+            </option>
+            <option>
+              <name>IInterwork2</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IProcessorMode2</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevel</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCOptStrategy</name>
+              <version>0</version>
+              <state>1</state>
+            </option>
+            <option>
+              <name>CCOptLevelSlave</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules98</name>
+              <version>0</version>
+              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+            </option>
+            <option>
+              <name>CompilerMisraRules04</name>
+              <version>0</version>
+              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+            </option>
+            <option>
+              <name>CCPosIndRopi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndRwpi</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>CCPosIndNoDynInit</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccLang</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccAllowVLA</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCppDialect</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccExceptions</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccRTTI</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccStaticDestr</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccCppInlineSemantics</name>
+              <state>0</state>
+            </option>
+            <option>
+              <name>IccCmsis</name>
+              <state>1</state>
+            </option>
+            <option>
+              <name>IccFloatSemantics</name>
+              <state>0</state>
+            </option>
+          </data>
+        </settings>
+      </configuration>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\board.c</name>
@@ -9020,6 +9397,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Gefeg_ECs-7140_HV.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Maxon_EC20flat.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Maxxon_EC.h</name>

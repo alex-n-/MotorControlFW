@@ -18,10 +18,15 @@
  */
 #include <stdint.h> 
 
-#define USE_EMERGENCY_SIGNAL
+//#define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
 
-#define BOARD_DEAD_TIME                         400                             /* [us]             - Dead time for FETs */
+/* BOARD PARAMETER */
+#define BOARD_NAME_PWR                          "M37SigmaPWR"
+
+#define BOARD_DEAD_TIME                         400                             /* [ns]             - Dead time for FETs */
+#define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
+
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       316                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SHUNT_1                 /* NONE */
 #define BOARD_SENSITIVITY_VOLTAGE_MEASURE       91                              /* [mV/V]           - Sensivity of voltage measurement circuit  */

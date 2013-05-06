@@ -213,7 +213,7 @@ void UART_SWReset(TSB_SC_TypeDef * UARTx)
   * @param  InitStruct: The structure containing basic UART configuration.
   * @retval None
   */
-void UART_Init(TSB_SC_TypeDef * UARTx, UART_InitTypeDef * InitStruct)
+void UART_Init(TSB_SC_TypeDef * UARTx, const UART_InitTypeDef * InitStruct)
 {
     uint32_t T0 = 0U;
     uint32_t T = 0U;

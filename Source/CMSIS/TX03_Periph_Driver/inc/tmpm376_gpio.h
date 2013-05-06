@@ -721,7 +721,7 @@ extern "C" {
     uint8_t GPIO_ReadDataBit(GPIO_Port GPIO_x, uint8_t Bit_x);
     void GPIO_WriteData(GPIO_Port GPIO_x, uint8_t Data);
     void GPIO_WriteDataBit(GPIO_Port GPIO_x, uint8_t Bit_x, uint8_t BitValue);
-    void GPIO_Init(GPIO_Port GPIO_x, uint8_t Bit_x, GPIO_InitTypeDef * GPIO_InitStruct);
+    void GPIO_Init(GPIO_Port GPIO_x, uint8_t Bit_x, const GPIO_InitTypeDef * GPIO_InitStruct);
     void GPIO_SetOutput(GPIO_Port GPIO_x, uint8_t Bit_x);
     void GPIO_SetInput(GPIO_Port GPIO_x, uint8_t Bit_x);
     void GPIO_SetInputEnableReg(GPIO_Port GPIO_x, uint8_t Bit_x, FunctionalState NewState);

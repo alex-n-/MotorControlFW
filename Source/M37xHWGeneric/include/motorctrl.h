@@ -82,6 +82,7 @@ typedef enum {
   VE_NOMOTOR          = (1<<3),
   VE_SWUNDERVOLTAGE   = (1<<4),
   VE_SWOVERVOLTAGE    = (1<<5),
+  VE_SPEEDREDUCTION   = (1<<7),
 } VE_ERROR;
 
 /*! \brief Parameter Changed Flags.
@@ -121,11 +122,11 @@ typedef __packed struct
   uint8_t   EncMult;                                                            /*!< NONE             - Number (Multiplier) */
   uint16_t  MaxAngAcc;                                                          /*!< [rad/sec^2]      - max angular velocity */
   uint16_t  TorqueFactor;                                                       /*!< [mNm/A]          - max torgue value * 10 */
-  uint16_t  Resistance;                                                         /*!< [mOhm]           - Winding resistance */
-  uint16_t  Inductance;                                                         /*!< [uH]             - Winding inductance */
+  uint32_t  Resistance;                                                         /*!< [mOhm]           - Winding resistance */
+  uint32_t  Inductance;                                                         /*!< [uH]             - Winding inductance */
   uint16_t  HzLimit;                                                            /*!< [Hz]             - Limitation speed of motor */
   uint16_t  HzChange;                                                           /*!< [Hz]             - Max Forced speed of motor (no FOC) */
-  uint16_t  InitDelay;                                                          /*!< [ms]             - Time of Positioning Stage */
+  uint16_t  PositionDelay;                                                      /*!< [ms]             - Time of Positioning Stage */
   uint32_t  IqStart;                                                            /*!< [mA]             - Start current (Iq) */
   uint32_t  IdStart;                                                            /*!< [mA]             - Start current (Id) */
   uint32_t  IqLim;                                                              /*!< [mA]             - q-axis limitation current */
@@ -157,6 +158,7 @@ typedef __packed struct
 typedef __packed struct
 {
   uint16_t  DeadTime;                                                           /*!< [ns]             - Dead time of output switching polarity unit (steps of 100 ns) */
+  uint16_t  BootstrapDelay;                                                      /*!< [ms]             - Bootstrap time */
   uint16_t  sensitivity_current_measure;                                        /*!< [mV/A]           - Input current(Iabc) at ADC =0xFFF0 */
   uint16_t  sensitivity_voltage_measure;                                        /*!< [mV/V]           - Input voltage(Vdc)   at ADC =0xFFF0 */
   uint8_t   gain_current_measure;                                               /*!< NONE             - Gain setting for current measurement with 3 input lines (3Shunt ro 2Sensor) */
@@ -193,6 +195,8 @@ typedef __packed struct
   uint8_t   channels;                                                           /*!< NONE             - Bitfield for determine the availabble motor channels */
   uint16_t  DSOSize;                                                            /*!< NONE             - Number of Data Samples for DSO functionality */
   uint8_t   BoardName[MAX_LENGTH_BOARD_NAME];                                   /*!< NONE             - name of the board */
+  uint8_t   BoardNamePWR0[MAX_LENGTH_BOARD_NAME];                               /*!< NONE             - name of the power board channel 0*/
+  uint8_t   BoardNamePWR1[MAX_LENGTH_BOARD_NAME];                               /*!< NONE             - name of the power board channel 1*/
   uint8_t   BoardRevision;                                                      /*!< NONE             - revision of the board */
   uint16_t  FirmwareFeatures;                                                   /*!< NONE             - features compiled into firmware */
 } __attribute__((packed)) BoardInfoValues;

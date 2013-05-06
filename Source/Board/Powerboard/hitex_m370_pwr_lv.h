@@ -26,7 +26,10 @@
 #define VISHAY_NTCLE100E3103JB0
 
 /* BOARD PARAMETER */
-#define BOARD_DEAD_TIME                         1400                            /* [us]             - Dead time for FETs */
+#define BOARD_NAME_PWR                          "Hitex M370 LV"
+
+#define BOARD_DEAD_TIME                         1400                            /* [ns]             - Dead time for FETs */
+#define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       833                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SHUNT_1                 /* NONE */

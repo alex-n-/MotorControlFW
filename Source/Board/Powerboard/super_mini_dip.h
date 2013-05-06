@@ -20,14 +20,18 @@
 /******************************************************************************/
 /*                                                                            */
 /*                           This is a Glyn Powerboad                         */
-/*        - please get in contact with Glyn for further information           */ 
+/* - please get in contact with Glyn (Power@glyn.de) for further information  */ 
 /*                                                                            */
 /******************************************************************************/
 
 #include <stdint.h> 
 
 /* BOARD PARAMETER */
-#define BOARD_DEAD_TIME                         2200                            /* [us]             - Dead time for IPM */
+#define BOARD_NAME_PWR                          "Glyn SuperMiniDIP"
+
+#define BOARD_DEAD_TIME                         2200                            /* [ns]             - Dead time for IPM */
+#define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
+
 #define BOARD_SENSITIVITY_CURRENT_MEASURE       301                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SENSOR_2                /* NONE */
 

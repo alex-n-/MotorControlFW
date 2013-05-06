@@ -118,11 +118,11 @@ void StallTask(void* pvParameters)
         stall_detected[i]=0;                                                    /* reset stall flag */
         if (SystemValues[i].RestartMode == RESTART_MOTOR)                       /* system restart mode ? */
         {
-          init_delay  = MotorParameterValues[i].InitDelay;                      /* remember original init delay */
-          MotorParameterValues[i].InitDelay = INIT_DELAY;                       /* set init delay */
+          init_delay  = MotorParameterValues[i].PositionDelay;                  /* remember original init delay */
+          MotorParameterValues[i].PositionDelay = INIT_DELAY;                   /* set init delay */
           VE_Start(i);                                                          /* restart the motor */
           MotorSetValues[i].TargetSpeed     = target_speed;                     /* restore the original target speed */
-          MotorParameterValues[i].InitDelay = init_delay;                       /* restore the original init delay */
+          MotorParameterValues[i].PositionDelay = init_delay;                   /* restore the original init delay */
         }
       }
     }

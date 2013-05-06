@@ -22,16 +22,19 @@
 #include "config.h"
 
 #ifdef BOARD_PWR_HEADER_FILE_0
-#include BOARD_PWR_HEADER_FILE_1
+#include BOARD_PWR_HEADER_FILE_0
 #ifdef USE_HV_COMMUNICATION
 #define HV_COMM 1
 #endif /* USE_HV_COMMUNICATION */
 #include "pwr_undefine.h"
 #endif 
+
+#ifdef BOARD_PWR_HEADER_FILE_1
 #include BOARD_PWR_HEADER_FILE_1
 #ifdef USE_HV_COMMUNICATION
 #define HV_COMM 1
 #endif /* USE_HV_COMMUNICATION */
+#endif /* BOARD_PWR_HEADER_FILE_1 */
 #include "pwr_undefine.h"
 
 #ifdef HV_COMM
@@ -55,11 +58,14 @@
 #ifdef USE_TEMPERATURE_CONTROL
 static uint16_t OvertempCmpValue     = 0x3ff;
 static uint16_t ClearTempCmpValue    = 0x3ff;
+#endif /* USE_TEMPERATURE_CONTROL */
+
+#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
 static uint16_t OverVoltageCmpValue  = 0x3ff;
 static uint16_t UnderVoltageCmpValue = 0x0;
 static uint8_t  UndervoltageCount    = 0;
 static uint8_t  OvervoltageCount     = 0;
-#endif /* USE_TEMPERATURE_CONTROL */
+#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */
 
 static TMRB_InitTypeDef timerTMBRConfig =
 {
@@ -225,10 +231,14 @@ void INTTB00_IRQHandler(void)
 */
 void HV_Communication_OverUndervoltageDetect(uint8_t channel_number)
 {
-  OverVoltageCmpValue = 0x3ff * SystemValues[channel_number].SW_Overvoltage  / VE_v_max[channel_number];
-  UnderVoltageCmpValue= 0x3ff * SystemValues[channel_number].SW_Undervoltage / VE_v_max[channel_number];
+  if (SystemValues[channel_number].SW_Overvoltage != 0)
+    OverVoltageCmpValue = 0x3ff * SystemValues[channel_number].SW_Overvoltage  * ChannelValues[channel_number].sensitivity_voltage_measure / 5000;
+  else
+    OverVoltageCmpValue = 0x3ff;
+      
+  UnderVoltageCmpValue= 0x3ff * SystemValues[channel_number].SW_Undervoltage * ChannelValues[channel_number].sensitivity_voltage_measure / 5000;;
 }
-#endif /* USE_TEMPERATURE_CONTROL */    
+#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */    
 
 #ifdef USE_TEMPERATURE_CONTROL
 /*! \brief Configure Temperature Control
