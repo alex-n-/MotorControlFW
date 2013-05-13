@@ -49,12 +49,13 @@ static uint32_t WaitValueForForced[MAX_CHANNEL];
   * @param  max_speed: maximum rpm to reach while turning
   * @retval None
 */
-void CalculateTurnRampAndTurn(uint8_t channel_number,int16_t nr_turns,uint16_t max_speed)
-{
   uint16_t SpeedUpTime;
   uint16_t TurnsWhileSpeedUp;
   uint16_t SpeedDownTime;
   uint16_t TurnsWhileSpeedDown;
+
+void CalculateTurnRampAndTurn(uint8_t channel_number,int16_t nr_turns,uint16_t max_speed)
+{
 
   /* Calculate new absolute position */
   TargetValue[channel_number] += nr_turns;
@@ -67,15 +68,14 @@ recalculate:
   ForcedSpeed[channel_number]=   60
                                * MotorParameterValues[channel_number].HzChange
                                / MotorParameterValues[channel_number].PolePairs
-                               - 5;                                             /* Security margin */
+                               * 9 / 10;                                        /* Security margin 90%*/
 
   /* Calculate the time needed to reach target rpm in ms */  
   SpeedUpTime = (uint16_t) ( (long long)PAI2
                                       * max_speed
                                       * MotorParameterValues[channel_number].PolePairs
                                       / MotorParameterValues[channel_number].MaxAngAcc
-                                      / SECONDS_PER_MINUTE
-                                      / 100000);
+                                      / SECONDS_PER_MINUTE/10);
   /* Calculate the number of tuns happen during speed up */
   TurnsWhileSpeedUp =   max_speed
                       / 2                                                       /* spinning the whole time with half the speed */
@@ -88,8 +88,7 @@ recalculate:
                                         * ForcedSpeed[channel_number]
                                         * MotorParameterValues[channel_number].PolePairs
                                         / MotorParameterValues[channel_number].MaxAngAcc
-                                        / SECONDS_PER_MINUTE
-                                        / 100000);
+                                        / SECONDS_PER_MINUTE/10);
                           
   /* Calculate the Turns during stopping from force commutation speed */
   TurnsWhileSpeedDown =   ForcedSpeed[channel_number]

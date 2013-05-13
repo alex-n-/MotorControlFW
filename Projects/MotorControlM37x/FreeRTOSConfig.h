@@ -29,12 +29,8 @@
 
 #include "config.h"
 
-#ifndef BOARD_M37SIGMA
-#define configTOTAL_HEAP_SIZE           ((size_t) (3050))
-#else
-#define configTOTAL_HEAP_SIZE           ((size_t) (2700))
-#endif /* !BOARD_M37SIGMA */
-
+#define configTOTAL_HEAP_SIZE           NEEDED_HEAP_SIZE
+   
 #ifdef USE_LOAD_STATISTICS
 #define configUSE_IDLE_HOOK             1
 #else

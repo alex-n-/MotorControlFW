@@ -29,8 +29,8 @@
 #define USE_LED                                                                 /*!< Activate LED signaling */
 #define USE_SERIAL_COMMUNICATION                                                /*!< Activate serial communication protocol */
 #define USE_CONFIG_STORAGE                                                      /*!< Read and Store Motor Parameter ... */
-#define USE_CONFIG_STORAGE_EEPROM                                               /*!< ... in EEPROM */
-//#define USE_CONFIG_STORAGE_FLASH                                                /*!< ... in flash memory */
+//#define USE_CONFIG_STORAGE_EEPROM                                               /*!< ... in EEPROM */
+#define USE_CONFIG_STORAGE_FLASH                                                /*!< ... in flash memory */
 
 #define USE_DSO                                                                 /*!< Activate DSO functionality */
 #define USE_HSDSO                                                               /*!< Activate Highspeed-DSO functionality */
@@ -51,7 +51,7 @@
 /* Motor defines */
 //#define MOTOR_CHANNEL_0 "motor_define_Gefeg_ECs-7140_HV.h"                      /*!< Motor to be used */
 //#define MOTOR_CHANNEL_0 "motor_define_Shinano_PMBA-200FK_HV.h"                  /*!< Motor to be used */
-//#define MOTOR_CHANNEL_0 "motor_define_Nanotec_DB42S03@HitexChannel0.h"          /*!< Motor to be used */
+#define MOTOR_CHANNEL_0 "motor_define_Nanotec_DB42S03@HitexChannel0.h"          /*!< Motor to be used */
 
 /* Default Power Board override */
 //#define BOARD_PWR_HEADER_FILE_0       "xxxxxxxxxxxxxxxxx.h"                     /*! Powerboard to be used */
@@ -67,6 +67,7 @@
 //#define MOTOR_CHANNEL_1 "motor_define_Nanotec_DB42S01@24V.h"                    /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Maxxon_EC.h"                              /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Shinano_PMBA-200FK_HV.h"                  /*!< Motor to be used */
+//#define MOTOR_CHANNEL_1 "motor_define_EMAX_CF2805.h"                            /*!< Motor to be used */
 
 /* Default Power Board override */
 //#define BOARD_PWR_HEADER_FILE_1       "m374pwr_lv.h"                            /*! Powerboard to be used */

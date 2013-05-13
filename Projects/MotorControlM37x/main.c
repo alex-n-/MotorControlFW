@@ -40,8 +40,11 @@
 
 #include "config.h"
 #include BOARD_BOARD_HEADER_FILE
-#include BOARD_LED_HEADER_FILE
 #include TMPM_WDT_HEADER_FILE
+
+#ifdef USE_LED
+#include BOARD_LED_HEADER_FILE
+#endif /* USE_LED */
 
 #ifdef USE_RGB_LED
 #include BOARD_RGB_LED_HEADER_FILE
@@ -54,6 +57,10 @@
 #ifdef BOARD_CAN_HEADER_FILE
 #include BOARD_CAN_HEADER_FILE
 #endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
+
+#if (BOARD_DSO_SIZE < 0)
+#error Needed heap size exceeds available memory - please deactivate firmware features in user_config.h
+#endif
 
 static xTaskHandle xSystemInit;                                                 /*!< Handle of the init task - for suicide */
 
@@ -149,16 +156,33 @@ int main(void)
 
   /* INTF_IRQn is the "last" interrupt for all
   supported platforms at the moment. */
+#if (defined __TMPM_370__) || (defined __TMPM_372__) || (defined __TMPM_373__) || (defined __TMPM_374__)
   for (nr = (IRQn_Type)0; nr < INTF_IRQn; nr++)
     NVIC_SetPriority(nr, ~0);
-
+#endif
+  
+#if (defined __TMPM_375__) || (defined __TMPM_376__)
+  for (nr = (IRQn_Type)0; nr < INTSBI0_IRQn; nr++)
+    NVIC_SetPriority(nr, ~0);
+#endif   
+  
   if ( xTaskCreate(system_init,                                                 /* Create an init task - needed as some of the inits use a task delay */
                    (signed char*) "SystemInit",
-                   120,
+                   INIT_TASK_STACK_SIZE,
                    NULL,
                    INIT_TASK_PRIORITY,
                    &xSystemInit) != pdPASS )
     dprintf("Can't create System Init Task\n");
+
+#ifdef USE_LOAD_STATISTICS
+  if ( xTaskCreate(SystemLoadTaks,                                              /* Create System Load Task */
+                   (signed char*) "SysLoad",
+                   SYSTEM_LOAD_TASK_STACK_SIZE,
+                   NULL,
+                   SYSTEM_LOAD_TASK_PRIORITY,
+                   NULL) != pdPASS)
+    dprintf("Can't create System Load Task\n");
+#endif /* USE_LOAD_STATISTICS */
 
 #ifdef USE_UI  
   if ( xTaskCreate(UITask,                                                      /* Create User Interface */
@@ -179,16 +203,6 @@ int main(void)
                    NULL) != pdPASS)
     dprintf("Can't create Protocol Task\n");
 #endif /* USE_SERIAL_COMMUNICATION */
-
-#ifdef USE_LOAD_STATISTICS
-  if ( xTaskCreate(SystemLoadTaks,                                              /* Create System Load Task */
-                   (signed char*) "SysLoad",
-                   SYSTEM_LOAD_TASK_STACK_SIZE,
-                   NULL,
-                   SYSTEM_LOAD_TASK_PRIORITY,
-                   NULL) != pdPASS)
-    dprintf("Can't create System Load Task\n");
-#endif /* USE_LOAD_STATISTICS */
 
 #ifdef USE_CAN
   if ( xTaskCreate(CanTask,                                                     /* Create CAN Communication Protocol Task */
@@ -213,7 +227,7 @@ int main(void)
 #ifdef USE_TURN_CONTROL
 #ifdef __TMPM_370__
   if ( xTaskCreate(TurnTask,                                                    /* Create Turn Task Channel 0*/
-                   (signed char*) "Turn",
+                   (signed char*) "Turn0",
                    TURN_TASK_STACK_SIZE,
                    (void*)0,
                    TURN_TASK_PRIORITY,
@@ -221,7 +235,7 @@ int main(void)
     dprintf("Can't create Turn Task\n");
 #endif /* USE_TURN_CONTROL */
   if ( xTaskCreate(TurnTask,                                                    /* Create Turn Task Channel 1*/
-                   (signed char*) "Turn",
+                   (signed char*) "Turn1",
                    TURN_TASK_STACK_SIZE,
                    (void*)1,
                    TURN_TASK_PRIORITY,
@@ -229,7 +243,6 @@ int main(void)
     dprintf("Can't create Turn Task\n");
 
 #endif /* USE_TURN_CONTROL */
-  
 
   vTaskStartScheduler();                                                        /* Start the scheduler. */
 

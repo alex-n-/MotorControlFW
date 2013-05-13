@@ -32,10 +32,10 @@
 #define BOARD_DEAD_TIME                         2200                            /* [ns]             - Dead time for IPM */
 #define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       301                             /* [mV/A]           - Sensivity of current measurement circuit */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       312                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SENSOR_2                /* NONE */
 
-#define BOARD_VDC_CHANNEL_1                     315                             /* Clamp voltage */
+#define BOARD_VDC_CHANNEL_1                     325                             /* Clamp voltage */
 
 #define BOARD_SENSOR_DIRECTION                  0
 #define BOARD_SENSITIVITY_VOLTAGE_MEASURE       12                              /* [mV/V]           - Sensivity of voltage measurement circuit  */

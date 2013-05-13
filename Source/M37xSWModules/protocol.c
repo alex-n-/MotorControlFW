@@ -22,7 +22,11 @@
 #ifdef USE_SERIAL_COMMUNICATION
 
 #include BOARD_BOARD_HEADER_FILE
+
+#ifdef USE_LED
 #include BOARD_LED_HEADER_FILE
+#endif /* USE_LED */
+
 #include TMPM_UART_HEADER_FILE
 #include TMPM_GPIO_HEADER_FILE
 
@@ -39,10 +43,6 @@
 #include "crc8.h"
 #include "debug.h"
 #include "board.h"
-
-#define rprintf(...)
-#define tprintf(...)
-
 
 __packed struct header
 {

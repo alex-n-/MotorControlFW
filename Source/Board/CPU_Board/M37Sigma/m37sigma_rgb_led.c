@@ -181,9 +181,9 @@ void RGB_LED_Init (void)
 {
   if ( xTaskCreate(RGBLEDTransmitTask,                                          /* Create Turn Task Channel 1*/
                    (signed char*) "RGB",
-                   60,
+                   RGB_LED_TASK_STACK_SIZE,
                    (void*)0,
-                   0,
+                   RGB_LED_TASK_PRIORITY,
                    NULL) != pdPASS)
     dprintf("Can't create RGBLEDTransmit Task\n");
 }

@@ -34,19 +34,24 @@
 #define __attribute__(x)
 #endif /* __KEIL__ */
 
+#ifdef __GNUC__
+#define __packed
+#endif
+
 /* Version information */
 #define FW_VERSION_MAJOR             1                                          /*!< Major number of the firmware */
 #define FW_VERSION_MINOR             12                                         /*!< Minor number of the firmware */
 
 /* Stack sizes & task priorities (lower priority value is higher importance) */
-#define INIT_TASK_STACK_SIZE        ((unsigned portSHORT)      50)              /*!< Stack Site for Init Process Task */
-#define SYSTEM_LOAD_TASK_STACK_SIZE ((unsigned portSHORT)      35)              /*!< Stack Site for System Load Task */
-#define VE_TASK_STACK_SIZE          ((unsigned portSHORT)      55)              /*!< Stack Site for Vector Engine Task */
-#define UI_TASK_STACK_SIZE          ((unsigned portSHORT)      80)              /*!< Stack Site for User Interface Task */
-#define PROTOCOL_TASK_STACK_SIZE    ((unsigned portSHORT)     130)              /*!< Stack Site for Serial Protocol Task */
-#define CAN_TASK_STACK_SIZE         ((unsigned portSHORT)     100)              /*!< Stack Site for CAN Communication Task */
-#define STALL_TASK_STACK_SIZE       ((unsigned portSHORT)      70)              /*!< Stack Site for Stall Detection Task */
-#define TURN_TASK_STACK_SIZE        ((unsigned portSHORT)      60)              /*!< Stack Site for Turn Task */
+#define INIT_TASK_STACK_SIZE        ( 95)                                       /*!< Stack Site for Init Process Task */
+#define SYSTEM_LOAD_TASK_STACK_SIZE ( 40)                                       /*!< Stack Site for System Load Task */
+#define VE_TASK_STACK_SIZE          ( 50)                                       /*!< Stack Site for Vector Engine Task */
+#define UI_TASK_STACK_SIZE          ( 80)                                       /*!< Stack Site for User Interface Task */
+#define PROTOCOL_TASK_STACK_SIZE    (100)                                       /*!< Stack Site for Serial Protocol Task */
+#define CAN_TASK_STACK_SIZE         (100)                                       /*!< Stack Site for CAN Communication Task */
+#define STALL_TASK_STACK_SIZE       ( 70)                                       /*!< Stack Site for Stall Detection Task */
+#define TURN_TASK_STACK_SIZE        ( 60)                                       /*!< Stack Site for Turn Task */
+#define RGB_LED_TASK_STACK_SIZE     ( 60)                                       /*!< Stack Site for RGB Led Task */
 
 #define INIT_TASK_PRIORITY          ((unsigned portBASE_TYPE )  4)              /*!< Task Priority for Init Process */
 #define SYSTEM_LOAD_TASK_PRIORITY   ((unsigned portBASE_TYPE )  0)              /*!< Task Priority for System Load */
@@ -56,6 +61,7 @@
 #define CAN_TASK_PRIORITY           ((unsigned portBASE_TYPE )  2)              /*!< Task Priority for CAN Communication */
 #define STALL_TASK_PRIORITY         ((unsigned portBASE_TYPE )  3)              /*!< Task Priority for Stall Detection */
 #define TURN_TASK_PRIORITY          ((unsigned portBASE_TYPE )  3)              /*!< Task Priority for Turn Task */
+#define RGB_LED_TASK_PRIORITY       ((unsigned portBASE_TYPE )  0)              /*!< Task Priority for Turn Task */
 
 /* Interrupt priorities - lower value is higher priority */
 #define INTERRUPT_PRIORITY_ERROR     0                                          /*!< Interrupt Priority for External Error Signal */
@@ -67,42 +73,23 @@
 #ifdef __TMPM_370__
 #define MAX_CHANNEL                  2                                          /*!< Number of vector engine channels */
 #define BOARD_AVAILABLE_CHANNELS     VE_CHANNEL_0|VE_CHANNEL_1                  /* M370 has VE channel 0 & 1 available */
-/* Specifiction for DSO storage size */
-#ifdef USE_DSO
-#define BOARD_DSO_SIZE               1536                                       /* Number of uint16_t */
-#else
-#define BOARD_DSO_SIZE               0                                          /* Number of uint16_t */
-#endif /* USE_DSO */
 #endif /* __TMPM_370__ */
 
 #if ( (defined __TMPM_372__) || (defined __TMPM_373__) || (defined __TMPM_374__) )
 #define MAX_CHANNEL                  2                                          /*!< Number of vector engine channels */
 #define BOARD_AVAILABLE_CHANNELS     VE_CHANNEL_1                               /* M37_234 has only channel 1 available */
 #undef  MOTOR_CHANNEL_0
-/* Specifiction for DSO storage size */
-#ifdef USE_DSO
-#define BOARD_DSO_SIZE               402                                        /* Number of uint16_t */
-#else
-#define BOARD_DSO_SIZE               0                                          /* Number of uint16_t */
-#endif /* USE_DSO */
 #endif /* (defined __TMPM_372__) || (defined __TMPM_373__) || (defined __TMPM_372__) */
 
 #ifdef __TMPM_375__
 #define MAX_CHANNEL                  2                                          /*!< Number of vector engine channels */
 #define BOARD_AVAILABLE_CHANNELS     VE_CHANNEL_1                               /* M375 has VE channel 1 available */
 #undef  MOTOR_CHANNEL_0
-#undef USE_DSO
 #endif /* __TMPM_370__ */
 
 #ifdef __TMPM_376__
 #define MAX_CHANNEL                  2                                          /*!< Number of vector engine channels */
 #define BOARD_AVAILABLE_CHANNELS     VE_CHANNEL_0|VE_CHANNEL_1                  /* M376 has VE channel 0 & 1 available */
-/* Specifiction for DSO storage size */
-#ifdef USE_DSO
-#define BOARD_DSO_SIZE               1536                                       /* Number of uint16_t */
-#else
-#define BOARD_DSO_SIZE               0                                          /* Number of uint16_t */
-#endif /* USE_DSO */
 #endif /* __TMPM_370__ */
 
 /* Board header files */
@@ -178,6 +165,25 @@
 
 #endif /* BOARD_M374STK */
 
+#ifdef BOARD_M375STK
+#define BOARD_NAME               "M375STK"                                      /* Name of the Board */
+#define BOARD_BOARD_HEADER_FILE  "m375stk_board.h"
+#define BOARD_GAIN_HEADER_FILE   "m375stk_gain.h"
+
+#undef  USE_CONFIG_STORAGE_EEPROM
+#undef  USE_CONFIG_STORAGE 
+//#define USE_CONFIG_STORAGE_FLASH
+#undef  USE_CAN
+#undef  USE_LED
+#undef  USE_CAN
+#undef  USE_DSO
+#undef  USE_ENCODER
+#ifndef BOARD_PWR_HEADER_FILE_1
+#define BOARD_PWR_HEADER_FILE_1  "m374pwr_lv.h"                                 /*! Powerboard to be used */
+#endif /* BOARD_PWR_HEADER_FILE_1 */
+
+#endif /* BOARD_M375STK */
+
 /* Chip header files */
 
 #ifdef __TMPM_370__
@@ -188,6 +194,7 @@
 #define TMPM_ADC_HEADER_FILE     "tmpm370_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm370_tmrb.h"
 #define TMPM_HEADER_FILE         "TMPM370.h"
+#define MEMORY_SIZE              0x2800
 #endif /* __TMPM_370__ */
 
 #ifdef __TMPM_372__
@@ -198,6 +205,7 @@
 #define TMPM_ADC_HEADER_FILE     "tmpm372_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm372_tmrb.h"
 #define TMPM_HEADER_FILE         "TMPM372.h"
+#define MEMORY_SIZE              0x1800
 #endif /* __TMPM_372__ */
 
 #ifdef __TMPM_373__
@@ -208,6 +216,7 @@
 #define TMPM_ADC_HEADER_FILE     "tmpm373_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm373_tmrb.h"
 #define TMPM_HEADER_FILE         "TMPM373.h"
+#define MEMORY_SIZE              0x1800
 #endif /* __TMPM_373__ */
 
 #ifdef __TMPM_374__
@@ -218,6 +227,7 @@
 #define TMPM_ADC_HEADER_FILE     "tmpm374_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm374_tmrb.h"
 #define TMPM_HEADER_FILE         "TMPM374.h"
+#define MEMORY_SIZE              0x1800
 #endif /* __TMPM_374__ */
 
 #ifdef __TMPM_375__
@@ -228,6 +238,7 @@
 #define TMPM_ADC_HEADER_FILE     "tmpm375_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm375_tmrb.h"
 #define TMPM_HEADER_FILE         "TMPM375.h"
+#define MEMORY_SIZE              0x1800
 #endif /* __TMPM_375__ */
 
 #ifdef __TMPM_376__
@@ -238,7 +249,87 @@
 #define TMPM_ADC_HEADER_FILE     "tmpm376_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm376_tmrb.h"
 #define TMPM_HEADER_FILE         "TMPM376.h"
+#define MEMORY_SIZE              0x8000
 #endif /* __TMPM_376__ */
+
+
+/* Needed stack size calculations */
+#define STACK_SIZE1                  (  90 )                                    /*!< Scheduler Stack Size */
+#define STACK_SIZE2                  (INIT_TASK_STACK_SIZE        + 28)
+#ifdef USE_LOAD_STATISTICS
+#define STACK_SIZE3                  (SYSTEM_LOAD_TASK_STACK_SIZE + 28)
+#else
+#define STACK_SIZE3                  0
+#endif /* USE_LOAD_STATISTICS */
+#ifdef USE_SERIAL_COMMUNICATION
+#define STACK_SIZE4                  (PROTOCOL_TASK_STACK_SIZE    + 28)
+#else 
+#define STACK_SIZE4                  0
+#endif /* USE_SERIAL_COMMUNICATION */
+#ifdef USE_CAN
+#define STACK_SIZE5                  (CAN_TASK_STACK_SIZE         + 28)
+#else 
+#define STACK_SIZE5                  0
+#endif /* USE_CAN */
+#ifdef USE_STALL_DETECT
+#define STACK_SIZE6                  (STALL_TASK_STACK_SIZE       + 28)
+#else 
+#define STACK_SIZE6                  0
+#endif /* USE_STALL_DETECT */
+#ifdef USE_RGB_LED
+#define STACK_SIZE7                  (RGB_LED_TASK_STACK_SIZE     + 28)
+#else 
+#define STACK_SIZE7                  0
+#endif /* USE_RGB_LED */
+
+#if defined __TMPM_370__ || defined __TMPM_376__
+#ifdef USE_TURN_CONTROL
+#define STACK_SIZE8                  (2*TURN_TASK_STACK_SIZE      + 28)
+#else 
+#define STACK_SIZE8                  0
+#endif /* USE_TURN_CONTROL */
+#define STACK_SIZE9                  (2*VE_TASK_STACK_SIZE        + 56)
+#else
+#ifdef USE_TURN_CONTROL
+#define STACK_SIZE8                  (TURN_TASK_STACK_SIZE        + 28)
+#else 
+#define STACK_SIZE8                  0
+#endif /* USE_TURN_CONTROL */
+#define STACK_SIZE9                  (VE_TASK_STACK_SIZE          + 28)
+#endif /* defined __TMPM_370_ || defined __TMPM_376__ */
+#ifdef USE_UI
+#define STACK_SIZE10                 (UI_TASK_STACK_SIZE          + 28)
+#else 
+#define STACK_SIZE10                 0
+#endif /* USE_UI */
+
+
+#define NEEDED_HEAP_SIZE             (4* (  STACK_SIZE1  \
+                                          + STACK_SIZE2  \
+                                          + STACK_SIZE3  \
+                                          + STACK_SIZE4  \
+                                          + STACK_SIZE5  \
+                                          + STACK_SIZE6  \
+                                          + STACK_SIZE7  \
+                                          + STACK_SIZE8  \
+                                          + STACK_SIZE9  \
+                                          + STACK_SIZE10 \
+                                          )              \
+                                      )
+
+#define FW_RAM_NEEDED                 2750
+
+#ifdef USE_DSO
+#define BOARD_DSO_SIZE                ((MEMORY_SIZE-FW_RAM_NEEDED-NEEDED_HEAP_SIZE)/2)
+#else
+#define BOARD_DSO_SIZE                0
+#endif /* USE_DSO */
+
+#if 0
+#define STR_HELPER(x) #x
+#define STR(x) STR_HELPER(x)
+#pragma message ( STR(NEEDED_HEAP_SIZE) )
+#endif
 
 /* Checking for consistency */
 

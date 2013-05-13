@@ -114,7 +114,7 @@ void SPEED_CONTROL_ADC_HANDLER(void)
                                                           / MotorParameterValues[ESC_CHANNEL].PolePairs
                                                           / 0xfff);
 
-      if (!GPIO_ReadDataBit(SPEED_CONTROL_CWCCW_PORT, SPEED_CONTROL_CWCCW_PIN))
+      if (GPIO_ReadDataBit(SPEED_CONTROL_CWCCW_PORT, SPEED_CONTROL_CWCCW_PIN))
         MotorSetValues[ESC_CHANNEL].TargetSpeed *= -1;
     }
     
@@ -180,7 +180,7 @@ void SPEED_CONTROL_PWM_HANDLER(void)
                                                         / MotorParameterValues[ESC_CHANNEL].PolePairs
                                                         / 1000);
 
-    if (!GPIO_ReadDataBit(SPEED_CONTROL_CWCCW_PORT, SPEED_CONTROL_CWCCW_PIN))
+    if (GPIO_ReadDataBit(SPEED_CONTROL_CWCCW_PORT, SPEED_CONTROL_CWCCW_PIN))
       MotorSetValues[ESC_CHANNEL].TargetSpeed *= -1;
   }
 }

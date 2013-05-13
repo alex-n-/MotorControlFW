@@ -31,9 +31,15 @@
 #define VE_CHANNEL0_TMBR_IRQ             INTTB30_IRQn
 #define VE_CHANNEL0_TMBR_IRQ_HANDLER     INTTB30_IRQHandler
 
+#ifndef __TMPM_375__
 #define VE_CHANNEL1_TMRB                 TSB_TB1                                /* Timer for VE Loop */
 #define VE_CHANNEL1_TMBR_IRQ             INTTB10_IRQn
 #define VE_CHANNEL1_TMBR_IRQ_HANDLER     INTTB10_IRQHandler
+#else
+#define VE_CHANNEL1_TMRB                 TSB_TB0                                /* Timer for VE Loop */
+#define VE_CHANNEL1_TMBR_IRQ             INTTB00_IRQn
+#define VE_CHANNEL1_TMBR_IRQ_HANDLER     INTTB00_IRQHandler
+#endif /* __TMPM_375__ */
 
 #define PAI   31416                                                             /* Pi     * 10000 */
 #define PAI2  2 * PAI                                                           /* Pi * 2 * 10000 */
@@ -328,7 +334,6 @@ enum _mainstage
   Stage_ZeroCurrentMeasure,                                                     /* measure zero current adc value */
   Stage_Initposition,                                                           /* control loop is off, first signals out and in */
   Stage_Force,                                                                  /* forced commutation */
-  Stage_ChangeUp,                                                               /* switch from forced commutation to FOC */
   Stage_FOC,                                                                    /* Field Oriented Commutation */
   Stage_Emergency                                                               /* emergency state */
 };
@@ -365,7 +370,8 @@ typedef struct
   uint32_t InductanceDropoutFactor;                                             /* fixpoint15 calculation 2*PI*I*Speed*1000/U */
   uint32_t PositionKiPreCalculation;                                            /* fixpoint15 calculation Ki*Tt*U/f */
   uint32_t PositionKpPreCalculation;                                            /* fixpoint15 calculation Kp*U/f */
-  uint16_t ChangeFrq_normed_to_HzMax;                                           /* fixpoint15 calculation HzChange normalized to HzMax */
+  uint16_t ChangeFrqUp_normed_to_HzMax;                                         /* fixpoint15 calculation HzChange normalized to HzMax */
+  uint16_t ChangeFrqDown_normed_to_HzMax;                                       /* fixpoint15 calculation HzChange normalized to HzMax */
   uint16_t IqLim_normed_to_amax;                                                /* fixpoint15 calculation IqLim normalized to a_max */
   uint16_t IdLim_normed_to_amax;                                                /* fixpoint31 calculation IdLim normalized to a_max */
   uint32_t HzMax_normed_to_PWMFrequency;                                        /* fixpoint   calcualtion HzMax normalized to PWMFrequency */
@@ -393,6 +399,24 @@ typedef enum {
   RESTART_MOTOR,
 } VE_Restart;
 
+/*! \brief PMD output state
+ *
+ *  Switch off or on the PMD
+ */
+typedef enum {
+  PMD_OFF,
+  PMD_ON,
+} VE_PMD_State;
+
+/*! \brief VE interrupt state
+ *
+ *  Switch off or on the IRQs
+ */
+typedef enum {
+  VE_IRQ_OFF,
+  VE_IRQ_ON,
+} VE_IRQ_State;
+
 
 int8_t VE_Start(uint8_t channel_number);
 int8_t VE_Stop (uint8_t channel_number);
@@ -402,7 +426,6 @@ extern int16_t              VE_Id[MAX_CHANNEL];                                 
 extern int16_t              VE_Iq[MAX_CHANNEL];                                 /* [A/maxA] q-axis current */
 extern int16_t              VE_Id_reference[MAX_CHANNEL];                       /* [A/maxA] Reference of d-axis c */
 extern int16_t              VE_Iq_reference[MAX_CHANNEL];                       /* [A/maxA] Reference of q-axis c */
-extern int16_t              VE_Theta_command[MAX_CHANNEL];
 extern FRACTIONAL           VE_Omega[MAX_CHANNEL];                              /* [Hz/maxHz] Omega(speed): Elect */
 extern FRACTIONAL           VE_Omega[MAX_CHANNEL];
 extern FRACTIONAL           VE_Theta[MAX_CHANNEL];
@@ -412,4 +435,5 @@ extern VEStage              VE_ActualStage[MAX_CHANNEL];
 extern uint16_t             VE_HzMax[MAX_CHANNEL];
 extern uint32_t             VE_v_max[MAX_CHANNEL];
 extern uint32_t             VE_a_max[MAX_CHANNEL];
+extern int16_t              VE_OmegaCalc[MAX_CHANNEL];
 #endif /* _VE_DEFINE_H_ */

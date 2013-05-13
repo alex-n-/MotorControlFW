@@ -98,12 +98,12 @@ int16_t                 VE_Iq_reference[MAX_CHANNEL];                           
 FRACTIONAL              VE_Omega[MAX_CHANNEL];                                  /*< [Hz/maxHz] Omega(speed): Electrical angle   */
 FRACTIONAL              VE_Theta[MAX_CHANNEL];                                  /*< [---] Electrical angle */
 FRACTIONAL              VE_Omega_command[MAX_CHANNEL];                          /*< [Hz/maxHz] Command of Motor omega (electrical angle)  */
-int16_t                 VE_Theta_command[MAX_CHANNEL];                          /*< [---] Command of motor theta */
 VEStage                 VE_ActualStage[MAX_CHANNEL];                            /*< Actual stage of VE */
 PreCalc                 VE_PreCalc[MAX_CHANNEL];                                /*< Pre calculated values for further computation */
 uint16_t                VE_HzMax[MAX_CHANNEL];                                  /*< Scaling factor for calculations */
 uint32_t                VE_a_max[MAX_CHANNEL];                                  /*< Scaling factor for calculations */
 uint32_t                VE_v_max[MAX_CHANNEL];                                  /*< Scaling factor for calculations */
+int16_t                 VE_OmegaCalc[MAX_CHANNEL];                              /*< Calculation value of position estimator */
 #ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
 int32_t                 VE_TargetSpeed_Backup[MAX_CHANNEL];
 #endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
@@ -117,99 +117,206 @@ static uint8_t          VE_PerformShutdown[MAX_CHANNEL];                        
 static uint32_t         VE_PerformShutdownTargetSpeed[MAX_CHANNEL];             /*< Remember Target Speed before Shutdown has initiated for recover */
 static uint16_t	        VE_StageCounter[MAX_CHANNEL];                           /*< Stage counter (for reaching the above timings) */
 static int32_t          VE_Vd[MAX_CHANNEL];                                     /*< [V/maxV] d-axis Voltage */
-static int16_t          VE_Id_command[MAX_CHANNEL];                             /*< [A/maxA] d-axis current command */
-static int16_t          VE_Iq_command[MAX_CHANNEL];                             /*< [A/maxA] q-axis current command */
 static FRACTIONAL       VE_Iq_reference_I[MAX_CHANNEL];                         /*< reference command current */
 static int16_t          VE_Omega_Target[MAX_CHANNEL];                           /*< [Hz/maxHz] OMEGA Target */
+#ifdef USE_MOTOR_DISCONNECT_DETECTION
+static uint16_t         disconnect_counter[MAX_CHANNEL];
+#endif /* USE_MOTOR_DISCONNECT_DETECTION */
 
 static TMRB_InitTypeDef VE_TMBRConfig =
 {
   TMRB_INTERVAL_TIMER,
   TMRB_CLK_DIV_2,
-  0x4e20 / VE_CONTROL_LOOP_FREQUENCY,
+  0x9c40 / VE_CONTROL_LOOP_FREQUENCY,
   TMRB_AUTO_CLEAR,
-  0x4e20 / VE_CONTROL_LOOP_FREQUENCY,
+  0x9c40 / VE_CONTROL_LOOP_FREQUENCY,
 };
 
-/*! \brief  Disable Vector Engine Interrupts
+#define VE_FOC_HYSTERESIS       5
+
+/******************************************************************************/
+/******************************************************************************/
+/***************************** Helper Functions *******************************/
+/******************************************************************************/
+/******************************************************************************/
+
+/*! \brief  Vector Engine Interrupts
   *
   * @param  channel_number: channel to work on
+  * @param  state: enable or disable
   * @retval None
 */
-static void VE_DisableIRQ(unsigned char channel_number)
+static void VE_IRQ(unsigned char channel_number,VE_IRQ_State state)
 {
+  switch (state)
+  {
+  case VE_IRQ_OFF:
+    switch (channel_number)
+    {
+#if defined __TMPM_370__ || defined __TMPM_376__
+    case 0:
+      NVIC_DisableIRQ(INTVCNA_IRQn);                                            /* disable VE0 interrupt while configure */
+      break;
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
+    case 1:
+      NVIC_DisableIRQ(INTVCNB_IRQn);                                            /* disable VE1 interrupt while configure */
+      break;
+    default:
+      assert_param(0);
+      break;
+    }
+    break;
+
+  case VE_IRQ_ON:
+    switch (channel_number)
+    {
+#if defined __TMPM_370__ || defined __TMPM_376__
+    case 0:
+      NVIC_EnableIRQ(INTVCNA_IRQn);                                             /* enable VE0 interrupt while configure */
+      break;
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
+    case 1:
+      NVIC_EnableIRQ(INTVCNB_IRQn);                                             /* enable VE1 interrupt while configure */
+      break;
+    default:
+      assert_param(0);
+      break;
+    }
+    break;
+
+  default:
+    assert_param(0);
+    break;
+  }
+}
+
+static void VE_PMD_Output(uint8_t channel_number, VE_PMD_State state)
+{
+  TEE_VEPMD_TypeDef * pVEPMDx = NULL;
+
   switch (channel_number)
   {
 #if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
-    NVIC_DisableIRQ(INTVCNA_IRQn);                                              /* disable VE0 interrupt while configure */
+    pVEPMDx = TEE_VEPMD0;
     break;
 #endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
-    NVIC_DisableIRQ(INTVCNB_IRQn);                                              /* disable VE1 interrupt while configure */
+    pVEPMDx = TEE_VEPMD1;
     break;
   default:
     assert_param(0);
     break;
   }
+  
+  if (state)
+    pVEPMDx->OUTCR = 0x1ff;
+  else
+    pVEPMDx->OUTCR = 0x0;
 }
 
-/*! \brief  Enable Vector Engine Interrupts
+/*! \brief  Calculate new target speed
+  *
+  * Calculate the new setting Omega if the user gives a new target speed (in rpm)
   *
   * @param  channel_number: channel to work on
   * @retval None
 */
-static void VE_EnableIRQ(unsigned char channel_number)
+static void calculate_new_target_speed(uint8_t channel_number)
 {
-  switch (channel_number)
-  {
-#if defined __TMPM_370__ || defined __TMPM_376__
-  case 0:
-      NVIC_EnableIRQ(INTVCNA_IRQn);                                             /* disable VE0 interrupt while configure */
-      break;
-#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
-  case 1:
-      NVIC_EnableIRQ(INTVCNB_IRQn);                                             /* disable VE1 interrupt while configure */
-      break;
-  default:
-    assert_param(0);
-    break;
-  }
+  static int32_t  old_target=0;                                                 /* remember old value */
+  static int32_t  targetspeed60;                                                /* local target speed (multiplied with 60) */
+
+  if (MotorSetValues[channel_number].TargetSpeed == old_target)
+    return;                                                                     /* nothing new to calculate */
+
+  old_target = MotorSetValues[channel_number].TargetSpeed;                      /* remember new setting */
+
+  targetspeed60 =   MotorSetValues[channel_number].TargetSpeed
+                  * MotorParameterValues[channel_number].PolePairs;
+
+  /* limit the speed parameter to it's maximum (unsigned) */
+  if (targetspeed60 > SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit)
+    targetspeed60 = SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit;
+
+  /* limit the speed parameter to it's maximum (unsigned) */
+  if (targetspeed60 < -SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit)
+    targetspeed60 = -SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit;
+
+  /* check  CW only specified by the motor parameter */
+  if (( MotorParameterValues[channel_number].Direction == MOTOR_CW_ONLY )  && ( targetspeed60 < 0))
+    targetspeed60=0;
+
+  /* check CCW only specified by the motor parameter */
+  if (( MotorParameterValues[channel_number].Direction == MOTOR_CCW_ONLY ) && ( targetspeed60 > 0))
+    targetspeed60=0;
+
+  /* convert target speed from rpm to Hz:
+   * 1Hz = 60sec = 1/60sec, targetspeed includes the pole count */
+  VE_Omega_Target[channel_number] = (int32_t)( (int64_t) targetspeed60
+                                                       * FIXPOINT_15
+                                                       / VE_HzMax[channel_number]
+                                                       / SECONDS_PER_MINUTE);
 }
 
-/*! \brief  Enable Vector Engine Interrupts
+/*! \brief  Compute the values for the GUI
   *
   * @param  channel_number: channel to work on
   * @retval None
 */
-static void VE_InitTimer(unsigned char channel_number)
+static void collect_data_for_display (uint8_t channel_number)
 {
-  switch (channel_number)
-  {
-  case 0:
-    TMRB_Enable(VE_CHANNEL0_TMRB);
-    TMRB_Init(VE_CHANNEL0_TMRB, &VE_TMBRConfig);
-    NVIC_EnableIRQ(VE_CHANNEL0_TMBR_IRQ);
-    break;
-  case 1:
-    TMRB_Enable(VE_CHANNEL1_TMRB);
-    TMRB_Init(VE_CHANNEL1_TMRB, &VE_TMBRConfig);
-    NVIC_EnableIRQ(VE_CHANNEL1_TMBR_IRQ);
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
-}
+  int64_t         av_out;                                                       /* average value output */
+  uint32_t        current;
+  static uint8_t  av_count[MAX_CHANNEL];                                        /* average build counter value output */
+  static int64_t  speedAverage[MAX_CHANNEL][5];                              /*< output for GUI */
 
+  /* Calculate rpm average over 5 ms */
+  speedAverage[channel_number][av_count[channel_number]++] = VE_Omega[channel_number].part.reg/5;
+  if (av_count[channel_number] > 4)
+  {
+    av_count[channel_number] = 0;
+  }
+  av_out = speedAverage[channel_number][0] + speedAverage[channel_number][1] +
+           speedAverage[channel_number][2] + speedAverage[channel_number][3] +
+           speedAverage[channel_number][4];
+
+  /* Calculater current normalized to A_MAX and FIXPOINT_15 */
+  current = (uint32_t)(abs(VE_Iq_reference_I[channel_number].part.reg)
+                       * VE_a_max[channel_number] / FIXPOINT_15 );
+
+  /* Calculate actual rpm */
+  /* VE_Omega (-> av_out) is electrical speed normalized with HzMax and FIXPOINT_15 */
+  /* therefor it's dependant of: */
+  /* HzMax, Polepairs and FIXPOINT_15 */
+  MotorStateValues[channel_number].ActualSpeed  = (
+                                                   (av_out
+                                                    * SECONDS_PER_MINUTE
+                                                    * VE_HzMax[channel_number]
+                                                    / FIXPOINT_15
+                                                    / MotorParameterValues[channel_number].PolePairs
+                                                   )
+                                                   * 2+1)/2;
+
+  /* Target speed in rpm */
+  MotorStateValues[channel_number].TargetSpeed  = MotorSetValues[channel_number].TargetSpeed;
+
+  /* Current in mA */
+  MotorStateValues[channel_number].Current      = current;
+
+  /* Torque in Ncm */
+  /* TorqueFactor is in mNm */
+  /* VE_Current is in mA */
+  MotorStateValues[channel_number].Torque       = MotorParameterValues[channel_number].TorqueFactor
+                                                  * current
+                                                  / 10;
+}
 
 /*! \brief  Limit Omega to speed up borders
   *
   * @param  now:      Actual Omega
   * @param  target:   Target Omega
-  * @param  lim_up:   Accelleration upper limit
-  * @param  lim_down: Accelleration lower limit
-  * @retval Cosine of Theta
+  * @param  limit:    Accelleration limit
 */
 static int32_t Limit_Omega(int64_t now, int64_t target, int64_t limit)
 {
@@ -237,52 +344,37 @@ static int32_t Limit_Omega(int64_t now, int64_t target, int64_t limit)
   }
 }
 
-/*! \brief  Sine Calculation
-  *
-  * @param  theta: Degree as int16_t
-  * @retval Sine of Theta
-*/
-static int16_t Sine(int16_t theta)
-{
-  int16_t x;                                                                    /* local swap data */
-  int16_t x1;                                                                   /* local swap data */
-  int32_t temp32;                                                               /* local calculation data */
+/******************************************************************************/
+/******************************************************************************/
+/************************* Precalculations and Inits **************************/
+/******************************************************************************/
+/******************************************************************************/
 
-  x = (int16_t) (theta & 0x7fff);                                               /* theta is unsigned now */
-  if(x >= ELE_DEG(90))
+/*! \brief  Set up timer for VE_Loop
+  *
+  * @param  channel_number: channel to work on
+  * @retval None
+*/
+static void VE_InitTimer(unsigned char channel_number)
+{
+  switch (channel_number)
   {
-    x = (int16_t) (ELE_DEG(180) - x);                                           /* macro returns 360°s fraction */
+#if (defined __TMPM370__) || (defined __TMPM376__)    
+  case 0:
+    TMRB_Enable(VE_CHANNEL0_TMRB);
+    TMRB_Init(VE_CHANNEL0_TMRB, &VE_TMBRConfig);
+    NVIC_EnableIRQ(VE_CHANNEL0_TMBR_IRQ);
+    break;
+#endif /* (defined __TMPM370__) || (defined __TMPM376__) */    
+  case 1:
+    TMRB_Enable(VE_CHANNEL1_TMRB);
+    TMRB_Init(VE_CHANNEL1_TMRB, &VE_TMBRConfig);
+    NVIC_EnableIRQ(VE_CHANNEL1_TMBR_IRQ);
+    break;
+  default:
+    assert_param(0);
+    break;
   }
-
-  x1 = x; /* x1 start data */
-  temp32 = (cSine1 * (int32_t) x1) << 1;                                        /* approximating the sine value */
-  x1 = (int16_t) (x1 * (int32_t) x >> (16 - 1));
-  temp32 += (cSine2 * (int32_t) x1) << 1;
-  x1 = (int16_t) (x1 * (int32_t) x >> (16 - 1));
-  temp32 += (cSine3 * (int32_t) x1) << 1;
-  x1 = (int16_t) (x1 * (int32_t) x >> (16 - 1));
-  temp32 += (cSine4 * (int32_t) x1) << 1;
-  x1 = (int16_t) (x1 * (int32_t) x >> (16 - 1));
-  temp32 += (cSine5 * (int32_t) x1) << 1;
-  temp32 <<= 3;
-
-  if((uint32_t) temp32 >= 0x7fffffff)                                           /* limit the result */
-    temp32 = 0x7fffffff;
-
-  if(theta <= 0)                                                                /* sign the result */
-    temp32 *= (-1);
-
-  return((int16_t) (temp32 >> 16));                                             /* return sine as fixpoint15 */
-}
-
-/*! \brief  Cosine Calculation
-  *
-  * @param  theta: Degree as int16_t
-  * @retval Cosine of Theta
-*/
-static int16_t Cosine(int16_t theta)
-{
-  return(Sine((int16_t) (ELE_DEG(90) + theta)));
 }
 
 /*! \brief  Initialize Vector Engine PI Registers
@@ -345,7 +437,6 @@ static void VE_InitPWMSettings(unsigned char channel_number)
 
   pVEx->TPWM  = VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency;
   pVEx->MDPRD = T0/SystemValues[channel_number].PWMFrequency;                   /* PWM frequency */
-
 }
 
 /*! \brief  Initialize the Vector Engine
@@ -406,10 +497,13 @@ static void VE_Init(unsigned char channel_number)
 
   __DSB();                                                                      /* flush the pipeline */
   __enable_irq();                                                               /* enable global interrupts */
-
 }
 
-
+/*! \brief  Calculate some values for further use
+  *
+  * @param  channel_number: channel to work on
+  * @retval None
+*/
 static void VE_PrecalculateChannelValues(unsigned char channel_number)
 {
   VE_a_max[channel_number] =   2500 * 1000
@@ -480,9 +574,15 @@ static void VE_PrecalculateMotorValues(unsigned char channel_number)
                 /          VE_HzMax[channel_number]
                 /          1000);
 
-  VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax
+  VE_PreCalc[channel_number].ChangeFrqUp_normed_to_HzMax
     = (uint16_t)(          FIXPOINT_15
                          * MotorParameterValues[channel_number].HzChange
+                         / VE_HzMax[channel_number]);
+  
+  VE_PreCalc[channel_number].ChangeFrqDown_normed_to_HzMax
+    = (uint16_t)(          FIXPOINT_15
+                         * (MotorParameterValues[channel_number].HzChange
+                            - MotorParameterValues[channel_number].HzChange * VE_FOC_HYSTERESIS / 100)
                          / VE_HzMax[channel_number]);
 
   VE_PreCalc[channel_number].IqLim_normed_to_amax
@@ -526,12 +626,20 @@ static void VE_PrecalculateMotorValues(unsigned char channel_number)
                 /        VE_a_max[channel_number]);
 }
 
-/*! \brief  Calculate Omega
+/******************************************************************************/
+/******************************************************************************/
+/************************* Position Estimators ********************************/
+/******************************************************************************/
+/******************************************************************************/
+
+/*! \brief  Calculate Omega BLDC
+  *
+  * Position (Omega) Calculator for BLDC motors
   *
   * @param  channel_number: channel to work on
   * @retval None
 */
-static void VE_Calculate_Omega(uint8_t channel_number)
+static void VE_Calculate_Omega_BLDC(uint8_t channel_number)
 {
   int32_t VE_temp1;                                                             /*< intermediate (temp) values for better debugging */
   int32_t VE_temp2;
@@ -587,284 +695,172 @@ static void VE_Calculate_Omega(uint8_t channel_number)
 
   /* set new omega from calculation */
   VE_Omega[channel_number].value      = VE_Omega_Calculated;
+  VE_OmegaCalc[channel_number]        = VE_Omega_Calculated>>16;                /* for DSO log */
 }
 
-/*! \brief  Calculate Iq-Ref while in Change Up
+/******************************************************************************/
+/******************************************************************************/
+/************************* Runtime calculations *******************************/
+/******************************************************************************/
+/******************************************************************************/
+
+/*! \brief  Calculate Id-Ref and Iq-Ref
   *
   * @param  channel_number: channel to work on
   * @retval None
 */
-static void VE_Calculate_R_Iq_ref_NO_Current_Control (uint8_t channel_number)
+static void VE_Calculate_Id_Iq_ref(uint8_t channel_number)
 {
-  /* Code without Speed control. R_Iq_com -> R_Iq_ref */
-  VE_Iq_reference[channel_number]         = VE_Iq_command[channel_number];
-  VE_Iq_reference_I[channel_number].value = VE_Iq_command[channel_number]<<16;
+  int32_t  VE_Temp_P;
+  int32_t  VE_Temp_I;
+  int16_t  VE_Omega_Deviation;
+  uint16_t increase_current;
 
-  /* normalizing and limiting this values to maximum current */
-  if(VE_Iq_command[channel_number] >= (VE_PreCalc[channel_number].IqLim_normed_to_amax))
+  switch (VE_ActualStage[channel_number].main)
   {
-    VE_Iq_reference[channel_number]         = (int16_t)(VE_PreCalc[channel_number].IqLim_normed_to_amax);
-    VE_Iq_reference_I[channel_number].value = (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
-  }
-  else if(VE_Iq_command[channel_number] <= -(VE_PreCalc[channel_number].IqLim_normed_to_amax))
-  {
-    VE_Iq_reference[channel_number]         = -(int16_t)(VE_PreCalc[channel_number].IqLim_normed_to_amax);
-    VE_Iq_reference_I[channel_number].value = -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
-  }
-}
+  case Stage_Stop:
+  case Stage_Bootstrap:
+  case Stage_Brake:
+  case Stage_Emergency:
+    VE_Id_reference[channel_number] = 0;
+    VE_Iq_reference[channel_number] = 0;
+    break;
+    
+  case Stage_Initposition:
+    VE_Id_reference[channel_number] = 0;
 
-/*! \brief  Calculate Iq-Ref while in FOC
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void VE_Calculate_Iq_ref_Current_Control (uint8_t channel_number)
-{
-  int32_t VE_Temp_P;
-  int32_t VE_Temp_I;
-  int16_t VE_Omega_Deviation;
+    /* set current "Iq" increasing as C-load */
+    increase_current = (((abs(VE_PreCalc[channel_number].IqCurrentForInitposition)<<16))
+                           / VE_PreCalc[channel_number].WaitTime_Position)>>16;
+    /* check minimized increase */
+    if (increase_current==0)
+      increase_current=1;
 
-  /* calculate the speed deviation\n
-   * Omega(Dev) = Omega(command) - Omega(calculated) */
-  VE_Omega_Deviation = (int16_t)((VE_Omega_command[channel_number].value - VE_Omega[channel_number].value)>>16);
-  /* normalize the deviation to maximum speed and frequency based on current */
-  VE_Temp_I =  (int32_t)( VE_Omega_Deviation
-              *(int64_t)( FIXPOINT_16
-                        * PIControl[channel_number].Speed_Ki
-                        * VE_HzMax[channel_number]
-                        / VE_a_max[channel_number]
-                        / SystemValues[channel_number].PWMFrequency));
+    if (MotorSetValues[channel_number].TargetSpeed >= 0)
+      VE_Iq_reference[channel_number] += increase_current;
+    else
+      VE_Iq_reference[channel_number] -= increase_current;
 
-  VE_Iq_reference_I[channel_number].value += VE_Temp_I;                         /* integrate to Iq(reference) */
+    /* normalizing and limiting this values to maximum current */
+    if(VE_Iq_reference[channel_number]   >= VE_PreCalc[channel_number].IqCurrentForInitposition)
+      VE_Iq_reference[channel_number]  = (int16_t)(VE_PreCalc[channel_number].IqCurrentForInitposition);
+    else if(VE_Iq_reference[channel_number] <= -VE_PreCalc[channel_number].IqCurrentForInitposition)
+      VE_Iq_reference[channel_number]     = -(int16_t)(VE_PreCalc[channel_number].IqCurrentForInitposition);
+
+    break;
+    
+  case Stage_Force:
+    if (VE_Omega_command[channel_number].part.reg >= 0)
+      VE_Iq_reference[channel_number] = VE_PreCalc[channel_number].IqCurrentForInitposition;
+    else
+      VE_Iq_reference[channel_number] = -VE_PreCalc[channel_number].IqCurrentForInitposition;
+    
+    VE_Iq_reference_I[channel_number].part.reg  = VE_Iq_reference[channel_number];
+    break;
+    
+  case Stage_FOC:
+    /* calculate the speed deviation\n
+    * Omega(Dev) = Omega(command) - Omega(calculated) */
+    VE_Omega_Deviation = (int16_t)((VE_Omega_command[channel_number].value - VE_Omega[channel_number].value)>>16);
+    /* normalize the deviation to maximum speed and frequency based on current */
+    VE_Temp_I =  (int32_t)( VE_Omega_Deviation
+                *(int64_t)( FIXPOINT_16
+                          * PIControl[channel_number].Speed_Ki
+                          * VE_HzMax[channel_number]
+                          / VE_a_max[channel_number]
+                          / SystemValues[channel_number].PWMFrequency));
+
+    VE_Iq_reference_I[channel_number].value += VE_Temp_I;                         /* integrate to Iq(reference) */
   
-  /* keep this in range */
-  if(VE_Iq_reference_I[channel_number].value > (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))  
-    VE_Iq_reference_I[channel_number].value  = (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
-  else if(VE_Iq_reference_I[channel_number].value < -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))
-    VE_Iq_reference_I[channel_number].value       = -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
+    /* keep this in range */
+    if(VE_Iq_reference_I[channel_number].value > (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))  
+      VE_Iq_reference_I[channel_number].value  = (VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
+    else if(VE_Iq_reference_I[channel_number].value < -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16))
+      VE_Iq_reference_I[channel_number].value       = -(VE_PreCalc[channel_number].IqLim_normed_to_amax<<16);
 
-  /* proportional part of the control algorithm normalized on base of current */
-  VE_Temp_P =  (int32_t)( VE_Omega_Deviation
-              *(int64_t)( FIXPOINT_16
-                        * PIControl[channel_number].Speed_Kp
-                        * VE_HzMax[channel_number]
-                        / VE_a_max[channel_number]));
+    /* proportional part of the control algorithm normalized on base of current */
+    VE_Temp_P =  (int32_t)( VE_Omega_Deviation
+                *(int64_t)( FIXPOINT_16
+                          * PIControl[channel_number].Speed_Kp
+                          * VE_HzMax[channel_number]
+                          / VE_a_max[channel_number]));
 
-  /* add the proportional part and and divide for correction */
-  VE_Iq_reference[channel_number] = (int16_t)((VE_Iq_reference_I[channel_number].value + VE_Temp_P)>>16);
+    /* add the proportional part and and divide for correction */
+    VE_Iq_reference[channel_number] = (int16_t)((VE_Iq_reference_I[channel_number].value + VE_Temp_P)>>16);
+    VE_Id_reference[channel_number] = 0;
+  
+#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
+    if( VE_Iq_reference[channel_number] > VE_PreCalc[channel_number].IqLim_normed_to_amax)
+    {
+      MotorSetValues[channel_number].TargetSpeed = MotorStateValues[channel_number].ActualSpeed;
+      MotorErrorField[channel_number].Error |= VE_SPEEDREDUCTION;
+    }
+    else if( VE_Iq_reference[channel_number] < -VE_PreCalc[channel_number].IqLim_normed_to_amax)
+    {
+      MotorSetValues[channel_number].TargetSpeed = MotorStateValues[channel_number].ActualSpeed;
+      MotorErrorField[channel_number].Error |= VE_SPEEDREDUCTION;
+    }
+    else
+      if (do_turn_control[channel_number]!=1)
+        if ( VE_PerformShutdown[channel_number] != 1)
+            MotorSetValues[channel_number].TargetSpeed = VE_TargetSpeed_Backup[channel_number];
+        else
+          MotorSetValues[channel_number].TargetSpeed = 0;
+#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
 
-  /* keep this in range */
-  if( VE_Iq_reference[channel_number] > VE_PreCalc[channel_number].IqLim_normed_to_amax)
-  {
-    VE_Iq_reference[channel_number]   = VE_PreCalc[channel_number].IqLim_normed_to_amax;
-#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
-    MotorSetValues[channel_number].TargetSpeed = MotorStateValues[channel_number].ActualSpeed;
-    MotorErrorField[channel_number].Error |= VE_SPEEDREDUCTION;
-#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
-  }
-  else if( VE_Iq_reference[channel_number] < -VE_PreCalc[channel_number].IqLim_normed_to_amax)
-  {
-    VE_Iq_reference[channel_number]        = -VE_PreCalc[channel_number].IqLim_normed_to_amax;
-#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
-    MotorSetValues[channel_number].TargetSpeed = MotorStateValues[channel_number].ActualSpeed;
-    MotorErrorField[channel_number].Error |= VE_SPEEDREDUCTION;
-#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
-  }
-#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
-  else
-    MotorSetValues[channel_number].TargetSpeed = VE_TargetSpeed_Backup[channel_number];
-#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
+    /* normalizing and limiting this values to maximum current */
+    if(VE_Iq_reference[channel_number]   >= VE_PreCalc[channel_number].IqLim_normed_to_amax)
+      VE_Iq_reference[channel_number]  = (int16_t)(VE_PreCalc[channel_number].IqLim_normed_to_amax);
+    else if(VE_Iq_reference[channel_number] <= -VE_PreCalc[channel_number].IqLim_normed_to_amax)
+      VE_Iq_reference[channel_number]     = -(int16_t)(VE_PreCalc[channel_number].IqLim_normed_to_amax);
+
+    break;
+    
+  default:
+    assert_param(0);
+    break;
+  }  
 }
 
-/*! \brief  Calculate and limit Id-Ref
+/*! \brief  Calculate or set Omeag and Theta
   *
   * @param  channel_number: channel to work on
   * @retval None
 */
-static void VE_Calculate_Id_ref(uint8_t channel_number)
+static void VE_Omega_Theta(uint8_t channel_number)
 {
-  /* calculate the determination of R_Id_ref */
-  VE_Id_reference[channel_number] = VE_Id_command[channel_number];
-
-  /* normalizing and limiting this values to maximum current */
-  if(VE_Id_command[channel_number]   >= VE_PreCalc[channel_number].IdLim_normed_to_amax)
-     VE_Id_reference[channel_number]  = (int16_t)(VE_PreCalc[channel_number].IdLim_normed_to_amax);
-  else if(VE_Id_command[channel_number] <= -VE_PreCalc[channel_number].IdLim_normed_to_amax)
-     VE_Id_reference[channel_number]     = -(int16_t)(VE_PreCalc[channel_number].IdLim_normed_to_amax);
-}
-
-/*! \brief  Determine the Omega and Theta during FOC
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void VE_Determine_Omega_Theta(uint8_t channel_number)
-{
-#ifdef USE_ENCODER
-  if (MotorParameterValues[channel_number].Encoder == MOTOR_ENCODER_SPEED)
-    ENC_Determine_Omega(channel_number);
-  else
-#endif
+  switch (VE_ActualStage[channel_number].main)
   {
-    VE_Calculate_Omega(channel_number);
+  case Stage_Stop:
+  case Stage_Bootstrap:
+  case Stage_Brake:
+  case Stage_Initposition:
+    break;
+    
+  case Stage_Force:
+    VE_Calculate_Omega_BLDC(channel_number);
+    VE_Omega[channel_number].value  = VE_Omega_command[channel_number].value;
     VE_Theta[channel_number].value += (int32_t) ( VE_Omega[channel_number].part.reg
-                                               *( VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency<<1));
-  }
-}
-
-/*! \brief  Calculate the Omeag and Theta for Forced Commutation
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void VE_Forced_Omega_Theta(uint8_t channel_number)
-{
-  VE_Omega[channel_number].value  = VE_Omega_command[channel_number].value;
-  VE_Theta[channel_number].value += (int32_t) ( VE_Omega[channel_number].part.reg
                                              *( VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency<<1));
-}
-
-/*! \brief  Calculate new target speed
-  *
-  * Calculate the new setting Omega if the user gives a new target speed (in rpm)
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void calculate_new_target_speed(uint8_t channel_number)
-{
-  static int32_t  old_target=0;                                                 /* remember old value */
-  static int32_t  targetspeed60;                                                /* local target speed (multiplied with 60) */
-
-  if (MotorSetValues[channel_number].TargetSpeed == old_target)
-    return;                                                                     /* nothing new to calculate */
-
-  old_target = MotorSetValues[channel_number].TargetSpeed;                      /* remember new setting */
-
-  targetspeed60 =   MotorSetValues[channel_number].TargetSpeed
-                  * MotorParameterValues[channel_number].PolePairs;
-
-  /* limit the speed parameter to it's maximum (unsigned) */
-  if (targetspeed60 > SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit)
-    targetspeed60 = SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit;
-
-  /* limit the speed parameter to it's maximum (unsigned) */
-  if (targetspeed60 < -SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit)
-    targetspeed60 = -SECONDS_PER_MINUTE * MotorParameterValues[channel_number].HzLimit;
-
-  /* check  CW only specified by the motor parameter */
-  if (( MotorParameterValues[channel_number].Direction == MOTOR_CW_ONLY )  && ( targetspeed60 < 0))
-    targetspeed60=0;
-
-  /* check CCW only specified by the motor parameter */
-  if (( MotorParameterValues[channel_number].Direction == MOTOR_CCW_ONLY ) && ( targetspeed60 > 0))
-    targetspeed60=0;
-
-  /* convert target speed from rpm to Hz:
-   * 1Hz = 60sec = 1/60sec, targetspeed includes the pole count */
-  VE_Omega_Target[channel_number] = (int32_t)( (int64_t) targetspeed60
-                                                       * FIXPOINT_15
-                                                       / VE_HzMax[channel_number]
-                                                       / SECONDS_PER_MINUTE);
-}
-
-/*! \brief  Compute the values for the GUI
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void collect_data_for_display (uint8_t channel_number)
-{
-  int64_t         av_out;                                                       /* average value output */
-  uint32_t        VE_Current;
-  static uint8_t  av_count[MAX_CHANNEL];                                        /* average build counter value output */
-  static int64_t  VE_SpeedAverage[MAX_CHANNEL][5];                              /*< output for GUI */
-
-  /* Calculate rpm average over 5 ms */
-  VE_SpeedAverage[channel_number][av_count[channel_number]++] = VE_Omega[channel_number].part.reg/5;
-  if (av_count[channel_number] > 4)
-  {
-    av_count[channel_number] = 0;
-  }
-  av_out = VE_SpeedAverage[channel_number][0] + VE_SpeedAverage[channel_number][1] +
-           VE_SpeedAverage[channel_number][2] + VE_SpeedAverage[channel_number][3] +
-           VE_SpeedAverage[channel_number][4];
-
-  /* Calculater current */
-  /* VE_Iq_reference_I[channel_number].part.reg is integrate part of the current - */
-  /* normalized to A_MAX and FIXPOINT_15 */
-  VE_Current = (uint32_t)( abs(VE_Iq_reference_I[channel_number].part.reg)
-                         * VE_a_max[channel_number] / FIXPOINT_15 );
-
-  /* Calculate actual rpm */
-  /* VE_Omega (-> av_out) is electrical speed normalized with HzMax and FIXPOINT_15 */
-  /* therefor it's dependant of: */
-  /* HzMax, Polepairs and FIXPOINT_15 */
-  MotorStateValues[channel_number].ActualSpeed  = (
-                                                   (av_out
-                                                    * SECONDS_PER_MINUTE
-                                                    * VE_HzMax[channel_number]
-                                                    / FIXPOINT_15
-                                                    / MotorParameterValues[channel_number].PolePairs
-                                                   )
-                                                   * 2+1)/2;
-
-  /* Target speed in rpm */
-  MotorStateValues[channel_number].TargetSpeed  = MotorSetValues[channel_number].TargetSpeed;
-
-  /* Current in mA */
-  MotorStateValues[channel_number].Current      = VE_Current;
-
-  /* Torque in Ncm */
-  /* TorqueFactor is in mNm */
-  /* VE_Current is in mA */
-  MotorStateValues[channel_number].Torque       = MotorParameterValues[channel_number].TorqueFactor
-                                                  * VE_Current
-                                                  / 10;
-}
-
-static void VE_PMD_NormalOutput(uint8_t channel_number)
-{
-  TEE_VEPMD_TypeDef * pVEPMDx = NULL;
-
-  switch (channel_number)
-  {
-#if defined __TMPM_370__ || defined __TMPM_376__
-  case 0:
-    pVEPMDx = TEE_VEPMD0;
     break;
-#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
-  case 1:
-    pVEPMDx = TEE_VEPMD1;
+    
+  case Stage_FOC:
+#ifdef USE_ENCODER
+    if (MotorParameterValues[channel_number].Encoder == MOTOR_ENCODER_SPEED)
+      ENC_Determine_Omega(channel_number);
+    else
+#endif
+    {
+      VE_Calculate_Omega_BLDC(channel_number);
+      VE_Theta[channel_number].value += (int32_t) ( VE_Omega[channel_number].part.reg
+                                               *( VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency<<1));
+    }
     break;
+
   default:
     assert_param(0);
     break;
   }
-  
-  pVEPMDx->OUTCR = 0x1ff;
-}
-
-static void VE_PMD_SwitchOff(uint8_t channel_number)
-{
-  TEE_VEPMD_TypeDef * pVEPMDx = NULL;
-
-  switch (channel_number)
-  {
-#if defined __TMPM_370__ || defined __TMPM_376__
-  case 0:
-    pVEPMDx = TEE_VEPMD0;
-    break;
-#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
-  case 1:
-    pVEPMDx = TEE_VEPMD1;
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
-  
-  pVEPMDx->OUTCR = 0;
 }
 
 /*! \brief  Handle dynamic change of parameters
@@ -908,10 +904,16 @@ static void VE_HandleParameterChange(unsigned char channel_number)
 #ifdef USE_ENCODER
     ENC_Init(channel_number);
 #endif
-    VE_Calculate_Id_ref(channel_number);
+    VE_Calculate_Id_Iq_ref(channel_number);
     ParameterChange[channel_number] &= ~VE_CHANGE_MOTOR_PARAMS;
   }
 }
+
+/******************************************************************************/
+/******************************************************************************/
+/************************* Control loop stages ********************************/
+/******************************************************************************/
+/******************************************************************************/
 
 /*! \brief  Emergency Stage
   *
@@ -922,9 +924,7 @@ static void VE_HandleParameterChange(unsigned char channel_number)
 */
 static void VE_Stage_Emergency(uint8_t channel_number)
 {
-  VE_PMD_SwitchOff(channel_number);    
-  VE_Theta_command[channel_number]              = 0;
-  VE_Theta[channel_number].value                = 0;
+  VE_PMD_Output(channel_number,PMD_OFF);
   MotorStateValues[channel_number].ActualSpeed  = 0;
   MotorStateValues[channel_number].Current      = 0;
   MotorStateValues[channel_number].Torque       = 0;
@@ -942,9 +942,8 @@ static void VE_Stage_Emergency(uint8_t channel_number)
 */
 static void VE_Stage_Stop(uint8_t channel_number)
 {
-  VE_DisableIRQ(channel_number);
-
-  VE_PMD_SwitchOff(channel_number);    
+  VE_IRQ(channel_number,VE_IRQ_OFF);
+  VE_PMD_Output(channel_number,PMD_OFF);
 
 #ifdef USE_EMERGENCY_SIGNAL  
   PMD_EmergencyReset(channel_number);
@@ -954,16 +953,15 @@ static void VE_Stage_Stop(uint8_t channel_number)
 #endif /* USE_OVERVOLTAGE_SIGNAL */
   MotorErrorField[channel_number].Error &= 0x1;                                 /* Reset all errors except overtemperature */
 
-  VE_Id_command[channel_number]          = 0;                                   /* reset all control process data */
+  VE_Calculate_Id_Iq_ref(channel_number);
+  
   VE_Omega[channel_number].value         = 0;
   VE_Omega_command[channel_number].value = 0;
   VE_StageCounter[channel_number]        = 0;                                   /* stage counter to limit time */
 
-  if (SystemValues[1].ShutdownMode != SHUTDOWN_GENTLE)                          /* Use old Theta value in case that we know it */
-  {
-    VE_Theta_command[channel_number] = 0;
-    VE_Theta[channel_number].value   = 0;
-  }
+  if (SystemValues[channel_number].ShutdownMode != SHUTDOWN_GENTLE)
+    VE_Theta[channel_number].value = 0;
+  
 }
 
 /*! \brief  Bootstrap Stage
@@ -975,8 +973,8 @@ static void VE_Stage_Stop(uint8_t channel_number)
 */
 static void VE_Stage_Bootstrap(uint8_t channel_number)
 {
+  VE_Calculate_Id_Iq_ref(channel_number);
 
-  VE_Id_command[channel_number]          = 0;                                   /* reset all control process data */
   VE_Omega[channel_number].value         = 0;
   VE_Omega_command[channel_number].value = 0;
 
@@ -1000,18 +998,16 @@ static void VE_Stage_Bootstrap(uint8_t channel_number)
 static void VE_Stage_Brake(uint8_t channel_number)
 {
 
-  VE_Id_command[channel_number]          = 0;                                   /* reset all control process data */
+  VE_Calculate_Id_Iq_ref(channel_number);
+
   VE_Omega[channel_number].value         = 0;
   VE_Omega_command[channel_number].value = 0;
   VE_StageCounter[channel_number]        = 0;                                   /* stage counter to limit time */
-  VE_Theta_command[channel_number] = 0;
-  VE_Theta[channel_number].value   = 0;
 
   MotorStateValues[channel_number].ActualSpeed  = 0;                            /* Clear GUI Values (but don't Error Flag) */
   MotorStateValues[channel_number].TargetSpeed  = 0;
   MotorStateValues[channel_number].Current      = 0;
   MotorStateValues[channel_number].Torque       = 0;
-
 }
 
 /*! \brief  Measure Zerocurrent
@@ -1035,15 +1031,11 @@ static void VE_Stage_MeasureZeroCurrent(uint8_t channel_number)
   * @retval None
 */
 static void VE_Stage_Initposition(uint8_t channel_number)
-{
-  uint16_t increrase_current;
-    
+{    
   switch(VE_ActualStage[channel_number].sub)
   {                                                                             /* initial substage */
   case Substage_Step0:
-    VE_PMD_NormalOutput(channel_number);    
-    VE_Id_command[channel_number]    = 0;                                       /* Id is zero */
-    VE_Theta_command[channel_number] = 0;                                       /* set position */
+    VE_PMD_Output(channel_number,PMD_ON);
     VE_ActualStage[channel_number].sub= Substage_Step1;                         /* next step */
     /*  No break. Continue to the next statements. */
   case Substage_Step1:
@@ -1053,23 +1045,16 @@ static void VE_Stage_Initposition(uint8_t channel_number)
       VE_ActualStage[channel_number].sub = Substage_StepEnd;                    /* set last substage */
       VE_StageCounter[channel_number]    = 0;                                   /* stage counter to limit time */
     }
-    /* set current "Id" increasing as C-load */
-    increrase_current = (((abs(VE_PreCalc[channel_number].IdCurrentForInitposition)<<16))
-                           / VE_PreCalc[channel_number].WaitTime_Position)>>16;
-    
-    if (increrase_current==0)
-      increrase_current=1;
 
-    VE_Id_command[channel_number] += increrase_current;
-    
-    if (VE_Id_command[channel_number] >= VE_PreCalc[channel_number].IdCurrentForInitposition )
-      VE_Id_command[channel_number] = VE_PreCalc[channel_number].IdCurrentForInitposition;
-    
+    VE_Omega_Theta(channel_number);
+    VE_Calculate_Id_Iq_ref(channel_number);
     break;
+    
   case Substage_StepEnd:                                                        /* final stage */
     VE_ActualStage[channel_number].main  = Stage_Force;                         /* set next stage */
     VE_ActualStage[channel_number].sub   = Substage_Step0;                      /* set next substage */
     break;
+    
   default:
     assert_param(0);
     break;
@@ -1088,95 +1073,22 @@ static void VE_Stage_Force(uint8_t channel_number)
   switch(VE_ActualStage[channel_number].sub)
   {
   case Substage_Step0:                                                          /* initial substage */
-    VE_Id_command[channel_number] = abs(VE_PreCalc[channel_number].IdCurrentForInitposition);
-    /*  No break. Continue to the next statements.  */
+
     /* If reach minimum frequency, it change to cStepEnd */
-    if(abs(VE_Omega_command[channel_number].part.reg) >= VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
+    if(abs(VE_Omega_command[channel_number].part.reg) >= VE_PreCalc[channel_number].ChangeFrqUp_normed_to_HzMax)
       VE_ActualStage[channel_number].sub = Substage_StepEnd;                    /* limit exceeded -> final stage active */
 
-    VE_Iq_command[channel_number] = VE_Id_command[channel_number];              /* make some output */
     /* Update drive frequency. for ever in this mode */
     VE_Omega_command[channel_number].value = Limit_Omega(VE_Omega_command[channel_number].value,
                                                         VE_Omega_Target[channel_number]<<16,
                                                         VE_PreCalc[channel_number].SpeedUpLimit);
     break;
-  case Substage_StepEnd:                                                        /* continuous stage */
-    VE_ActualStage[channel_number].main = Stage_ChangeUp;                       /* final set for forcing stage */
+    
+  case Substage_StepEnd:                                                        
+    VE_ActualStage[channel_number].main = Stage_FOC;                            /* final set for FOC stage */
     VE_ActualStage[channel_number].sub  = Substage_Step0;                       /* set next substage */
     break;
-  default:
-    assert_param(0);
-    break;
-  }
-}
-
-/*! \brief  Cahnge Up Stage - switching from Forced Commutation to FOC
-  *
-  * @param  channel_number: channel to work on
-  * @retval None
-*/
-static void VE_Stage_ChangeUp(uint8_t channel_number)
-{
-  int32_t id_temp,iq_temp;
-  int16_t VE_Lambda_Calculation;                                                /*< intermediate calculation of position */
-
-  switch(VE_ActualStage[channel_number].sub)
-  {
-  case Substage_Step0:                                                          /* initial substage */
-    VE_Lambda_Calculation               = 0;
-    VE_ActualStage[channel_number].sub  = Substage_Step1;
-
-    /* No break. Continue to the next statements. */
-  case Substage_Step1:                                                          /* continuous stage */
-
-    /* recalculate lambda (speed) by omega (normalized) */
-    VE_Lambda_Calculation += (abs(VE_Omega_command[channel_number].part.reg)
-                               * VE_HzMax[channel_number]
-                               / VE_CONTROL_LOOP_FREQUENCY
-                               / 1000) << 1;
-
-    /* limit lambda */
-    if(VE_Lambda_Calculation > ELE_DEG(90))
-      VE_Lambda_Calculation = ELE_DEG(90);
-
-    /* calculate initial current from lambda */
-    id_temp = (VE_PreCalc[channel_number].IdCurrentForInitposition * Cosine(VE_Lambda_Calculation)) << 1;
-    iq_temp = (VE_PreCalc[channel_number].IqCurrentForInitposition * Sine  (VE_Lambda_Calculation)) << 1;
-
-    /* use absolute values and determine direction */
-    id_temp = abs(id_temp);
-    iq_temp = abs(iq_temp);
-
-    if(VE_Omega_Target[channel_number] < 0)
-      iq_temp *= (-1);
-
-    VE_DisableIRQ(channel_number);
-
-    VE_Id_command[channel_number] = id_temp>>16;                                /* set current for vector engine */
-    VE_Iq_command[channel_number] = iq_temp>>16;
-
-    VE_EnableIRQ(channel_number);
-
-    /* Update drive frequency. */
-    VE_Omega_command[channel_number].value = Limit_Omega(VE_Omega_command[channel_number].value,
-                                                        VE_Omega_Target[channel_number]<<16,
-                                                        VE_PreCalc[channel_number].SpeedUpLimit);
-
-    /* check frequency exceeding defined limits */
-    if (abs(VE_Omega_command[channel_number].part.reg) >= VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
-      VE_ActualStage[channel_number].sub = Substage_Step2;                      /* call final stage */
-
-    break;
-  case Substage_Step2:
-    VE_Id_command[channel_number]       = 0;                                    /* leaving this mode : Id = 0 */
-    /* Update drive frequency. */
-    VE_ActualStage[channel_number].sub  = Substage_StepEnd;
-    VE_StageCounter[channel_number]     = 0;
-    break;
-  case Substage_StepEnd:                                                        /* final stage */
-    VE_ActualStage[channel_number].main = Stage_FOC;                            /* set next stage */
-    VE_ActualStage[channel_number].sub  = Substage_Step0;                       /* set next substage */
-    break;
+    
   default:
     assert_param(0);
     break;
@@ -1194,29 +1106,88 @@ static void VE_Stage_FOC(uint8_t channel_number)
 {
   switch(VE_ActualStage[channel_number].sub)
   {
-  case Substage_Step0:
-    VE_ActualStage[channel_number].sub = Substage_Step1;
-    /* No break. Continue to the next statements. */
-  case Substage_Step1:                                                          /* continuous stage */
+  case Substage_Step0:                                                          /* continuous stage */
     /* Update drive frequency. */
     VE_Omega_command[channel_number].value = Limit_Omega(VE_Omega_command[channel_number].value,
                                                         VE_Omega_Target[channel_number]<<16,
                                                         VE_PreCalc[channel_number].SpeedUpLimit);
-    /* Field-weakening control */
-    VE_Id_command[channel_number] = 0;
 
     /* check low speed rotation */
-    if(abs(VE_Omega_command[channel_number].part.reg) < VE_PreCalc[channel_number].ChangeFrq_normed_to_HzMax)
+    if(abs(VE_Omega_command[channel_number].part.reg) < VE_PreCalc[channel_number].ChangeFrqDown_normed_to_HzMax)
     {
       VE_ActualStage[channel_number].main  = Stage_Force;                       /* terminate this stage */
       VE_ActualStage[channel_number].sub   = Substage_Step0;
     }
+    break;
+    
+  default:
+    assert_param(0);
+    break;
+  }
+}
+
+/*! \brief  Functions that have to be called on regular basis
+  *
+  * This is the main worker part from the Vector Engine Task
+  * put to an own function for better structure
+  *
+  * @param  channel_number: channel number to work with
+  * @retval None
+*/
+static void VE_Loop(uint8_t channel_number)
+{
+#ifdef  USE_TEMPERATURE_CONTROL 
+  static uint16_t temp_counter=0;
+#endif /* USE_TEMPERATURE_CONTROL */  
+  
+  calculate_new_target_speed(channel_number);
+  collect_data_for_display(channel_number);
+
+#ifdef  USE_TEMPERATURE_CONTROL 
+  if (temp_counter++>=1000)
+  {
+    temp_counter=0;
+    TEMPERATURE_CheckOvertemp(channel_number);
+  }
+#endif /* USE_TEMPERATURE_CONTROL */  
+
+  switch (VE_ActualStage[channel_number].main)
+  {
+  case Stage_Stop:
+    VE_Stage_Stop(channel_number);                                              /* active in Stop mode */
+    break;
+  case Stage_Bootstrap:
+    VE_Stage_Bootstrap(channel_number);                                         /* active in Bootstrap mode */
+    break;
+  case Stage_Brake:
+    VE_Stage_Brake(channel_number);                                             /* active in Brake mode */
+    break;
+  case Stage_ZeroCurrentMeasure:
+    VE_Stage_MeasureZeroCurrent(channel_number);                                /* measure zero current */
+    break;
+  case Stage_Initposition:
+    VE_Stage_Initposition(channel_number);                                      /* Positioning mode */
+    break;
+  case Stage_Force:
+    VE_Stage_Force(channel_number);                                             /* Forced commutation mode */
+    break;
+  case Stage_FOC:
+    VE_Stage_FOC(channel_number);                                               /* Speed control by current mode */
+    break;
+  case Stage_Emergency:
+    VE_Stage_Emergency(channel_number);                                         /* Emergency mode */
     break;
   default:
     assert_param(0);
     break;
   }
 }
+
+/******************************************************************************/
+/******************************************************************************/
+/*************************** IRQ part of VE ***********************************/
+/******************************************************************************/
+/******************************************************************************/
 
 /*! \brief  Common part for the Vector Engine IRQ
   *
@@ -1226,6 +1197,9 @@ static void VE_Stage_FOC(uint8_t channel_number)
 static void IRQ_Common(uint8_t channel_number)
 {
   TEE_VE_TypeDef*     pVEx    = NULL;
+#ifdef USE_MOTOR_DISCONNECT_DETECTION
+  uint32_t meas_current,calc_current;
+#endif /* USE_MOTOR_DISCONNECT_DETECTION */
 
   switch (channel_number)
   {
@@ -1242,12 +1216,19 @@ static void IRQ_Common(uint8_t channel_number)
     break;
   }
 
+  /*****************************************/
+  /************* Task selection ************/
+  /*****************************************/
   switch (VE_ActualStage[channel_number].main)
   {
+  /************ Emergency Stage ************/
+  /*************** Stop Stage **************/
   case Stage_Emergency:
   case Stage_Stop:
     pVEx->MODE        = VE_MODE_OFF;                                            /* Output OFF */
     break;
+   
+  /******** Zero Current Measurement *******/
   case Stage_ZeroCurrentMeasure:
     pVEx->MODE        = VE_ZEROCURRENTEN;                                       /* Input 0 current */
     TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                                       /* VE start from current control */
@@ -1257,15 +1238,10 @@ static void IRQ_Common(uint8_t channel_number)
                          & ~(VE_ACTSCH_CLEAN_MASK<<(channel_number*4)))
                          | VE_ACTSCH_SCHEDULE_9<<(channel_number*4);            /* Schedule 9 */
     break;
+
+  /*********** Bootstrap Stage *************/
+  /************** Break Stage **************/
   case Stage_Bootstrap:
-    pVEx->MODE        = VE_OUTPUTENABLE;                                        /* Output ON */
-    TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                                       /* VE start from sin/cos computation */
-                         & ~(VE_TASKAPP_CLEAN_MASK<<(channel_number*4)))
-                         | VE_TASKAPP_SIN_COS_COMPUTATION<<(channel_number*4);
-    TEE_VEC->ACTSCH   = (TEE_VEC->ACTSCH
-                         & ~(VE_ACTSCH_CLEAN_MASK<<(channel_number*4)))
-                         | VE_ACTSCH_SCHEDULE_4<<(channel_number*4);            /* Schedule 9 */
-    break;
   case Stage_Brake:
     pVEx->MODE        = VE_OUTPUTENABLE;                                        /* Output ON */
     TEE_VEC->TASKAPP  = (TEE_VEC->TASKAPP                                       /* VE start from sin/cos computation */
@@ -1275,9 +1251,13 @@ static void IRQ_Common(uint8_t channel_number)
                          & ~(VE_ACTSCH_CLEAN_MASK<<(channel_number*4)))
                          | VE_ACTSCH_SCHEDULE_4<<(channel_number*4);            /* Schedule 9 */
     break;
+
+  /********** Position Stage ***************/
+  /******* Forced Commutation Stage ********/
+  /*********** ChangeUp Stage **************/
+  /************* FOC Stage *****************/
   case Stage_Initposition:
   case Stage_Force:
-  case Stage_ChangeUp:
   case Stage_FOC:
     pVEx->MODE        = VE_OUTPUTENABLE;                                        /* Output ON */
 #ifndef USE_USER_CALLBACKS
@@ -1362,6 +1342,9 @@ static void IRQ_Common(uint8_t channel_number)
   VE_Id[channel_number] = (int16_t)(pVEx->ID>>16);                              /* Read Id from VE */
   VE_Iq[channel_number] = (int16_t)(pVEx->IQ>>16);                              /* Read Iq from VE */
 
+  /*****************************************/
+  /****** Current / Pos calculation ********/
+  /*****************************************/
   switch (VE_ActualStage[channel_number].main)
   {
   case Stage_Stop:
@@ -1372,17 +1355,9 @@ static void IRQ_Common(uint8_t channel_number)
   case Stage_Brake:
     break;
   case Stage_Force:
-    VE_Forced_Omega_Theta(channel_number);
-    VE_Calculate_R_Iq_ref_NO_Current_Control(channel_number);
-    break;
-  case Stage_ChangeUp:
-    VE_Determine_Omega_Theta(channel_number);
-    VE_Calculate_R_Iq_ref_NO_Current_Control(channel_number);
-    break;
   case Stage_FOC:
-    VE_Determine_Omega_Theta(channel_number);
-    VE_Calculate_Iq_ref_Current_Control(channel_number);
-    VE_Calculate_Id_ref(channel_number);
+    VE_Omega_Theta(channel_number);
+    VE_Calculate_Id_Iq_ref(channel_number);
     break;
   default:
     assert_param(0);
@@ -1392,41 +1367,26 @@ static void IRQ_Common(uint8_t channel_number)
   switch (VE_ActualStage[channel_number].main)
   {
   /*****************************************/
-  /************ STOP Stage *****************/
-  /*****************************************/
-  case Stage_Stop:
-    pVEx->OMEGA= 0x00u;
-    pVEx->ID   = 0x00u;
-    pVEx->IQ   = 0x00u;
-    pVEx->VD   = 0x00u;
-    pVEx->VQ   = 0x00u;
-    pVEx->IDREF= 0x00u;
-    pVEx->IQREF= 0x00u;
-    pVEx->THETA= 0x00u;
-    VE_Omega_command[channel_number].value  = 0;
-    break;
-  /*****************************************/
+  /************ Emergency Stage ************/
+  /************** STOP Stage ***************/
   /*********** Bootstrap Stage *************/
-  /*****************************************/
-  case Stage_Bootstrap:
-    pVEx->IDREF= 0x00u;
-    pVEx->IQREF= 0x00u;
-    VE_Omega_command[channel_number].value  = 0;
-    break;
-  /*****************************************/
   /************** Break Stage **************/
   /*****************************************/
+  case Stage_Emergency:
+  case Stage_Stop:
+  case Stage_Bootstrap:
   case Stage_Brake:
-    pVEx->OMEGA= 0x00u;
-    pVEx->ID   = 0x00u;
-    pVEx->IQ   = 0x00u;
-    pVEx->VD   = 0x00u;
-    pVEx->VQ   = 0x00u;
-    pVEx->IDREF= 0x00u;
-    pVEx->IQREF= 0x00u;
-    pVEx->THETA= 0x00u;
+    pVEx->OMEGA= 0x0;
+    pVEx->ID   = 0x0;
+    pVEx->IQ   = 0x0;
+    pVEx->VD   = 0x0;
+    pVEx->VQ   = 0x0;
+    pVEx->IDREF= 0x0;
+    pVEx->IQREF= 0x0;
+    pVEx->THETA= 0x0;
     VE_Omega_command[channel_number].value  = 0;
     break;
+
   /*****************************************/
   /******** Measure Zero Current ***********/
   /*****************************************/
@@ -1443,50 +1403,39 @@ static void IRQ_Common(uint8_t channel_number)
       VE_StageCounter[channel_number]     = 0;                                  /* stage counter to limit time */
     }
     break;
+    
   /*****************************************/
-  /********** Position Stage ***************/
-  /*****************************************/
-  case Stage_Initposition:
-    pVEx->IDREF = VE_Id_command[channel_number];                                /* Set Id */
-    break;
-  /*****************************************/
-  /**** Forced Commutation Stage ***********/
+  /************ Position Stage *************/
+  /******* Forced Commutation Stage ********/
+  /************* FOC Stage *****************/
   /*****************************************/
   case Stage_Force:
-    pVEx->IDREF = VE_Id_command[channel_number];                                /* Set Id */
-    pVEx->IQREF = 0x00u;                                                        /* Set Iq=0 */
-    pVEx->THETA = VE_Theta[channel_number].part.reg;                            /* Theta set */
-#ifdef USE_MOTOR_DISCONNECT_DETECTION    
-    if( ( abs(pVEx->IAADC-pVEx->IA0)
-        + abs(pVEx->IBADC-pVEx->IB0)
-        + abs(pVEx->IBADC-pVEx->IC0) ) < 0x50 )
+#ifdef USE_MOTOR_DISCONNECT_DETECTION
+    meas_current = abs(pVEx->IAADC-pVEx->IA0) + abs(pVEx->IBADC-pVEx->IB0) + abs(pVEx->IBADC-pVEx->IC0);
+    calc_current = (MotorParameterValues[channel_number].IdStart + MotorParameterValues[channel_number].IqStart) * VE_a_max[channel_number] / 0x7ff;
+      
+    if(  ( meas_current < calc_current / 5)
+       &&( abs(VE_Omega_command[channel_number].part.reg) >= 1000) )
+       disconnect_counter[channel_number]++;
+    else
+      disconnect_counter[channel_number]=0;
+       
+    if (disconnect_counter[channel_number] > 1000)
     {
       MotorErrorField[channel_number].Error |= VE_NOMOTOR;
       VE_ActualStage[channel_number].main = Stage_Emergency;
     }
 #endif /* USE_MOTOR_DISCONNECT_DETECTION */ 
-    break;
-  /*****************************************/
-  /********** ChangeUp Stage ***************/
-  /*****************************************/
-  case Stage_ChangeUp:
-    pVEx->IDREF = VE_Id_command[channel_number];                                /* Set Id */
-    pVEx->IQREF = VE_Iq_command[channel_number];                                /* Set Iq */
-    pVEx->THETA = VE_Theta[channel_number].part.reg;                            /* Theta set */
-    break;
-  /*****************************************/
-  /************* FOC Stage *****************/
-  /*****************************************/
+  case Stage_Initposition:
   case Stage_FOC:
-    pVEx->IDREF = VE_Id_reference[channel_number];                              /* Set Id */
-    pVEx->IQREF = VE_Iq_reference[channel_number];                              /* Set Iq */
+    pVEx->IDREF = VE_Id_reference[channel_number];                              /* Set Id reference */
+    pVEx->IQREF = VE_Iq_reference[channel_number];                              /* Set Iq reference */
     pVEx->THETA = VE_Theta[channel_number].part.reg;                            /* Theta set */
     break;
+
   /*****************************************/
-  /************ Emergency Stage ************/
+  /***************** ERROR *****************/
   /*****************************************/
-  case Stage_Emergency:
-    break;
   default:
     assert_param(0);
     break;
@@ -1556,7 +1505,6 @@ static void IRQ_Common(uint8_t channel_number)
 #if defined __TMPM_370__ || defined __TMPM_376__
 void INTVCNA_IRQHandler(void)
 {
-  IRQ_Common(0);
 #ifdef USE_DSO
   DSO_Log (VE_CALLING , TEE_VE0 );
 #endif // USE_DSO
@@ -1568,6 +1516,8 @@ void INTVCNA_IRQHandler(void)
 #endif // USE_STALL_DETECT
   if (ParameterChange[0]!=0)
     VE_HandleParameterChange(0);
+
+  IRQ_Common(0);
 }
 #endif /* defined __TMPM_370__ || defined __TMPM_376__ */
 
@@ -1578,7 +1528,6 @@ void INTVCNA_IRQHandler(void)
 */
 void INTVCNB_IRQHandler(void)
 {
-  IRQ_Common(1);
 #ifdef USE_DSO
   DSO_Log (VE_CALLING , TEE_VE1 );
 #endif // USE_DSO
@@ -1590,66 +1539,8 @@ void INTVCNB_IRQHandler(void)
 #endif // USE_STALL_DETECT
   if (ParameterChange[1]!=0)
     VE_HandleParameterChange(1);
-}
 
-/*! \brief  Functions that have to be called on regular basis
-  *
-  * This is the main worker part from the Vector Engine Task
-  * put to an own function for better structure
-  *
-  * @param  channel_number: channel number to work with
-  * @retval None
-*/
-static void VE_Loop(uint8_t channel_number)
-{
-#ifdef  USE_TEMPERATURE_CONTROL 
-  static uint16_t temp_counter=0;
-#endif /* USE_TEMPERATURE_CONTROL */  
-  
-  calculate_new_target_speed(channel_number);
-  collect_data_for_display(channel_number);
-
-#ifdef  USE_TEMPERATURE_CONTROL 
-  if (temp_counter++>=1000)
-  {
-    temp_counter=0;
-    TEMPERATURE_CheckOvertemp(channel_number);
-  }
-#endif /* USE_TEMPERATURE_CONTROL */  
-
-  switch (VE_ActualStage[channel_number].main)
-  {
-  case Stage_Stop:
-    VE_Stage_Stop(channel_number);                                              /* active in Stop mode */
-    break;
-  case Stage_Bootstrap:
-    VE_Stage_Bootstrap(channel_number);                                         /* active in Bootstrap mode */
-    break;
-  case Stage_Brake:
-    VE_Stage_Brake(channel_number);                                             /* active in Brake mode */
-    break;
-  case Stage_ZeroCurrentMeasure:
-    VE_Stage_MeasureZeroCurrent(channel_number);                                /* measure zero current */
-    break;
-  case Stage_Initposition:
-    VE_Stage_Initposition(channel_number);                                      /* Positioning mode */
-    break;
-  case Stage_Force:
-    VE_Stage_Force(channel_number);                                             /* Forced commutation mode */
-    break;
-  case Stage_ChangeUp:
-    VE_Stage_ChangeUp(channel_number);                                          /* Change up mode */
-    break;
-  case Stage_FOC:
-    VE_Stage_FOC(channel_number);                                               /* Speed control by current mode */
-    break;
-  case Stage_Emergency:
-    VE_Stage_Emergency(channel_number);                                         /* Emergency mode */
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
+  IRQ_Common(1);
 }
 
 /*! \brief  clear off the rest for stopping the Vector Engine
@@ -1691,7 +1582,7 @@ static void complete_shutdown(uint8_t channel_number)
   MotorStateValues[channel_number].Torque       = 0;
 
   xVETask[channel_number]=NULL;                                                 /* Delete Task Handle */
-  VE_DisableIRQ(channel_number);
+  VE_IRQ(channel_number,VE_IRQ_OFF);
   memset (pVEx,0,sizeof(TEE_VE_TypeDef));
   VE_Omega[channel_number].value         = 0;
   VE_Omega_command[channel_number].value = 0;
@@ -1701,9 +1592,11 @@ static void complete_shutdown(uint8_t channel_number)
 
   switch (channel_number)
   {
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     TMRB_SetRunState(VE_CHANNEL0_TMRB, TMRB_STOP);
     break;
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     TMRB_SetRunState(VE_CHANNEL1_TMRB, TMRB_STOP);
     break;
@@ -1725,12 +1618,14 @@ void VETask(void* pvParameters)
   long           channel_number = (long) pvParameters;
   static uint8_t state = 0;
 
-  VE_EnableIRQ(channel_number);
+  VE_IRQ(channel_number,VE_IRQ_ON);
   switch (channel_number)
   {
+#if defined __TMPM_370__ || defined __TMPM_376__
   case 0:
     TMRB_SetRunState(VE_CHANNEL0_TMRB, TMRB_RUN);
     break;
+#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
   case 1:
     TMRB_SetRunState(VE_CHANNEL1_TMRB, TMRB_RUN);
     break;

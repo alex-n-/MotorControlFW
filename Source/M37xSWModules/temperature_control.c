@@ -19,6 +19,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "config.h"
 
@@ -58,6 +59,8 @@ int8_t TEMPERATURE_GetTemperature(uint8_t channel_number)
   ADC_Result         result;
   uint8_t            i;
 
+	memset(&result,0,sizeof(result));
+	
   switch (channel_number)
   {
 #if defined __TMPM_370__ || defined __TMPM_376__

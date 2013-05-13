@@ -24,11 +24,18 @@
 #define TEMP_SLOPE 5
 #define VISHAY_NTCLE100E3103JB0
 
+#ifndef HWPATCH_2_TIMES_LV
 #define USE_EMERGENCY_SIGNAL
+#endif
+
 #define USE_OVERVOLTAGE_SIGNAL
 
 /* BOARD PARAMETER */
+#ifndef HWPATCH_2_TIMES_LV
 #define BOARD_NAME_PWR                          "Hitex M370 HV"
+#else
+#define BOARD_NAME_PWR                          "Hitex M370 LVPatch"
+#endif
 
 #define BOARD_DEAD_TIME                         1400                            /* [ns]             - Dead time for FETs */
 #define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */

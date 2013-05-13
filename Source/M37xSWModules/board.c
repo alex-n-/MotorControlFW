@@ -20,8 +20,11 @@
 #include "config.h"
 #include TMPM_ADC_HEADER_FILE
 #include BOARD_BOARD_HEADER_FILE
-#include BOARD_LED_HEADER_FILE
 #include BOARD_GAIN_HEADER_FILE
+
+#ifdef USE_LED
+#include BOARD_LED_HEADER_FILE
+#endif /* USE_LED */
 
 #ifdef BOARD_PWR_HEADER_FILE_0
 #include BOARD_PWR_HEADER_FILE_0
@@ -39,9 +42,9 @@
 #include "pwr_undefine.h"
 #endif /* BOARD_PWR_HEADER_FILE_1 */
 
-#ifndef BOARD_M37SIGMA
+#if (!defined BOARD_M37SIGMA) && (!defined BOARD_M375STK)
 #include BOARD_SPI_HEADER_FILE
-#endif /* BOARD_M37SIGMA */
+#endif /* (!defined BOARD_M37SIGMA) && (!defined BOARD_M375STK) */
 
 #ifdef USE_RGB_LED
 #include BOARD_RGB_LED_HEADER_FILE
@@ -88,11 +91,9 @@ void BOARD_SetupHW(void)
   FirmwareVersion.fw_version[0]=FW_VERSION_MAJOR;
   FirmwareVersion.fw_version[1]=FW_VERSION_MINOR;
   
-#ifndef BOARD_M37SIGMA
+#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) | defined (BOARD_HITEX_M370) )
   SPI_DeviceInit(SPI_10_MHZ);                                                   /* Init SPI Channel */
 #endif /* BOARD_M37SIGMA */
-  BOARD_SetupGain();                                                            /* Set up the gain for current measure */
-  
   BoardRevision = BOARD_Detect_Revision();
 
 #ifdef BOARD_PWR_HEADER_FILE_0                                                          /* Set up Board dependant values */
@@ -126,6 +127,8 @@ void BOARD_SetupHW(void)
   ChannelValues[1].polh                        = BOARD_POLH;
 #include "pwr_undefine.h"
 #endif /* BOARD_PWR_HEADER_FILE_1 */
+
+  BOARD_SetupGain();                                                            /* Set up the gain for current measure */
   
 #ifdef USE_LED
   LED_Init();                                                                   /* Init LED Ports */

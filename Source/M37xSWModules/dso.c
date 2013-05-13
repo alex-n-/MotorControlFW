@@ -51,6 +51,8 @@ static unsigned long        log_times             = 0;                          
 static int16_t              spread                = 0;                          /* actual spread state */
 static unsigned char        spread_factor         = 0;                          /* factor of which the logging is spread */
 
+static int                  user_dummy            = 0;
+
 /*********************************************************************
 ************************** Macros ************************************
 *********************************************************************/	
@@ -121,7 +123,6 @@ static signed char get_trigger_offset(unsigned long trigger_value)
 */
 static int16_t* DSO_Fill_up_dataPMD(int16_t* pos)
 {
-
   LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Va,         17);
   LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Vb,         17);
   LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Vc,         17);
@@ -142,18 +143,15 @@ static int16_t* DSO_Fill_up_dataVE(int16_t* pos, TEE_VE_TypeDef* pVEx)
 {
   LOG_IF_SELECTED(pVEx->ID,                     Id,         16);
   LOG_IF_SELECTED(pVEx->IDREF,                  Id_Ref,      0);
-  LOG_IF_SELECTED(pVEx->CIDKP,                  Id_kp,       0);
-  LOG_IF_SELECTED(pVEx->CIDKI,                  Id_ki,       0);
   LOG_IF_SELECTED(pVEx->IQ,                     Iq,         16);
   LOG_IF_SELECTED(pVEx->IQREF,                  Iq_Ref,      0);
-  LOG_IF_SELECTED(pVEx->CIQKP,                  Iq_kp,       0);
-  LOG_IF_SELECTED(pVEx->CIQKI,                  Iq_ki,       0);
   LOG_IF_SELECTED(pVEx->VD,                     Vd,         16);
   LOG_IF_SELECTED(pVEx->VQ,                     Vq,         16);
   LOG_IF_SELECTED(pVEx->VDIH,                   Vdi,        16);
   LOG_IF_SELECTED(pVEx->VQIH,                   Vqi,        16);
   LOG_IF_SELECTED(pVEx->THETA,                  Theta,       1);
   LOG_IF_SELECTED(VE_Omega[channel].part.reg,   Omega,       0);
+  LOG_IF_SELECTED(VE_OmegaCalc[channel],        OmegaCalc,   0);
   LOG_IF_SELECTED(pVEx->SIN,                    SIN_Theta,   0);
   LOG_IF_SELECTED(pVEx->COS,                    COS_Theta,   0);
   LOG_IF_SELECTED(pVEx->SECTOR,                 Sector,      0);
@@ -163,10 +161,13 @@ static int16_t* DSO_Fill_up_dataVE(int16_t* pos, TEE_VE_TypeDef* pVEx)
   LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Ic,         16);
   LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Ialpha,     16);
   LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Ibeta,      16);
-  LOG_IF_SELECTED(VE_Id_reference[channel],     SW_Id_Ref,   0);
-  LOG_IF_SELECTED(VE_Iq_reference[channel],     SW_Iq_Ref,   0);
-  LOG_IF_SELECTED(VE_Id[channel],               SW_Id,       0);
-  LOG_IF_SELECTED(VE_Iq[channel],               SW_Iq,       0);
+  LOG_IF_SELECTED(VE_ActualStage[channel].main, VE_Stage,    0);
+  LOG_IF_SELECTED(user_dummy,                   User_1,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_2,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_3,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_4,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_5,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_6,      0);
 
   return pos;
 }
@@ -426,5 +427,5 @@ void DSO_Log (Expected_Log_Caller caller , TEE_VE_TypeDef* pVEx )
        spread=spread_factor;                                                    /* cause not logging every set of values */
   }
   
-  }    
+}    
 #endif

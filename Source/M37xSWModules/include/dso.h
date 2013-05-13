@@ -39,34 +39,34 @@ typedef enum
   Vbeta           = (1<< 4),                                                    /*!< beta-axis voltage */
   Id              = (1<< 5),                                                    /*!< d-axis current */
   Id_Ref          = (1<< 6),                                                    /*!< d-axis reference current */
-  Id_kp           = (1<< 7),                                                    /*!< Proportional coefficient */
-  Id_ki           = (1<< 8),                                                    /*!< Proportional coefficient */
-  Iq              = (1<< 9),                                                    /*!< q-axis current */
-  Iq_Ref          = (1<<10),                                                    /*!< q-axis reference current */
-  Iq_kp           = (1<<11),                                                    /*!< Proportional coefficient */
-  Iq_ki           = (1<<12),                                                    /*!< Proportional coefficient */
-  Vd              = (1<<13),                                                    /*!< d-axis voltage */
-  Vq              = (1<<14),                                                    /*!< q-axis voltage */
-  Vdi             = (1<<15),                                                    /*!< d-axis integral term */
-  Vqi             = (1<<16),                                                    /*!< q-axis integral term */
-  Theta           = (1<<17),                                                    /*!< Phase 0 */
-  Omega           = (1<<18),                                                    /*!< Rotation speed */
-  SIN_Theta       = (1<<19),                                                    /*!< Sine Value at 0 */
-  COS_Theta       = (1<<20),                                                    /*!< Cosine Value at 0 */
-  Sector          = (1<<21),                                                    /*!< Sector information */
-  VDC             = (1<<22),                                                    /*!< Motor supply voltage */
-  Ia              = (1<<23),                                                    /*!< a-phase current */
-  Ib              = (1<<24),                                                    /*!< b-phase current */  
-  Ic              = (1<<25),                                                    /*!< c-phase current */
-  Ialpha          = (1<<26),                                                    /*!< alpha-axis current */
-  Ibeta           = (1<<27),                                                    /*!< beat-axis current */
-  SW_Id_Ref       = (1<<28),                                                    /*!< d-axis reference current (inside variable) */
-  SW_Iq_Ref       = (1<<29),                                                    /*!< q-axis reference current (inside variable) */
-  SW_Id           = (1<<30),                                                    /*!< d-axis current (inside variable) */
+  Iq              = (1<< 7),                                                    /*!< q-axis current */
+  Iq_Ref          = (1<< 8),                                                    /*!< q-axis reference current */
+  Vd              = (1<< 9),                                                    /*!< d-axis voltage */
+  Vq              = (1<<10),                                                    /*!< q-axis voltage */
+  Vdi             = (1<<11),                                                    /*!< d-axis integral term */
+  Vqi             = (1<<12),                                                    /*!< q-axis integral term */
+  Theta           = (1<<13),                                                    /*!< Phase 0 */
+  Omega           = (1<<14),                                                    /*!< Rotation speed */
+  OmegaCalc       = (1<<15),
+  SIN_Theta       = (1<<16),                                                    /*!< Sine Value at 0 */
+  COS_Theta       = (1<<17),                                                    /*!< Cosine Value at 0 */
+  Sector          = (1<<18),                                                    /*!< Sector information */
+  VDC             = (1<<19),                                                    /*!< Motor supply voltage */
+  Ia              = (1<<20),                                                    /*!< a-phase current */
+  Ib              = (1<<21),                                                    /*!< b-phase current */  
+  Ic              = (1<<22),                                                    /*!< c-phase current */
+  Ialpha          = (1<<23),                                                    /*!< alpha-axis current */
+  Ibeta           = (1<<24),                                                    /*!< beat-axis current */
+  VE_Stage        = (1<<25),                                                    /*!< User log variable */
+  User_1          = (1<<26),                                                    /*!< User log variable */
+  User_2          = (1<<27),                                                    /*!< User log variable */
+  User_3          = (1<<28),                                                    /*!< User log variable */
+  User_4          = (1<<29),                                                    /*!< User log variable */
+  User_5          = (1<<30),                                                    /*!< User log variable */
 #if (defined(__KEIL__))
 #pragma diag_suppress 61
 #endif
-  SW_Iq           = (1<<31),                                                    /*!< q-axis current (inside variable) */
+  User_6          = (1<<31),                                                    /*!< User log variable */
 #if (defined(__KEIL__))
 #pragma diag_default 61
 #endif

@@ -33,4 +33,23 @@
 #define dprintf(...)
 #endif
 
+
+#if 0
+#define rprintf(...) \
+  do \
+  { \
+    printf("%s(): ", __func__); \
+    printf(__VA_ARGS__); \
+  } while(0)
+#define tprintf(...) \
+  do \
+  { \
+    printf("%s(): ", __func__); \
+    printf(__VA_ARGS__); \
+  } while(0)
+#else
+#define rprintf(...)
+#define tprintf(...)
+#endif
+
 #endif

@@ -22,7 +22,10 @@
 
 #include "config.h"
 #include BOARD_BOARD_HEADER_FILE
+
+#ifdef USE_LED
 #include BOARD_LED_HEADER_FILE
+#endif /* USE_LED */
 
 #ifdef BOARD_PWR_HEADER_FILE_0
 #include BOARD_PWR_HEADER_FILE_0

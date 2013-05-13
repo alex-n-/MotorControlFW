@@ -20,7 +20,7 @@
 #include <stdint.h>
 #include "config.h"
 
-//#define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
+#define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
 #define VISHAY_NTCLE100E3103JB0
 

@@ -37,7 +37,7 @@
 #define USE_HV_COMMUNICATION
 
 /* BOARD PARAMETER */
-#define BOARD_NAME_PWR                          "Glyn M37x IPM-PWR v2.0"
+#define BOARD_NAME_PWR                          "M37x IPM-PWR v2.0"
 
 #define BOARD_DEAD_TIME                         2200                            /* [ns]             - Dead time for IPM */
 #define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */

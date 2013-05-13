@@ -151,6 +151,8 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
 uint16_t ADC_GetVDC(uint8_t channel_number)
 {
   ADC_Result         result;
+	
+	memset(&result,0,sizeof(result));
   
   switch (channel_number)
   {

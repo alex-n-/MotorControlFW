@@ -36,6 +36,8 @@ static int is_configured = 0;
 static int is_enabled = 0;
 static int in_progress = 0;
 
+static int user_dummy = 0;
+
 #define MAX_NUM_ENTRIES 32
 #define NUM_SIZE_HEADER 5 /* Start-Byte, Checksum, Event, Timestamp */
 #define SIZE_XFER_ARRAY (NUM_SIZE_HEADER+(MAX_NUM_ENTRIES*2))
@@ -223,18 +225,15 @@ void HsDSO_Log_VE(int offset)
 
   LOG_IF_SELECTED(pVEx->ID,                     Id,         16);
   LOG_IF_SELECTED(pVEx->IDREF,                  Id_Ref,      0);
-  LOG_IF_SELECTED(pVEx->CIDKP,                  Id_kp,       0);
-  LOG_IF_SELECTED(pVEx->CIDKI,                  Id_ki,       0);
   LOG_IF_SELECTED(pVEx->IQ,                     Iq,         16);
   LOG_IF_SELECTED(pVEx->IQREF,                  Iq_Ref,      0);
-  LOG_IF_SELECTED(pVEx->CIQKP,                  Iq_kp,       0);
-  LOG_IF_SELECTED(pVEx->CIQKI,                  Iq_ki,       0);
   LOG_IF_SELECTED(pVEx->VD,                     Vd,         16);
   LOG_IF_SELECTED(pVEx->VQ,                     Vq,         16);
   LOG_IF_SELECTED(pVEx->VDIH,                   Vdi,        16);
   LOG_IF_SELECTED(pVEx->VQIH,                   Vqi,        16);
   LOG_IF_SELECTED(pVEx->THETA,                  Theta,       1);
   LOG_IF_SELECTED(VE_Omega[offset].part.reg,    Omega,       0);
+  LOG_IF_SELECTED(VE_OmegaCalc[offset],         OmegaCalc,   0);
   LOG_IF_SELECTED(pVEx->SIN,                    SIN_Theta,   0);
   LOG_IF_SELECTED(pVEx->COS,                    COS_Theta,   0);
   LOG_IF_SELECTED(pVEx->SECTOR,                 Sector,      0);
@@ -244,10 +243,13 @@ void HsDSO_Log_VE(int offset)
   LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Ic,         16);
   LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Ialpha,     16);
   LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Ibeta,      16);
-  LOG_IF_SELECTED(VE_Id_reference[offset],      SW_Id_Ref,   0);
-  LOG_IF_SELECTED(VE_Iq_reference[offset],      SW_Iq_Ref,   0);
-  LOG_IF_SELECTED(VE_Id[offset],                SW_Id,       0);
-  LOG_IF_SELECTED(VE_Iq[offset],                SW_Iq,       0);
+  LOG_IF_SELECTED(VE_ActualStage[offset].main,  VE_Stage,    0);
+  LOG_IF_SELECTED(user_dummy,                   User_1,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_2,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_3,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_4,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_5,      0);
+  LOG_IF_SELECTED(user_dummy,                   User_6,      0);
 
   g_xfer_buf[0] = 0x11;
   g_xfer_buf[2] = g_missed & 0xff;
