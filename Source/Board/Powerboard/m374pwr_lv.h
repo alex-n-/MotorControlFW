@@ -26,7 +26,7 @@
 
 #define USE_EMERGENCY_SIGNAL
 #define USE_OVERVOLTAGE_SIGNAL
-//#define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
+#define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
 
 /* BOARD PARAMETER */
 #define BOARD_NAME_PWR                          "M374PWR LV"

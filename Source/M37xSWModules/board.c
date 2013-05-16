@@ -51,7 +51,7 @@
 #endif /* USE_RGB_LED */
 
 
-#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) )
+#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK)  || (defined BOARD_EFTORCOS) )
 #include BOARD_PGA_HEADER_FILE
 #endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
 
@@ -91,7 +91,7 @@ void BOARD_SetupHW(void)
   FirmwareVersion.fw_version[0]=FW_VERSION_MAJOR;
   FirmwareVersion.fw_version[1]=FW_VERSION_MINOR;
   
-#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) | defined (BOARD_HITEX_M370) )
+#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) | defined (BOARD_HITEX_M370) || (defined BOARD_EFTORCOS))
   SPI_DeviceInit(SPI_10_MHZ);                                                   /* Init SPI Channel */
 #endif /* BOARD_M37SIGMA */
   BoardRevision = BOARD_Detect_Revision();
