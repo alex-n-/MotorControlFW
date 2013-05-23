@@ -20,18 +20,18 @@
 #include <stdint.h>
 #include "config.h"
 
-//#define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
+#define USE_TEMPERATURE_CONTROL                                                 /*!< Activate Temperature Control and measurement */
 #define TEMP_SLOPE 5
 #define VISHAY_NTCLE100E3103JB0
 
 #define USE_EMERGENCY_SIGNAL
-#define USE_OVERVOLTAGE_SIGNAL
+//#define USE_OVERVOLTAGE_SIGNAL
 #define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
 
 /* BOARD PARAMETER */
 #define BOARD_NAME_PWR                          "EFTORCOS"
 
-#define BOARD_DEAD_TIME                         6000                            /* [ns]             - Dead time for FETs */
+#define BOARD_DEAD_TIME                         800                            /* [ns]             - Dead time for FETs */
 #define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
 #ifdef USE_CURRENT_SENSORS
