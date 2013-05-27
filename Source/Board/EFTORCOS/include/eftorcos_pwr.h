@@ -25,17 +25,17 @@
 #define VISHAY_NTCLE100E3103JB0
 
 #define USE_EMERGENCY_SIGNAL
-#define USE_OVERVOLTAGE_SIGNAL
+//#define USE_OVERVOLTAGE_SIGNAL
 #define USE_CURRENT_SENSORS                                                     /* Make use of Current Sensors instead of Shunts */
 
 /* BOARD PARAMETER */
-#define BOARD_NAME_PWR                          "M374PWR LV"
+#define BOARD_NAME_PWR                          "EFTORCOS"
 
-#define BOARD_DEAD_TIME                         1400                            /* [ns]             - Dead time for FETs */
+#define BOARD_DEAD_TIME                         800                            /* [ns]             - Dead time for FETs */
 #define BOARD_BOOTSTRAP_DELAY                     10                            /* [ms]             - Bootstrap time */
 
 #ifdef USE_CURRENT_SENSORS
-#define BOARD_SENSITIVITY_CURRENT_MEASURE       185                             /* [mV/A]           - Sensivity of current measurement circuit */
+#define BOARD_SENSITIVITY_CURRENT_MEASURE       100                             /* [mV/A]           - Sensivity of current measurement circuit */
 #define BOARD_MEASUREMENT_TYPE                  CURRENT_SENSOR_2                /* NONE */
 #define BOARD_SENSOR_DIRECTION                  0
 #else

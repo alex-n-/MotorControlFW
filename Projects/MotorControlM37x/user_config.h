@@ -33,10 +33,10 @@
 #define USE_CONFIG_STORAGE_FLASH                                                /*!< ... in flash memory */
 
 #define USE_DSO                                                                 /*!< Activate DSO functionality */
-#define USE_HSDSO                                                               /*!< Activate Highspeed-DSO functionality */
+//#define USE_HSDSO                                                               /*!< Activate Highspeed-DSO functionality */
 #define USE_LOAD_STATISTICS                                                     /*!< Activate internal cpu load statistics */
-#define USE_ENCODER                                                             /*!< Use encoder for RPM determination */
-#define USE_STALL_DETECT                                                        /*!< Activate automatic stall detection */
+//#define USE_ENCODER                                                             /*!< Use encoder for RPM determination */
+//#define USE_STALL_DETECT                                                        /*!< Activate automatic stall detection */
 //#define USE_SW_OVER_UNDER_VOLTAGE_DETECTION                                     /*!< Activate software based under- and over-voltage detection */
 //#define USE_MOTOR_DISCONNECT_DETECTION                                          /*!< Activate automatic motor disconnected */
 //#define USE_LOAD_DEPENDANT_SPEED_REDUCTION                                      /*!< Activate load dependant speed reduction */

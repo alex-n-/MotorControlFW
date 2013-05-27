@@ -208,6 +208,9 @@ typedef enum
 #define CNF1_0125_16MHz                0x03
 #define CNF2_0125_16MHz                0xB8
 #define CNF3_0125_16MHz                0x05
+#define CNF1_0125_10MHz                0x01
+#define CNF2_0125_10MHz                0xBA
+#define CNF3_0125_10MHz                0x07
 
 /*! \brief CAN Bitrate 250 kbps at 20 MHz and 16 MHz
  *

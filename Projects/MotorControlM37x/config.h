@@ -165,6 +165,21 @@
 
 #endif /* BOARD_M374STK */
 
+#ifdef BOARD_EFTORCOS
+#define BOARD_NAME               "EFTORCOS"                                      /* Name of the Board */
+#define BOARD_BOARD_HEADER_FILE  "eftorcos_board.h"
+#define BOARD_LED_HEADER_FILE    "eftorcos_led.h"
+#define BOARD_SPI_HEADER_FILE    "eftorcos_spi_device.h"
+#define BOARD_GAIN_HEADER_FILE   "eftorcos_gain.h"
+#define BOARD_PGA_HEADER_FILE    "eftorcos_pga.h"
+#define BOARD_CAN_HEADER_FILE    "eftorcos_can.h"
+
+#ifndef BOARD_PWR_HEADER_FILE_1
+#define BOARD_PWR_HEADER_FILE_1  "eftorcos_pwr.h"                                 /*! Powerboard to be used */
+#endif /* BOARD_PWR_HEADER_FILE_1 */
+
+#endif /* BOARD_EFTORCOS */
+
 #ifdef BOARD_M375STK
 #define BOARD_NAME               "M375STK"                                      /* Name of the Board */
 #define BOARD_BOARD_HEADER_FILE  "m375stk_board.h"
