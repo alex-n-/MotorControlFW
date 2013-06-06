@@ -16,7 +16,7 @@
  * FOR SUCH DAMAGE IS BASED UPON WARRANTY, CONTRACT, TORT, NEGLIGENCE OR
  * OTHERWISE. (C)Copyright TOSHIBA CORPORATION 2011 All rights reserved
  */
-
+ 
 /* Standard includes. */
 #include <stdio.h>
 #include <string.h>
