@@ -131,7 +131,7 @@ void WDT_SetOverflowOutput(uint32_t OverflowOutput)
   * @param  InitStruct: The structure containing basic WD configuration.
   * @retval None
   */
-void WDT_Init(WDT_InitTypeDef * InitStruct)
+void WDT_Init(const WDT_InitTypeDef * InitStruct)
 {
     /* Check the parameters */
     assert_param(IS_POINTER_NOT_NULL(InitStruct));

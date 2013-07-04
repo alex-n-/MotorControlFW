@@ -45,8 +45,26 @@ typedef enum {
  */
 typedef enum {
   MOTOR_NO_ENCODER,                                                             /*!< Motor has NO Encoder - use SW emulation for event counting */
-  MOTOR_ENCODER_SPEED,                                                          /*!< Motor is having en Encoder (Hall/Incremental) used for Speed Control */
-  MOTOR_ENCODER_EVENT,                                                          /*!< Motor is having an Encoder (Hall/Incremental) used for  Counting Events */
+  /*****************/
+  /* Speed Control */
+  /*****************/
+  /* 3 Inputs */
+  MOTOR_HALL_UVW_SPEED,                                                         /*!< Motor is using 3 Hall Sensors Phase U,V,W   - for speed control */
+  MOTOR_INCENC_ABZ_SPEED,                                                       /*!< Motor is using encoder inputs A,B,Z         - for speed control */
+  /* 2 Inputs */
+  MOTOR_HALL_UV_SPEED,                                                          /*!< Motor is using 2 Hall Sensors Phase U and V - for speed control */
+  MOTOR_INCENC_AB_SPEED,                                                        /*!< Motor is using encoder inputs A,B           - for speed control */
+  MOTOR_SINGLE_PULSE_SPEED,                                                     /*!< Motor is using single pulse                 - for speed control */
+  /*****************/
+  /* Event Control */  
+  /*****************/
+  /* 3 Inputs */
+  MOTOR_HALL_UVW_EVENT,                                                         /*!< Motor is using 3 Hall Sensors Phase U,V,W   - for event counting */
+  MOTOR_INCENC_ABZ_EVENT,                                                       /*!< Motor is using encoder inputs A,B,Z         - for event counting */
+  /* 2 Inputs */
+  MOTOR_HALL_UV_EVENT,                                                          /*!< Motor is using 2 Hall Sensors Phase U and V - for event counting */
+  MOTOR_INCENC_AB_EVENT,                                                        /*!< Motor is using encoder inputs A,B           - for event counting */
+  MOTOR_SINGLE_PULSE_EVENT,                                                     /*!< Motor is using single pulse                 - for event counting */
 } MOTOR_ENCODER; 
 
 /*! \brief Motor turning possibilities.
@@ -79,10 +97,12 @@ typedef enum {
   VE_OVERTEMPERATURE  = (1<<0),                                                 /*!< Over temperature detected */  
   VE_EMERGENCY        = (1<<1),                                                 /*!< Emergency Signal Detected */
   VE_OVERVOLTAGE      = (1<<2),                                                 /*!< Overvoltage Signal Detected */
-  VE_NOMOTOR          = (1<<3),
-  VE_SWUNDERVOLTAGE   = (1<<4),
-  VE_SWOVERVOLTAGE    = (1<<5),
-  VE_SPEEDREDUCTION   = (1<<7),
+  VE_NOMOTOR          = (1<<3),                                                 /*!< Motor Disconnection detected */
+  VE_SWUNDERVOLTAGE   = (1<<4),                                                 /* Undervoltage detected (software solution) */
+  VE_SWOVERVOLTAGE    = (1<<5),                                                 /* Overvoltage detected (software solution) */
+  VE_SWOVERCURRENT    = (1<<6),                                                 /* Overcurrent detected (software solution) */
+  VE_SPEEDREDUCTION   = (1<<7),                                                 /* Target speed reduced due to load */
+  VE_STALLDETECTED    = (1<<8),                                                 /* Field stall detected */
 } VE_ERROR;
 
 /*! \brief Parameter Changed Flags.
@@ -93,9 +113,9 @@ typedef enum {
   VE_CHANGE_MOTOR_PARAMS      = (1<<0),                                         /*!< New motor parameter set */  
   VE_CHANGE_PI_PARAMS         = (1<<1),                                         /*!< New PI control parameter set */
   VE_CHANGE_SYSTEM_PARAMS_VE  = (1<<2),                                         /*!< New system values parameter set */
-  VE_CHANGE_SYSTEM_PARAMS_PMD = (1<<2),                                         /*!< New system values parameter set */
-  VE_CHANGE_BOARD_PARAMS_VE   = (1<<3),                                         /*!< New system values parameter set */
-  VE_CHANGE_BOARD_PARAMS_PMD  = (1<<3),                                         /*!< New system values parameter set */
+  VE_CHANGE_SYSTEM_PARAMS_PMD = (1<<3),                                         /*!< New system values parameter set */
+  VE_CHANGE_BOARD_PARAMS_VE   = (1<<4),                                         /*!< New system values parameter set */
+  VE_CHANGE_BOARD_PARAMS_PMD  = (1<<5),                                         /*!< New system values parameter set */
 } VE_CHANGED_VALUE;
 
 /*! \brief External Speed control flags.
@@ -118,8 +138,7 @@ typedef __packed struct
   uint8_t   PolePairs;                                                          /*!< NONE             - Half of Poles */
   uint8_t   Direction;                                                          /*!< NONE             - Enum Type (MOTOR_CW_ONLY / MOTOR_CCW_ONLY / MOTOR_CW_CCW) */
   uint8_t   Encoder;                                                            /*!< NONE             - Enum Type (MOTOR_NO_SENSOR / MOTOR_HALL_SENSOR / MOTOR_ENCODER) */
-  uint16_t  EncRes;                                                             /*!< NONE             - Number (Resolution) */
-  uint8_t   EncMult;                                                            /*!< NONE             - Number (Multiplier) */
+  uint16_t  IncRotEncCnt;                                                       /*!< NONE             - Incremental rotary encoder counts per revolution*/
   uint16_t  MaxAngAcc;                                                          /*!< [rad/sec^2]      - max angular velocity */
   uint16_t  TorqueFactor;                                                       /*!< [mNm/A]          - max torgue value * 10 */
   uint32_t  Resistance;                                                         /*!< [mOhm]           - Winding resistance */
@@ -176,6 +195,7 @@ typedef __packed struct
 {
   uint16_t  PWMFrequency;                                                       /*!< [Hz]             - PWM Frequency */
   uint8_t   ShutdownMode;                                                       /*!< NONE             - Shutdown Mode for the VE */
+  uint16_t  BrakeTime;                                                          /*!< [ms]             - Time for braking when Short brake is selected */
   uint8_t   RestartMode;                                                        /*!< NONE             - Restart behaviour */
   uint16_t  StallDetectValue;                                                   /*!< NONE             - vqi value for stall detection */
   int8_t    Overtemperature;                                                    /*!< [Degree Celsius] - Shutdown if temperature exceeds this temperature setting */
@@ -183,6 +203,8 @@ typedef __packed struct
   uint8_t   ExternalSpeedCtrl;                                                  /*!< NONE             - Enum Type (ESC_NONE = 0, ESC_ADC = 1, ESC_PWM = 2) */
   uint16_t  SW_Overvoltage;                                                     /*!< [V]              - Voltage for SW Overvolage detection */
   uint16_t  SW_Undervoltage;                                                    /*!< [V]              - Voltage for SW Undervoltage detection */
+  uint32_t  SW_Overcurrent;                                                     /*!< [mA]             - Current for SW Overcurrent detection */
+  uint8_t   SpeedReductionPercent;                                              /*!< [%]              - Percentage of IqLimit when Speed Reduction shall be used */
 } __attribute__((packed)) SystemDependandValues;
 
 
@@ -240,7 +262,7 @@ typedef __packed struct
  */
 typedef __packed struct
 {
-  uint8_t  Error;
+  uint16_t  Error;
 } __attribute__((packed)) MotorError;
 
 /*! \brief DSO Logging data set.

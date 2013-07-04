@@ -27,7 +27,9 @@
  * AVAILABLE ON THE FreeRTOS.org WEB SITE.
  */
 
+#ifndef __ASM__
 #include "config.h"
+#endif /* __ASM__ */
 
 #define configTOTAL_HEAP_SIZE           NEEDED_HEAP_SIZE
    
@@ -57,7 +59,7 @@
 #define configUSE_RECURSIVE_MUTEXES     0
 #define configQUEUE_REGISTRY_SIZE       50
 #define configGENERATE_RUN_TIME_STATS   0
-#define configUSE_MALLOC_FAILED_HOOK    1
+#define configUSE_MALLOC_FAILED_HOOK    0
    
 /*
  * Set the following definitions to 1 to include the API function, or zero to

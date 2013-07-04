@@ -137,7 +137,7 @@ void TEMPERATURE_CheckOvertemp(uint8_t channel_number)
   if (SystemValues[channel_number].Overtemperature == 0)
     return;
   
-  temp = TEMPERATURE_GetTemperature(channel_number);
+  temp = actual_temperature;
   
   if (temp>=SystemValues[channel_number].Overtemperature)
     counter++;
@@ -163,7 +163,7 @@ void TEMPERATURE_CheckOvertemp(uint8_t channel_number)
 */
 uint8_t TEMPERATURE_GetActualTemperature(uint8_t channel_number)
 {
-    return actual_temperature;
+    return TEMPERATURE_GetTemperature(channel_number);
 }
 
 #else /* USE_HV_COMMUNICATION */

@@ -40,14 +40,14 @@
 
 /* Version information */
 #define FW_VERSION_MAJOR             1                                          /*!< Major number of the firmware */
-#define FW_VERSION_MINOR             12                                         /*!< Minor number of the firmware */
+#define FW_VERSION_MINOR             14                                         /*!< Minor number of the firmware */
 
 /* Stack sizes & task priorities (lower priority value is higher importance) */
 #define INIT_TASK_STACK_SIZE        ( 95)                                       /*!< Stack Site for Init Process Task */
 #define SYSTEM_LOAD_TASK_STACK_SIZE ( 40)                                       /*!< Stack Site for System Load Task */
-#define VE_TASK_STACK_SIZE          ( 50)                                       /*!< Stack Site for Vector Engine Task */
+#define VE_TASK_STACK_SIZE          ( 60)                                       /*!< Stack Site for Vector Engine Task */
 #define UI_TASK_STACK_SIZE          ( 80)                                       /*!< Stack Site for User Interface Task */
-#define PROTOCOL_TASK_STACK_SIZE    (100)                                       /*!< Stack Site for Serial Protocol Task */
+#define PROTOCOL_TASK_STACK_SIZE    (110)                                       /*!< Stack Site for Serial Protocol Task */
 #define CAN_TASK_STACK_SIZE         (100)                                       /*!< Stack Site for CAN Communication Task */
 #define STALL_TASK_STACK_SIZE       ( 70)                                       /*!< Stack Site for Stall Detection Task */
 #define TURN_TASK_STACK_SIZE        ( 60)                                       /*!< Stack Site for Turn Task */
@@ -65,9 +65,9 @@
 
 /* Interrupt priorities - lower value is higher priority */
 #define INTERRUPT_PRIORITY_ERROR     0                                          /*!< Interrupt Priority for External Error Signal */
-#define INTERRUPT_PRIORITY_VE        1                                          /*!< Interrupt Priority for Vector Engine */
-#define INTERRUPT_PRIORITY_PMD       1                                          /*!< Interrupt Priority for Programable Motor Driver */
-#define INTERRUPT_PRIORITY_ENCODER   2                                          /*!< Interrupt Priority for Encoder */
+#define INTERRUPT_PRIORITY_ENCODER   1                                          /*!< Interrupt Priority for Encoder */
+#define INTERRUPT_PRIORITY_VE        2                                          /*!< Interrupt Priority for Vector Engine */
+#define INTERRUPT_PRIORITY_PMD       2                                          /*!< Interrupt Priority for Programable Motor Driver */
 #define INTERRUPT_PRIORITY_CAN       3                                          /*!< Interrupt Priority for CAN */
 
 #ifdef __TMPM_370__
@@ -137,7 +137,7 @@
 #define BOARD_RGB_LED_HEADER_FILE "m37sigma_rgb_led.h"
 
 #undef USE_LED
-#ifndef DEBUG
+#ifdef SIGMA_PRODUCTION
 #undef USE_INTERNAL_MOTOR_PARAMS
 #endif /* DEBUG */
 
@@ -175,7 +175,6 @@
 //#define USE_CONFIG_STORAGE_FLASH
 #undef  USE_CAN
 #undef  USE_LED
-#undef  USE_CAN
 #undef  USE_DSO
 #undef  USE_ENCODER
 #ifndef BOARD_PWR_HEADER_FILE_1
@@ -184,7 +183,26 @@
 
 #endif /* BOARD_M375STK */
 
-/* Chip header files */
+#ifdef BOARD_EFTORCOS
+#define BOARD_NAME               "EFTORCOS"                                     /* Name of the Board */
+#define BOARD_BOARD_HEADER_FILE  "eftorcos_board.h"
+#define BOARD_LED_HEADER_FILE    "eftorcos_led.h"
+#define BOARD_SPI_HEADER_FILE    "eftorcos_spi_device.h"
+#define BOARD_GAIN_HEADER_FILE   "eftorcos_gain.h"
+#define BOARD_PGA_HEADER_FILE    "eftorcos_pga.h"
+#define BOARD_CAN_HEADER_FILE    "eftorcos_can.h"
+
+#undef  USE_CONFIG_STORAGE_EEPROM
+#define USE_CONFIG_STORAGE_FLASH
+#undef  USE_HSDSO
+
+#ifndef BOARD_PWR_HEADER_FILE_1
+#define BOARD_PWR_HEADER_FILE_1  "eftorcos_pwr.h"                               /*! Powerboard to be used */
+#endif /* BOARD_PWR_HEADER_FILE_1 */
+
+#endif /* BOARD_EFTORCOS */
+
+/* Chip header files and information */
 
 #ifdef __TMPM_370__
 #define TMPM_UART_HEADER_FILE    "tmpm370_uart.h"
@@ -193,8 +211,13 @@
 #define TMPM_FC_HEADER_FILE      "tmpm370_fc.h"
 #define TMPM_ADC_HEADER_FILE     "tmpm370_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm370_tmrb.h"
+#define TMPM_CG_HEADER_FILE      "tmpm370_cg.h"
+#define TMPM_WDT_HEADER_FILE     "tmpm370_wdt.h"
+#define TMPM_VLTD_HEADER_FILE    "tmpm370_vltd.h"
+#define TMPM_OFD_HEADER_FILE     "tmpm370_ofd.h"
 #define TMPM_HEADER_FILE         "TMPM370.h"
 #define MEMORY_SIZE              0x2800
+#define PLL_MULTIPLIER           8                                              /* Multiplier of the PLL */
 #endif /* __TMPM_370__ */
 
 #ifdef __TMPM_372__
@@ -204,8 +227,13 @@
 #define TMPM_FC_HEADER_FILE      "tmpm372_fc.h"
 #define TMPM_ADC_HEADER_FILE     "tmpm372_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm372_tmrb.h"
+#define TMPM_CG_HEADER_FILE      "tmpm372_cg.h"
+#define TMPM_WDT_HEADER_FILE     "tmpm372_wdt.h"
+#define TMPM_VLTD_HEADER_FILE    "tmpm372_vltd.h"
+#define TMPM_OFD_HEADER_FILE     "tmpm372_ofd.h"
 #define TMPM_HEADER_FILE         "TMPM372.h"
 #define MEMORY_SIZE              0x1800
+#define PLL_MULTIPLIER           8                                              /* Multiplier of the PLL */
 #endif /* __TMPM_372__ */
 
 #ifdef __TMPM_373__
@@ -215,8 +243,13 @@
 #define TMPM_FC_HEADER_FILE      "tmpm373_fc.h"
 #define TMPM_ADC_HEADER_FILE     "tmpm373_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm373_tmrb.h"
+#define TMPM_CG_HEADER_FILE      "tmpm373_cg.h"
+#define TMPM_WDT_HEADER_FILE     "tmpm373_wdt.h"
+#define TMPM_VLTD_HEADER_FILE    "tmpm373_vltd.h"
+#define TMPM_OFD_HEADER_FILE     "tmpm373_ofd.h"
 #define TMPM_HEADER_FILE         "TMPM373.h"
 #define MEMORY_SIZE              0x1800
+#define PLL_MULTIPLIER           8                                              /* Multiplier of the PLL */
 #endif /* __TMPM_373__ */
 
 #ifdef __TMPM_374__
@@ -226,8 +259,13 @@
 #define TMPM_FC_HEADER_FILE      "tmpm374_fc.h"
 #define TMPM_ADC_HEADER_FILE     "tmpm374_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm374_tmrb.h"
+#define TMPM_CG_HEADER_FILE      "tmpm374_cg.h"
+#define TMPM_WDT_HEADER_FILE     "tmpm374_wdt.h"
+#define TMPM_VLTD_HEADER_FILE    "tmpm374_vltd.h"
+#define TMPM_OFD_HEADER_FILE     "tmpm374_ofd.h"
 #define TMPM_HEADER_FILE         "TMPM374.h"
 #define MEMORY_SIZE              0x1800
+#define PLL_MULTIPLIER           8                                              /* Multiplier of the PLL */
 #endif /* __TMPM_374__ */
 
 #ifdef __TMPM_375__
@@ -237,8 +275,13 @@
 #define TMPM_FC_HEADER_FILE      "tmpm375_fc.h"
 #define TMPM_ADC_HEADER_FILE     "tmpm375_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm375_tmrb.h"
+#define TMPM_CG_HEADER_FILE      "tmpm375_cg.h"
+#define TMPM_WDT_HEADER_FILE     "tmpm375_wdt.h"
+#define TMPM_VLTD_HEADER_FILE    "tmpm375_vltd.h"
+#define TMPM_OFD_HEADER_FILE     "tmpm375_ofd.h"
 #define TMPM_HEADER_FILE         "TMPM375.h"
 #define MEMORY_SIZE              0x1800
+#define PLL_MULTIPLIER           4                                              /* Multiplier of the PLL */
 #endif /* __TMPM_375__ */
 
 #ifdef __TMPM_376__
@@ -248,88 +291,135 @@
 #define TMPM_FC_HEADER_FILE      "tmpm376_fc.h"
 #define TMPM_ADC_HEADER_FILE     "tmpm376_adc.h"
 #define TMPM_TIMER_HEADER_FILE   "tmpm376_tmrb.h"
+#define TMPM_CG_HEADER_FILE      "tmpm376_cg.h"
+#define TMPM_WDT_HEADER_FILE     "tmpm376_wdt.h"
+#define TMPM_VLTD_HEADER_FILE    "tmpm376_vltd.h"
+#define TMPM_OFD_HEADER_FILE     "tmpm376_ofd.h"
 #define TMPM_HEADER_FILE         "TMPM376.h"
 #define MEMORY_SIZE              0x8000
+#define PLL_MULTIPLIER           8                                              /* Multiplier of the PLL */
 #endif /* __TMPM_376__ */
 
 
 /* Needed stack size calculations */
-#define STACK_SIZE1                  (  90 )                                    /*!< Scheduler Stack Size */
-#define STACK_SIZE2                  (INIT_TASK_STACK_SIZE        + 28)
+#define TASK_OVERHEAD                   28
+
+#define STACK_SIZE1                     ( 90 )                                  /*!< Scheduler Stack Size */
+#define STACK_SIZE2                     (INIT_TASK_STACK_SIZE        + TASK_OVERHEAD)
 #ifdef USE_LOAD_STATISTICS
-#define STACK_SIZE3                  (SYSTEM_LOAD_TASK_STACK_SIZE + 28)
+#define STACK_SIZE3                     (SYSTEM_LOAD_TASK_STACK_SIZE + TASK_OVERHEAD)
 #else
-#define STACK_SIZE3                  0
+#define STACK_SIZE3                     0
 #endif /* USE_LOAD_STATISTICS */
 #ifdef USE_SERIAL_COMMUNICATION
-#define STACK_SIZE4                  (PROTOCOL_TASK_STACK_SIZE    + 28)
+#define STACK_SIZE4                     (PROTOCOL_TASK_STACK_SIZE    + TASK_OVERHEAD)
 #else 
-#define STACK_SIZE4                  0
+#define STACK_SIZE4                     0
 #endif /* USE_SERIAL_COMMUNICATION */
 #ifdef USE_CAN
-#define STACK_SIZE5                  (CAN_TASK_STACK_SIZE         + 28)
+#define STACK_SIZE5                     (CAN_TASK_STACK_SIZE         + TASK_OVERHEAD)
 #else 
-#define STACK_SIZE5                  0
+#define STACK_SIZE5                     0
 #endif /* USE_CAN */
 #ifdef USE_STALL_DETECT
-#define STACK_SIZE6                  (STALL_TASK_STACK_SIZE       + 28)
+#define STACK_SIZE6                     (STALL_TASK_STACK_SIZE       + TASK_OVERHEAD)
 #else 
-#define STACK_SIZE6                  0
+#define STACK_SIZE6                     0
 #endif /* USE_STALL_DETECT */
 #ifdef USE_RGB_LED
-#define STACK_SIZE7                  (RGB_LED_TASK_STACK_SIZE     + 28)
+#define STACK_SIZE7                     (RGB_LED_TASK_STACK_SIZE     + TASK_OVERHEAD)
 #else 
-#define STACK_SIZE7                  0
+#define STACK_SIZE7                     0
 #endif /* USE_RGB_LED */
 
 #if defined __TMPM_370__ || defined __TMPM_376__
 #ifdef USE_TURN_CONTROL
-#define STACK_SIZE8                  (2*TURN_TASK_STACK_SIZE      + 28)
+#define STACK_SIZE8                     (2*TURN_TASK_STACK_SIZE      + 2*TASK_OVERHEAD)
 #else 
-#define STACK_SIZE8                  0
+#define STACK_SIZE8                     0
 #endif /* USE_TURN_CONTROL */
-#define STACK_SIZE9                  (2*VE_TASK_STACK_SIZE        + 56)
+#define STACK_SIZE9                     (2*VE_TASK_STACK_SIZE        + 2*TASK_OVERHEAD)
 #else
 #ifdef USE_TURN_CONTROL
-#define STACK_SIZE8                  (TURN_TASK_STACK_SIZE        + 28)
+#define STACK_SIZE8                     (TURN_TASK_STACK_SIZE        + TASK_OVERHEAD)
 #else 
-#define STACK_SIZE8                  0
+#define STACK_SIZE8                     0
 #endif /* USE_TURN_CONTROL */
-#define STACK_SIZE9                  (VE_TASK_STACK_SIZE          + 28)
+#define STACK_SIZE9                     (VE_TASK_STACK_SIZE          + TASK_OVERHEAD)
 #endif /* defined __TMPM_370_ || defined __TMPM_376__ */
 #ifdef USE_UI
-#define STACK_SIZE10                 (UI_TASK_STACK_SIZE          + 28)
+#define STACK_SIZE10                    (UI_TASK_STACK_SIZE          + TASK_OVERHEAD)
 #else 
-#define STACK_SIZE10                 0
+#define STACK_SIZE10                    0
 #endif /* USE_UI */
 
+/* Memory calculations */
+#define NEEDED_HEAP_SIZE                (4* (  STACK_SIZE1  \
+                                             + STACK_SIZE2  \
+                                             + STACK_SIZE3  \
+                                             + STACK_SIZE4  \
+                                             + STACK_SIZE5  \
+                                             + STACK_SIZE6  \
+                                             + STACK_SIZE7  \
+                                             + STACK_SIZE8  \
+                                             + STACK_SIZE9  \
+                                             + STACK_SIZE10 \
+                                             )              \
+                                        )
 
-#define NEEDED_HEAP_SIZE             (4* (  STACK_SIZE1  \
-                                          + STACK_SIZE2  \
-                                          + STACK_SIZE3  \
-                                          + STACK_SIZE4  \
-                                          + STACK_SIZE5  \
-                                          + STACK_SIZE6  \
-                                          + STACK_SIZE7  \
-                                          + STACK_SIZE8  \
-                                          + STACK_SIZE9  \
-                                          + STACK_SIZE10 \
-                                          )              \
-                                      )
-
-#define FW_RAM_NEEDED                 2750
+#define FW_RAM_NEEDED                   2950
 
 #ifdef USE_DSO
-#define BOARD_DSO_SIZE                ((MEMORY_SIZE-FW_RAM_NEEDED-NEEDED_HEAP_SIZE)/2)
+#define BOARD_DSO_SIZE                  ((MEMORY_SIZE-FW_RAM_NEEDED-NEEDED_HEAP_SIZE)/2)
 #else
-#define BOARD_DSO_SIZE                0
+#define BOARD_DSO_SIZE                  0
 #endif /* USE_DSO */
+
+/* Clock calculations */
+#include BOARD_BOARD_HEADER_FILE
+
+#define INTERNAL_OSCILLATOR_FREQUENCY   9500000
 
 #if 0
 #define STR_HELPER(x) #x
 #define STR(x) STR_HELPER(x)
-#pragma message ( STR(NEEDED_HEAP_SIZE) )
+#pragma message ( STR(BOARD_BOARD_HEADER_FILE) )
 #endif
+
+#if   BOARD_CLOCK_GEAR_DIVIDER == CG_DIVIDE_1
+#define GEAR_DIVIDER                    1
+#elif BOARD_CLOCK_GEAR_DIVIDER == CG_DIVIDE_2
+#define GEAR_DIVIDER                    2
+#elif BOARD_CLOCK_GEAR_DIVIDER == CG_DIVIDE_4
+#define GEAR_DIVIDER                    4
+#elif BOARD_CLOCK_GEAR_DIVIDER == CG_DIVIDE_8
+#define GEAR_DIVIDER                    8
+#elif BOARD_CLOCK_GEAR_DIVIDER == CG_DIVIDE_16
+#define GEAR_DIVIDER                    16
+#endif
+
+#if   BOARD_PERIPHERIAL_CLOCK_DIVIDER == CG_DIVIDE_1
+#define PER_GEAR_DIVIDER                1
+#elif BOARD_PERIPHERIAL_CLOCK_DIVIDER == CG_DIVIDE_2
+#define PER_GEAR_DIVIDER                2
+#elif BOARD_PERIPHERIAL_CLOCK_DIVIDER == CG_DIVIDE_4
+#define PER_GEAR_DIVIDER                4
+#elif BOARD_PERIPHERIAL_CLOCK_DIVIDER == CG_DIVIDE_8
+#define PER_GEAR_DIVIDER                8
+#elif BOARD_PERIPHERIAL_CLOCK_DIVIDER == CG_DIVIDE_16
+#define PER_GEAR_DIVIDER                16
+#endif
+
+#ifdef BOARD_USE_PLL
+#define CPU_CLOCK                       ( osc_frequency  \
+                                        / GEAR_DIVIDER   \
+                                        * PLL_MULTIPLIER)
+#else
+#define CPU_CLOCK                       ( osc_frequency  \
+                                        / GEAR_DIVIDER )
+#endif /*  BOARD_USE_PLL */
+
+#define PERIPHERIAL_CLOCK               ( CPU_CLOCK / PER_GEAR_DIVIDER )
 
 /* Checking for consistency */
 
@@ -341,8 +431,8 @@
 #error USING THE UI WITHOUT LCD MAKES NO SENSE
 #endif
 
-#if ( !(defined USE_ENCODER) && (defined USE_TURN_CONTROL))
-#error WHEN USING TURN CONTROL ENCODER HAS TO BE USED
+#if ( (defined USE_WDT) && !(defined USE_LOAD_STATISTICS))
+#error USING WDT ONLY WITH USE_LOAD_STATISTICS
 #endif
 
 #ifdef USE_CONFIG_STORAGE

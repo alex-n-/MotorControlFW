@@ -40,7 +40,7 @@
 #define WDCR_Val         (0x000000B1UL)
 
 /* Clock Generator (CG) Configuration */
-#define CLOCK_SETUP      1
+#define CLOCK_SETUP      0
 #define SYSCR_Val        (0x00010000UL)
 
 /* #define INTERNAL_OSCILLATION */

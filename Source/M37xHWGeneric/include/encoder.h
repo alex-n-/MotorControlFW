@@ -63,7 +63,7 @@
 typedef struct
 {
   int32_t FullTurns;
-  int32_t ticksBetweenEvents;                                                   /*!< Measured clock ticks between two events */
+  int32_t ticksBetweenEvents[24];                                                /*!< Measured clock ticks between two events */
   int16_t event_nr;                                                             /*!< Event number (from 0 to MAX) */
   uint8_t CW;                                                                   /*!< Motor direction as determined by encoder block */
   int32_t Theta0;                                                               /*!< Theta of Event 0 */
@@ -71,7 +71,7 @@ typedef struct
 
 extern EncoderValues  EncoderData[MAX_CHANNEL];
 
-void ENC_Determine_Omega(uint8_t channel_number);
-void ENC_Init           (uint8_t channel_number);
-
+void ENC_Determine_Omega_Theta(uint8_t channel_number);
+void ENC_Init                 (uint8_t channel_number);
+void ENC_GetTheta             (uint8_t channel_number);
 #endif  /* _ENCODER_H_ */

@@ -169,7 +169,7 @@ void SPI_Init(TSB_SC_TypeDef* SPIx, SPI_InitTypeDef* InitStruct)
 {
   uint32_t tmp = 0;
   /* Get the peripheral I/O clock frequency */
-  SPIx->BRCR = T0 / 2 / InitStruct->speed;
+  SPIx->BRCR = PERIPHERIAL_CLOCK / 4 / InitStruct->speed;
 
   /* Use baud rate generator */
   SPIx->MOD0 |= MOD0_SC_BRG;

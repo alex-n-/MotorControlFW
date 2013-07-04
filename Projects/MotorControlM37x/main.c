@@ -56,7 +56,7 @@
 
 #ifdef BOARD_CAN_HEADER_FILE
 #include BOARD_CAN_HEADER_FILE
-#endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
+#endif /* BOARD_CAN_HEADER_FILE */
 
 #if (BOARD_DSO_SIZE < 0)
 #error Needed heap size exceeds available memory - please deactivate firmware features in user_config.h
@@ -84,13 +84,13 @@ void vApplicationStackOverflowHook(xTaskHandle* pxTask, signed portCHAR* pcTaskN
 
   for(;;);
 }
-
+#if 0
 void vApplicationMallocFailedHook(void)
 {
   /* We should never go to this function - check your memory settings */
   for(;;);
 }
-
+#endif
 /*! \brief  System Init
   *
   * @param  pvParameters: None
@@ -102,10 +102,6 @@ void system_init( void *pvParameters )
   int ret;
 #endif /*  USE_CONFIG_STORAGE */
   
-  SCB->SHCSR = SCB_SHCSR_MEMFAULTENA_Msk                                        /* enable Fault Interrupts */
-              |SCB_SHCSR_BUSFAULTENA_Msk
-              |SCB_SHCSR_USGFAULTENA_Msk;
-    
   BOARD_SetupHW();                                                              /* Setup HW components on the Board (internal/external) */
 
   /* Clear all settings */
@@ -114,8 +110,8 @@ void system_init( void *pvParameters )
   memset(&SystemValues[0],         0,sizeof(SystemValues)); 
 
   /* Make some usefull basic setup - otherwise system will crash */
-  SystemValues[0].PWMFrequency     = 12500;
-  SystemValues[1].PWMFrequency     = 12500;
+  SystemValues[0].PWMFrequency     = 16000;
+  SystemValues[1].PWMFrequency     = 16000;
   
   /* Read back parameters stored in EEProm */
 #ifdef USE_CONFIG_STORAGE
@@ -145,6 +141,7 @@ void system_init( void *pvParameters )
   SetupInternalMotorParams();                                                   /* When no EEProm - use compiled in parameters */
 #endif
   BOARD_SetupHW2();                                                             /* Setup rest of the HW components on the Board */
+  BOARD_SetupWDT();
   
   /* Kill myself to free stack memory */
   vTaskDelete(xSystemInit);
@@ -154,6 +151,13 @@ int main(void)
 {
   IRQn_Type nr;
 
+  SCB->SHCSR = SCB_SHCSR_MEMFAULTENA_Msk                                        /* enable Fault Interrupts */
+              |SCB_SHCSR_BUSFAULTENA_Msk
+              |SCB_SHCSR_USGFAULTENA_Msk;
+
+  BOARD_SetupClocks();
+  BOARD_SetupOFD();
+  
   /* INTF_IRQn is the "last" interrupt for all
   supported platforms at the moment. */
 #if (defined __TMPM_370__) || (defined __TMPM_372__) || (defined __TMPM_373__) || (defined __TMPM_374__)

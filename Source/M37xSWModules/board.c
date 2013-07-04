@@ -19,6 +19,9 @@
 
 #include "config.h"
 #include TMPM_ADC_HEADER_FILE
+#include TMPM_CG_HEADER_FILE
+#include TMPM_OFD_HEADER_FILE
+#include TMPM_WDT_HEADER_FILE
 #include BOARD_BOARD_HEADER_FILE
 #include BOARD_GAIN_HEADER_FILE
 
@@ -50,10 +53,11 @@
 #include BOARD_RGB_LED_HEADER_FILE
 #endif /* USE_RGB_LED */
 
+#include "hv_serial_communication.h"
 
-#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) )
+#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) || (defined BOARD_EFTORCOS))
 #include BOARD_PGA_HEADER_FILE
-#endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) */
+#endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) || (defined BOARD_EFTORCOS)*/
 
 #ifdef BOARD_HITEX_M370
 #include "hitex_m370_lcd.h"
@@ -71,10 +75,109 @@
 #include "hv_serial_communication.h"
 #include "temperature_control.h"
 
+uint8_t   external_clock_working=1;
 uint8_t   BoardRevision = 0;
 uint8_t   INIT_Done     = 0;
-uint32_t  T0            = 0;
+uint32_t  osc_frequency = 0;
 FWVersion FirmwareVersion;
+
+static const WDT_InitTypeDef configWDT =
+{
+ WDT_DETECT_TIME_EXP_25,
+ WDT_WDOUT,
+};
+
+/*! \brief  Setup the Watchdog
+  *
+  * @param  None
+  * @retval None
+*/
+void BOARD_SetupWDT(void)
+{
+  WDT_Init(&configWDT);
+  WDT_SetIdleMode(DISABLE);
+#ifdef USE_WDT
+  WDT_Enable();
+#else    
+  WDT_Disable();
+#endif
+}
+
+/*! \brief  Setup the Oscillator Frequency Detector
+  *
+  * @param  None
+  * @retval None
+*/
+void BOARD_SetupOFD(void)
+{
+#define REFERENCE_CLOCK_MAX     10500000
+#define REFERENCE_CLOCK_MIN      8500000
+  
+#ifdef USE_OFD
+  uint32_t max_value_pll =  ((uint64_t)(osc_frequency * PLL_MULTIPLIER * 11 / 10) * (2<<6)) / ( 4 * REFERENCE_CLOCK_MIN);
+  uint32_t min_value_pll =  ((uint64_t)(osc_frequency * PLL_MULTIPLIER *  9 / 10) * (2<<6)) / ( 4 * REFERENCE_CLOCK_MAX);
+  uint32_t max_value     =  ((uint64_t)(osc_frequency                  * 11 / 10) * (2<<6)) / ( 4 * REFERENCE_CLOCK_MIN);
+  uint32_t min_value     =  ((uint64_t)(osc_frequency                  *  9 / 10) * (2<<6)) / ( 4 * REFERENCE_CLOCK_MAX);
+  
+  OFD_SetRegWriteMode(ENABLE);
+  OFD_SetDetectionFrequency(OFD_PLL_ON , max_value_pll, min_value_pll);
+  OFD_SetDetectionFrequency(OFD_PLL_OFF, max_value,     min_value);
+  OFD_Enable();
+  OFD_SetRegWriteMode(DISABLE);
+#endif
+}
+
+/*! \brief  Setup the CPU Clocks
+  *
+  * @param  None
+  * @retval None
+*/
+
+void BOARD_SetupClocks(void)
+{
+  CG_SetPhiT0Src(BOARD_PERIPHERIAL_CLOCK_SOURCE);
+  if (CG_SetPhiT0Level(BOARD_PERIPHERIAL_CLOCK_DIVIDER) != SUCCESS)
+    for(;;);
+  CG_SetFgearLevel(BOARD_CLOCK_GEAR_DIVIDER);
+  
+#ifdef BOARD_USE_EXTERNAL_OSCILLATOR  
+  CG_SetPortM(CG_PORTM_AS_HOSC);
+  if (CG_SetFosc(CG_FOSC_OSC1, ENABLE) != SUCCESS)
+    external_clock_working = 0;
+ 
+  if (external_clock_working == 1)
+  {
+    osc_frequency = BOARD_EXTERNAL_OSCILLATOR_FREQUENCY;
+
+    CG_SetFoscSrc(CG_FOSC_OSC1);
+    if (CG_SetFosc(CG_FOSC_OSC2, DISABLE) != SUCCESS)
+      for(;;);
+    CG_SetWarmUpTime(CG_WARM_UP_SRC_OSC1, 0xfff);                               /* Maximum time */
+  }
+  else
+    osc_frequency = INTERNAL_OSCILLATOR_FREQUENCY;
+
+#else
+  CG_SetPortM(CG_PORTM_AS_GPIO);
+
+  osc_frequency = INTERNAL_OSCILLATOR_FREQUENCY;
+ 
+  if (CG_SetFosc(CG_FOSC_OSC2, ENABLE) != SUCCESS)
+    for(;;);
+  CG_SetFoscSrc(CG_FOSC_OSC2);
+  if (CG_SetFosc(CG_FOSC_OSC1, DISABLE) != SUCCESS)
+    for(;;);
+  CG_SetWarmUpTime(CG_WARM_UP_SRC_OSC2, 0xfff);                                 /* Maximum time */
+#endif
+
+#ifdef BOARD_USE_PLL
+  if (CG_SetPLL(ENABLE) != SUCCESS)
+    for(;;);
+  CG_StartWarmUp();
+  while (CG_GetWarmUpState() != DONE );
+  CG_SetFcSrc(CG_FC_SRC_FPLL);
+#endif    
+}
 
 /*! \brief  Setup the Board Hardware
   *
@@ -83,22 +186,22 @@ FWVersion FirmwareVersion;
 */
 void BOARD_SetupHW(void)
 {
-  /* Get the peripheral I/O clock frequency */
-  const uint32_t a = 2U;
-  SystemCoreClockUpdate();
-  T0 = SystemCoreClock / (a << ((TSB_CG->SYSCR >> 8) & 7U));
-
+#ifdef USE_LED
+  uint8_t i;
+#endif /* USE_LED */  
+  
   FirmwareVersion.fw_version[0]=FW_VERSION_MAJOR;
   FirmwareVersion.fw_version[1]=FW_VERSION_MINOR;
   
-#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) | defined (BOARD_HITEX_M370) )
+#if ( (defined BOARD_M372STK) || (defined BOARD_M374STK) || defined (BOARD_HITEX_M370) || (defined BOARD_EFTORCOS) )
   SPI_DeviceInit(SPI_10_MHZ);                                                   /* Init SPI Channel */
-#endif /* BOARD_M37SIGMA */
+#endif /* (defined BOARD_M372STK) || (defined BOARD_M374STK) || defined (BOARD_HITEX_M370) || (defined BOARD_EFTORCOS) */
   BoardRevision = BOARD_Detect_Revision();
 
-#ifdef BOARD_PWR_HEADER_FILE_0                                                          /* Set up Board dependant values */
+#ifdef BOARD_PWR_HEADER_FILE_0                                                  /* Set up Board dependant values */
 #include BOARD_PWR_HEADER_FILE_0
   ChannelValues[0].DeadTime                    = BOARD_DEAD_TIME;
+  ChannelValues[0].BootstrapDelay              = BOARD_BOOTSTRAP_DELAY;
   ChannelValues[0].gain_current_measure        = BOARD_GAIN_CURRENT_MEASURE;
   ChannelValues[0].measurement_type            = BOARD_MEASUREMENT_TYPE;
   ChannelValues[0].sensitivity_voltage_measure = BOARD_SENSITIVITY_VOLTAGE_MEASURE;
@@ -115,6 +218,7 @@ void BOARD_SetupHW(void)
 #ifdef BOARD_PWR_HEADER_FILE_1
 #include BOARD_PWR_HEADER_FILE_1
   ChannelValues[1].DeadTime                    = BOARD_DEAD_TIME;
+  ChannelValues[1].BootstrapDelay              = BOARD_BOOTSTRAP_DELAY;
   ChannelValues[1].gain_current_measure        = BOARD_GAIN_CURRENT_MEASURE;
   ChannelValues[1].measurement_type            = BOARD_MEASUREMENT_TYPE;
   ChannelValues[1].sensitivity_voltage_measure = BOARD_SENSITIVITY_VOLTAGE_MEASURE;
@@ -153,6 +257,17 @@ void BOARD_SetupHW(void)
 #ifdef USE_RGB_LED
   RGB_LED_Init();
 #endif /* USE_RGB_LED */
+
+  if (external_clock_working == 0)
+  {
+#ifdef USE_LED
+    for (i=0;i<4;i++)
+      LED_SetState(i,1);
+#endif /* USE_LED */    
+#ifdef USE_RGB_LED
+    RGB_LED_SetValue(LED_RGB_YELLOW);
+#endif /* USE_RGB_LED */      
+  }
   
 }
 
@@ -165,15 +280,13 @@ void BOARD_SetupHW2(void)
   TEMPERATURE_ConfigureADCforTemperature(0);
 #endif
 #ifndef BOARD_VDC_CHANNEL_0 
-#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
-#ifdef HV_COMM
+#if (defined HV_COMM && defined USE_SW_OVER_UNDER_VOLTAGE_DETECTION)
   HV_Communication_OverUndervoltageDetect(0);
 #else
   ADC_OverUndervoltageDetect(0);
 #endif /* USE_HV_COMMUNICATION */
-#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */
 #endif /* !defined BOARD_VDC_CHANNEL_0 */
-  
+
 #endif /* defined __TMPM_370__  || defined __TMPM_376__ */
 
   ADC_Init(1,(CURRENT_MEASUREMENT)ChannelValues[1].measurement_type);           /* enable, configure the ADC */
@@ -182,13 +295,11 @@ void BOARD_SetupHW2(void)
   TEMPERATURE_ConfigureADCforTemperature(1);
 #endif
 #ifndef BOARD_VDC_CHANNEL_1
-#ifdef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
-#ifdef HV_COMM
+#if (defined HV_COMM && defined USE_SW_OVER_UNDER_VOLTAGE_DETECTION)
   HV_Communication_OverUndervoltageDetect(1);
 #else
   ADC_OverUndervoltageDetect(1);
 #endif /* USE_HV_COMMUNICATION */
-#endif /* USE_SW_OVER_UNDER_VOLTAGE_DETECTION */
 #endif /* !defined BOARD_VDC_CHANNEL_1 */
   
   INIT_Done=1;                                                                  /* Allow other tasks to access the HW */
@@ -197,6 +308,21 @@ void BOARD_SetupHW2(void)
   EXTERNAL_SPEED_CONTROL_Init();
 #endif
 }
+
+#if (defined USE_WDT) && (!(defined USE_LOAD_STATISTICS))
+/*! \brief  Idle handler
+  *
+  * Overloading function for FreeRTOS idle handler
+  *
+  * @param  None
+  * @retval None
+*/
+void vApplicationIdleHook( void )
+{
+  WDT_WriteClearCode();
+}
+#endif /* (defined USE_WDT) && (!(defined USE_LOAD_STATISTICS)) */
+
 
 #if defined __TMPM_370__  || defined __TMPM_376__
 const PMD_TrgProgINTTypeDef  TrgProgINT_3ShuntA =

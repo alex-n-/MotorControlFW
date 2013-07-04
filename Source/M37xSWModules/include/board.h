@@ -24,9 +24,10 @@
 #include "config.h"
 #include TMPM_ADC_HEADER_FILE
 
-extern uint8_t  BoardRevision;
-extern uint8_t  INIT_Done;
-extern uint32_t T0;
+extern uint8_t   BoardRevision;
+extern uint8_t   INIT_Done;
+extern uint32_t  osc_frequency;
+extern uint8_t   external_clock_working;
 
 extern const PMD_TrgProgINTTypeDef TrgProgINT_3ShuntA;
 extern const PMD_TrgProgINTTypeDef TrgProgINT_3ShuntB;
@@ -58,6 +59,9 @@ extern const PMD_TrgTypeDef PMDTrigger1_1PhaseB;
 extern const PMD_TrgTypeDef PMDTrigger0_2PhaseB;
 extern const PMD_TrgTypeDef PMDTrigger1_2PhaseB;
 
+void BOARD_SetupWDT(void);
+void BOARD_SetupClocks(void);
+void BOARD_SetupOFD(void);
 void BOARD_SetupHW(void);
 void BOARD_SetupHW2(void);
 

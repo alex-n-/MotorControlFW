@@ -12,7 +12,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -87,7 +87,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -153,13 +153,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -402,13 +406,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -458,7 +466,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -564,6 +572,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -621,7 +633,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -901,6 +913,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -940,7 +956,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1015,7 +1031,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -1081,13 +1097,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1329,13 +1349,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1385,7 +1409,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -1491,6 +1515,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -1548,7 +1576,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -1828,6 +1856,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -1867,7 +1899,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -1942,7 +1974,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -2008,13 +2040,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2258,13 +2294,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2306,7 +2346,7 @@
         </option>
         <option>
           <name>ADebug</name>
-          <state>1</state>
+          <state>0</state>
         </option>
         <option>
           <name>AltRegisterNames</name>
@@ -2314,7 +2354,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -2420,6 +2460,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -2477,7 +2521,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -2757,6 +2801,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -2796,7 +2844,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -2871,7 +2919,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -2937,13 +2985,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -3185,13 +3237,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -3241,7 +3297,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -3347,6 +3403,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -3404,7 +3464,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -3684,6 +3744,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -3723,7 +3787,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -3798,7 +3862,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -3864,13 +3928,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4114,13 +4182,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4170,7 +4242,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -4276,6 +4348,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -4333,7 +4409,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -4613,6 +4689,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -4652,7 +4732,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -4727,7 +4807,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -4793,13 +4873,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -5041,13 +5125,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -5097,7 +5185,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -5203,6 +5291,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -5260,7 +5352,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -5540,6 +5632,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -5579,7 +5675,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -5654,7 +5750,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -5720,13 +5816,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -5974,13 +6074,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -6030,7 +6134,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -6136,6 +6240,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -6193,7 +6301,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -6473,6 +6581,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -6512,7 +6624,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -6587,7 +6699,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -6653,13 +6765,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -6906,13 +7022,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -6962,7 +7082,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -7068,6 +7188,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -7125,7 +7249,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -7405,6 +7529,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -7444,7 +7572,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -7519,7 +7647,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -7585,13 +7713,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -7607,6 +7739,7 @@
           <state>USE_RGB_LED</state>
           <state>USE_EXTERNAL_SPEED_CONTROL</state>
           <state>USE_RW_BOARD_SETTINGS</state>
+          <state>SIGMA_PRODUCTION</state>
         </option>
         <option>
           <name>CCPreprocFile</name>
@@ -7838,13 +7971,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -7894,7 +8031,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -8000,6 +8137,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -8057,7 +8198,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -8337,6 +8478,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -8376,7 +8521,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -8451,7 +8596,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -8463,7 +8608,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>TMPM374FWUG	Toshiba TMPM374FWUG</state>
+          <state>TMPM375FSDMG	Toshiba TMPM375FSDMG</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -8517,13 +8662,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -8767,13 +8916,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -8823,7 +8976,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -8929,6 +9082,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -8986,7 +9143,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>1</debug>
         <option>
@@ -9266,6 +9423,10 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -9305,7 +9466,7 @@
       <name>General</name>
       <archiveVersion>3</archiveVersion>
       <data>
-        <version>21</version>
+        <version>22</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -9380,7 +9541,7 @@
         </option>
         <option>
           <name>OGLastSavedByProductVersion</name>
-          <state>6.50.3.4744</state>
+          <state>6.60.1.5099</state>
         </option>
         <option>
           <name>GeneralEnableMisra</name>
@@ -9392,7 +9553,7 @@
         </option>
         <option>
           <name>OGChipSelectEditMenu</name>
-          <state>TMPM374FWUG	Toshiba TMPM374FWUG</state>
+          <state>TMPM375FSDMG	Toshiba TMPM375FSDMG</state>
         </option>
         <option>
           <name>GenLowLevelInterface</name>
@@ -9446,13 +9607,17 @@
           <name>OGUseCmsisDspLib</name>
           <state>0</state>
         </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>ICCARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>28</version>
+        <version>29</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -9694,13 +9859,17 @@
           <name>IccFloatSemantics</name>
           <state>0</state>
         </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
       <name>AARM</name>
       <archiveVersion>2</archiveVersion>
       <data>
-        <version>8</version>
+        <version>9</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -9750,7 +9919,7 @@
         </option>
         <option>
           <name>ADefines</name>
-          <state></state>
+          <state>__ASM__</state>
         </option>
         <option>
           <name>AList</name>
@@ -9856,6 +10025,10 @@
           <name>AExtraOptionsV2</name>
           <state></state>
         </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -9913,7 +10086,7 @@
       <name>ILINK</name>
       <archiveVersion>0</archiveVersion>
       <data>
-        <version>15</version>
+        <version>16</version>
         <wantNonLocal>1</wantNonLocal>
         <debug>0</debug>
         <option>
@@ -10193,6 +10366,1898 @@
           <version>0</version>
           <state>0</state>
         </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>IARCHIVE</name>
+      <archiveVersion>0</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>0</debug>
+        <option>
+          <name>IarchiveInputs</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IarchiveOverride</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IarchiveOutput</name>
+          <state>###Unitialized###</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>BILINK</name>
+      <archiveVersion>0</archiveVersion>
+      <data/>
+    </settings>
+  </configuration>
+  <configuration>
+    <name>Debug - EFTORCOS</name>
+    <toolchain>
+      <name>ARM</name>
+    </toolchain>
+    <debug>1</debug>
+    <settings>
+      <name>General</name>
+      <archiveVersion>3</archiveVersion>
+      <data>
+        <version>22</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>ExePath</name>
+          <state>Debug - EFTORCOS\Exe</state>
+        </option>
+        <option>
+          <name>ObjPath</name>
+          <state>Debug - EFTORCOS\Obj</state>
+        </option>
+        <option>
+          <name>ListPath</name>
+          <state>Debug - EFTORCOS\List</state>
+        </option>
+        <option>
+          <name>Variant</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>GEndianMode</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Input variant</name>
+          <version>3</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Input description</name>
+          <state>Automatic choice of formatter.</state>
+        </option>
+        <option>
+          <name>Output variant</name>
+          <version>2</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Output description</name>
+          <state>Automatic choice of formatter.</state>
+        </option>
+        <option>
+          <name>GOutputBinary</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>FPU</name>
+          <version>2</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OGCoreOrChip</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GRuntimeLibSelect</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GRuntimeLibSelectSlave</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>RTDescription</name>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
+        </option>
+        <option>
+          <name>OGProductVersion</name>
+          <state>6.20.2.52635</state>
+        </option>
+        <option>
+          <name>OGLastSavedByProductVersion</name>
+          <state>6.60.1.5099</state>
+        </option>
+        <option>
+          <name>GeneralEnableMisra</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraVerbose</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OGChipSelectEditMenu</name>
+          <state>TMPM374FWUG	Toshiba TMPM374FWUG</state>
+        </option>
+        <option>
+          <name>GenLowLevelInterface</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GEndianModeBE</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OGBufferedTerminalOutput</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GenStdoutInterface</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules98</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
+          <name>GeneralMisraVer</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+        </option>
+        <option>
+          <name>RTConfigPath2</name>
+          <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
+        </option>
+        <option>
+          <name>GFPUCoreSlave</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>GBECoreSlave</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>OGUseCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OGUseCmsisDspLib</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>ICCARM</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>29</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>CCOptimizationNoSizeConstraints</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCDefines</name>
+          <state>BOARD_EFTORCOS</state>
+          <state>__TMPM_374__</state>
+          <state>DEBUG</state>
+          <state>_IARCMSIS_</state>
+        </option>
+        <option>
+          <name>CCPreprocFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPreprocComments</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPreprocLine</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListCFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListCMnemonics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListCMessages</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListAssFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListAssSource</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCEnableRemarks</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCDiagSuppress</name>
+          <state>Pa050,Pa082</state>
+        </option>
+        <option>
+          <name>CCDiagRemark</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCDiagWarning</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCDiagError</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCObjPrefix</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCAllowList</name>
+          <version>1</version>
+          <state>1111111</state>
+        </option>
+        <option>
+          <name>CCDebugInfo</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IEndianMode</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IExtraOptionsCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IExtraOptions</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCLangConformance</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCSignedPlainChar</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCRequirePrototypes</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCMultibyteSupport</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCDiagWarnAreErr</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCCompilerRuntimeInfo</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IFpuProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OutputFile</name>
+          <state>$FILE_BNAME$.o</state>
+        </option>
+        <option>
+          <name>CCLibConfigHeader</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>PreInclude</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CompilerMisraOverride</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\</state>
+          <state>$PROJ_DIR$\..</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\\CPU_Board\EFTORCOS\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+          <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+          <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+          <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+        </option>
+        <option>
+          <name>CCStdIncCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCCodeSection</name>
+          <state>.text</state>
+        </option>
+        <option>
+          <name>IInterwork2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IProcessorMode2</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCOptLevel</name>
+          <state>3</state>
+        </option>
+        <option>
+          <name>CCOptStrategy</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCOptLevelSlave</name>
+          <state>3</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules98</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+        </option>
+        <option>
+          <name>CCPosIndRopi</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPosIndRwpi</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPosIndNoDynInit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccLang</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCDialect</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccAllowVLA</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCppDialect</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccExceptions</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccRTTI</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccStaticDestr</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccCppInlineSemantics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccFloatSemantics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AARM</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>9</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>AObjPrefix</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AEndian</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ACaseSensitivity</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>MacroChars</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AWarnEnable</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AWarnWhat</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AWarnOne</name>
+          <state></state>
+        </option>
+        <option>
+          <name>AWarnRange1</name>
+          <state></state>
+        </option>
+        <option>
+          <name>AWarnRange2</name>
+          <state></state>
+        </option>
+        <option>
+          <name>ADebug</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AltRegisterNames</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADefines</name>
+          <state>__ASM__</state>
+        </option>
+        <option>
+          <name>AList</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AListHeader</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AListing</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Includes</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>MacDefs</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>MacExps</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>MacExec</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OnlyAssed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>MultiLine</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>PageLengthCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>PageLength</name>
+          <state>80</state>
+        </option>
+        <option>
+          <name>TabSpacing</name>
+          <state>8</state>
+        </option>
+        <option>
+          <name>AXRef</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AXRefDefines</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AXRefInternal</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AXRefDual</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AFpuProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AOutputFile</name>
+          <state>$FILE_BNAME$.o</state>
+        </option>
+        <option>
+          <name>AMultibyteSupport</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ALimitErrorsCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ALimitErrorsEdit</name>
+          <state>100</state>
+        </option>
+        <option>
+          <name>AIgnoreStdInclude</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AUserIncludes</name>
+          <state>$PROJ_DIR$\..</state>
+        </option>
+        <option>
+          <name>AExtraOptionsCheckV2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AExtraOptionsV2</name>
+          <state></state>
+        </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>OBJCOPY</name>
+      <archiveVersion>0</archiveVersion>
+      <data>
+        <version>1</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>OOCOutputFormat</name>
+          <version>2</version>
+          <state>2</state>
+        </option>
+        <option>
+          <name>OCOutputOverride</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OOCOutputFile</name>
+          <state>MotorControl.bin</state>
+        </option>
+        <option>
+          <name>OOCCommandLineProducer</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OOCObjCopyEnable</name>
+          <state>1</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>CUSTOM</name>
+      <archiveVersion>3</archiveVersion>
+      <data>
+        <extensions></extensions>
+        <cmdline></cmdline>
+      </data>
+    </settings>
+    <settings>
+      <name>BICOMP</name>
+      <archiveVersion>0</archiveVersion>
+      <data/>
+    </settings>
+    <settings>
+      <name>BUILDACTION</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <prebuild></prebuild>
+        <postbuild></postbuild>
+      </data>
+    </settings>
+    <settings>
+      <name>ILINK</name>
+      <archiveVersion>0</archiveVersion>
+      <data>
+        <version>16</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>IlinkLibIOConfig</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>XLinkMisraHandler</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkInputFileSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOutputFile</name>
+          <state>MotorControl.out</state>
+        </option>
+        <option>
+          <name>IlinkDebugInfoEnable</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkKeepSymbols</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinaryFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinarySymbol</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinarySegment</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinaryAlign</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkDefines</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkConfigDefines</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkMapFile</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkLogFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogInitialization</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogModule</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogSection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogVeneer</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkIcfOverride</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkIcfFile</name>
+          <state>$PROJ_DIR$\M372_3_4.icf</state>
+        </option>
+        <option>
+          <name>IlinkIcfFileSlave</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkEnableRemarks</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkSuppressDiags</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkTreatAsRem</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkTreatAsWarn</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkTreatAsErr</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkWarningsAreErrors</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkUseExtraOptions</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkExtraOptions</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkLowLevelInterfaceSlave</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkAutoLibEnable</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkAdditionalLibs</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkOverrideProgramEntryLabel</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkProgramEntryLabelSelect</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkProgramEntryLabel</name>
+          <state>__iar_program_start</state>
+        </option>
+        <option>
+          <name>DoFill</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>FillerByte</name>
+          <state>0xFF</state>
+        </option>
+        <option>
+          <name>FillerStart</name>
+          <state>0x0</state>
+        </option>
+        <option>
+          <name>FillerEnd</name>
+          <state>0x0</state>
+        </option>
+        <option>
+          <name>CrcSize</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcAlign</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcPoly</name>
+          <state>0x11021</state>
+        </option>
+        <option>
+          <name>CrcCompl</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CrcBitOrder</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CrcInitialValue</name>
+          <state>0x0</state>
+        </option>
+        <option>
+          <name>DoCrc</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkBE8Slave</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkBufferedTerminalOutput</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkStdoutInterfaceSlave</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcFullSize</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkIElfToolPostProcess</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogAutoLibSelect</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogRedirSymbols</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogUnusedFragments</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCrcReverseByteOrder</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCrcUseAsInput</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptInline</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOptExceptionsAllow</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptExceptionsForce</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptMergeDuplSections</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOptUseVfe</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptForceVfe</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkStackAnalysisEnable</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkStackControlFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkStackCallGraphFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CrcAlgorithm</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcUnitSize</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>IARCHIVE</name>
+      <archiveVersion>0</archiveVersion>
+      <data>
+        <version>0</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>1</debug>
+        <option>
+          <name>IarchiveInputs</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IarchiveOverride</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IarchiveOutput</name>
+          <state>###Unitialized###</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>BILINK</name>
+      <archiveVersion>0</archiveVersion>
+      <data/>
+    </settings>
+  </configuration>
+  <configuration>
+    <name>Release - EFTORCOS</name>
+    <toolchain>
+      <name>ARM</name>
+    </toolchain>
+    <debug>0</debug>
+    <settings>
+      <name>General</name>
+      <archiveVersion>3</archiveVersion>
+      <data>
+        <version>22</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>0</debug>
+        <option>
+          <name>ExePath</name>
+          <state>Release - EFTORCOS\Exe</state>
+        </option>
+        <option>
+          <name>ObjPath</name>
+          <state>Release - EFTORCOS\Obj</state>
+        </option>
+        <option>
+          <name>ListPath</name>
+          <state>Release - EFTORCOS\List</state>
+        </option>
+        <option>
+          <name>Variant</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>GEndianMode</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Input variant</name>
+          <version>3</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Input description</name>
+          <state>Automatic choice of formatter.</state>
+        </option>
+        <option>
+          <name>Output variant</name>
+          <version>2</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>Output description</name>
+          <state>Automatic choice of formatter.</state>
+        </option>
+        <option>
+          <name>GOutputBinary</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>FPU</name>
+          <version>2</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OGCoreOrChip</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GRuntimeLibSelect</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GRuntimeLibSelectSlave</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>RTDescription</name>
+          <state>Use the normal configuration of the C/C++ runtime library. No locale interface, C locale, no file descriptor support, no multibytes in printf and scanf, and no hex floats in strtod.</state>
+        </option>
+        <option>
+          <name>OGProductVersion</name>
+          <state>6.20.2.52635</state>
+        </option>
+        <option>
+          <name>OGLastSavedByProductVersion</name>
+          <state>6.60.1.5099</state>
+        </option>
+        <option>
+          <name>GeneralEnableMisra</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraVerbose</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OGChipSelectEditMenu</name>
+          <state>TMPM374FWUG	Toshiba TMPM374FWUG</state>
+        </option>
+        <option>
+          <name>GenLowLevelInterface</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GEndianModeBE</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OGBufferedTerminalOutput</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GenStdoutInterface</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules98</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
+          <name>GeneralMisraVer</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GeneralMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+        </option>
+        <option>
+          <name>RTConfigPath2</name>
+          <state>$TOOLKIT_DIR$\INC\c\DLib_Config_Normal.h</state>
+        </option>
+        <option>
+          <name>GFPUCoreSlave</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>GBECoreSlave</name>
+          <version>20</version>
+          <state>38</state>
+        </option>
+        <option>
+          <name>OGUseCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OGUseCmsisDspLib</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>GRuntimeLibThreads</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>ICCARM</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>29</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>0</debug>
+        <option>
+          <name>CCOptimizationNoSizeConstraints</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCDefines</name>
+          <state>BOARD_EFTORCOS</state>
+          <state>__TMPM_374__</state>
+        </option>
+        <option>
+          <name>CCPreprocFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPreprocComments</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPreprocLine</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListCFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListCMnemonics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListCMessages</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListAssFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCListAssSource</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCEnableRemarks</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCDiagSuppress</name>
+          <state>Pa050,Pa082</state>
+        </option>
+        <option>
+          <name>CCDiagRemark</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCDiagWarning</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCDiagError</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCObjPrefix</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCAllowList</name>
+          <version>1</version>
+          <state>1111111</state>
+        </option>
+        <option>
+          <name>CCDebugInfo</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IEndianMode</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IExtraOptionsCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IExtraOptions</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CCLangConformance</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCSignedPlainChar</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCRequirePrototypes</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCMultibyteSupport</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCDiagWarnAreErr</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCCompilerRuntimeInfo</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IFpuProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OutputFile</name>
+          <state>$FILE_BNAME$.o</state>
+        </option>
+        <option>
+          <name>CCLibConfigHeader</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>PreInclude</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CompilerMisraOverride</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCIncludePath2</name>
+          <state>$PROJ_DIR$\</state>
+          <state>$PROJ_DIR$\..</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
+          <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
+          <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
+          <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
+          <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
+        </option>
+        <option>
+          <name>CCStdIncCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCCodeSection</name>
+          <state>.text</state>
+        </option>
+        <option>
+          <name>IInterwork2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IProcessorMode2</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCOptLevel</name>
+          <state>3</state>
+        </option>
+        <option>
+          <name>CCOptStrategy</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CCOptLevelSlave</name>
+          <state>3</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules98</name>
+          <version>0</version>
+          <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
+        </option>
+        <option>
+          <name>CompilerMisraRules04</name>
+          <version>0</version>
+          <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
+        </option>
+        <option>
+          <name>CCPosIndRopi</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPosIndRwpi</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCPosIndNoDynInit</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccLang</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCDialect</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccAllowVLA</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCppDialect</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccExceptions</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccRTTI</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccStaticDestr</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccCppInlineSemantics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IccCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IccFloatSemantics</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CCNoLiteralPool</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>AARM</name>
+      <archiveVersion>2</archiveVersion>
+      <data>
+        <version>9</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>0</debug>
+        <option>
+          <name>AObjPrefix</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AEndian</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>ACaseSensitivity</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>MacroChars</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AWarnEnable</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AWarnWhat</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AWarnOne</name>
+          <state></state>
+        </option>
+        <option>
+          <name>AWarnRange1</name>
+          <state></state>
+        </option>
+        <option>
+          <name>AWarnRange2</name>
+          <state></state>
+        </option>
+        <option>
+          <name>ADebug</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AltRegisterNames</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ADefines</name>
+          <state>__ASM__</state>
+        </option>
+        <option>
+          <name>AList</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AListHeader</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AListing</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>Includes</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>MacDefs</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>MacExps</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>MacExec</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OnlyAssed</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>MultiLine</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>PageLengthCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>PageLength</name>
+          <state>80</state>
+        </option>
+        <option>
+          <name>TabSpacing</name>
+          <state>8</state>
+        </option>
+        <option>
+          <name>AXRef</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AXRefDefines</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AXRefInternal</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AXRefDual</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AFpuProcessor</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>AOutputFile</name>
+          <state>$FILE_BNAME$.o</state>
+        </option>
+        <option>
+          <name>AMultibyteSupport</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ALimitErrorsCheck</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>ALimitErrorsEdit</name>
+          <state>100</state>
+        </option>
+        <option>
+          <name>AIgnoreStdInclude</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AUserIncludes</name>
+          <state>$PROJ_DIR$\..</state>
+        </option>
+        <option>
+          <name>AExtraOptionsCheckV2</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>AExtraOptionsV2</name>
+          <state></state>
+        </option>
+        <option>
+          <name>AsmNoLiteralPool</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>OBJCOPY</name>
+      <archiveVersion>0</archiveVersion>
+      <data>
+        <version>1</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>0</debug>
+        <option>
+          <name>OOCOutputFormat</name>
+          <version>2</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OCOutputOverride</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>OOCOutputFile</name>
+          <state>MotorControl.srec</state>
+        </option>
+        <option>
+          <name>OOCCommandLineProducer</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>OOCObjCopyEnable</name>
+          <state>0</state>
+        </option>
+      </data>
+    </settings>
+    <settings>
+      <name>CUSTOM</name>
+      <archiveVersion>3</archiveVersion>
+      <data>
+        <extensions></extensions>
+        <cmdline></cmdline>
+      </data>
+    </settings>
+    <settings>
+      <name>BICOMP</name>
+      <archiveVersion>0</archiveVersion>
+      <data/>
+    </settings>
+    <settings>
+      <name>BUILDACTION</name>
+      <archiveVersion>1</archiveVersion>
+      <data>
+        <prebuild></prebuild>
+        <postbuild></postbuild>
+      </data>
+    </settings>
+    <settings>
+      <name>ILINK</name>
+      <archiveVersion>0</archiveVersion>
+      <data>
+        <version>16</version>
+        <wantNonLocal>1</wantNonLocal>
+        <debug>0</debug>
+        <option>
+          <name>IlinkLibIOConfig</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>XLinkMisraHandler</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkInputFileSlave</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOutputFile</name>
+          <state>MotorControl.out</state>
+        </option>
+        <option>
+          <name>IlinkDebugInfoEnable</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkKeepSymbols</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinaryFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinarySymbol</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinarySegment</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkRawBinaryAlign</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkDefines</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkConfigDefines</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkMapFile</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkLogFile</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogInitialization</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogModule</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogSection</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogVeneer</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkIcfOverride</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkIcfFile</name>
+          <state>$PROJ_DIR$\M372_3_4.icf</state>
+        </option>
+        <option>
+          <name>IlinkIcfFileSlave</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkEnableRemarks</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkSuppressDiags</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkTreatAsRem</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkTreatAsWarn</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkTreatAsErr</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkWarningsAreErrors</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkUseExtraOptions</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkExtraOptions</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkLowLevelInterfaceSlave</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkAutoLibEnable</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkAdditionalLibs</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkOverrideProgramEntryLabel</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkProgramEntryLabelSelect</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkProgramEntryLabel</name>
+          <state>__iar_program_start</state>
+        </option>
+        <option>
+          <name>DoFill</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>FillerByte</name>
+          <state>0xFF</state>
+        </option>
+        <option>
+          <name>FillerStart</name>
+          <state>0x0</state>
+        </option>
+        <option>
+          <name>FillerEnd</name>
+          <state>0x0</state>
+        </option>
+        <option>
+          <name>CrcSize</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcAlign</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcPoly</name>
+          <state>0x11021</state>
+        </option>
+        <option>
+          <name>CrcCompl</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CrcBitOrder</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>CrcInitialValue</name>
+          <state>0x0</state>
+        </option>
+        <option>
+          <name>DoCrc</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkBE8Slave</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkBufferedTerminalOutput</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkStdoutInterfaceSlave</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcFullSize</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkIElfToolPostProcess</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogAutoLibSelect</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogRedirSymbols</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkLogUnusedFragments</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCrcReverseByteOrder</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCrcUseAsInput</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptInline</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOptExceptionsAllow</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptExceptionsForce</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkCmsis</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptMergeDuplSections</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkOptUseVfe</name>
+          <state>1</state>
+        </option>
+        <option>
+          <name>IlinkOptForceVfe</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkStackAnalysisEnable</name>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkStackControlFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>IlinkStackCallGraphFile</name>
+          <state></state>
+        </option>
+        <option>
+          <name>CrcAlgorithm</name>
+          <version>0</version>
+          <state>1</state>
+        </option>
+        <option>
+          <name>CrcUnitSize</name>
+          <version>0</version>
+          <state>0</state>
+        </option>
+        <option>
+          <name>IlinkThreadsSlave</name>
+          <state>1</state>
+        </option>
       </data>
     </settings>
     <settings>
@@ -10236,6 +12301,8 @@
           <configuration>Production - M37Sigma</configuration>
           <configuration>Debug - M375STK</configuration>
           <configuration>Release - M375STK</configuration>
+          <configuration>Debug - EFTORCOS</configuration>
+          <configuration>Release - EFTORCOS</configuration>
         </excluded>
         <group>
           <name>include</name>
@@ -10284,6 +12351,61 @@
     <group>
       <name>CPU Board</name>
       <group>
+        <name>EFTORCOS</name>
+        <excluded>
+          <configuration>Debug - HitexM370</configuration>
+          <configuration>Release - HitexM370</configuration>
+          <configuration>Debug - M374STK</configuration>
+          <configuration>Release - M374STK</configuration>
+          <configuration>Debug - M372STK</configuration>
+          <configuration>Release - M372STK</configuration>
+          <configuration>Debug - M37Sigma</configuration>
+          <configuration>Release - M37Sigma</configuration>
+          <configuration>Production - M37Sigma</configuration>
+          <configuration>Debug - M375STK</configuration>
+          <configuration>Release - M375STK</configuration>
+        </excluded>
+        <group>
+          <name>include</name>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_board.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_can.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_gain.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_led.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_pga.h</name>
+          </file>
+          <file>
+            <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_spi_device.h</name>
+          </file>
+        </group>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\eftorcos_board.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\eftorcos_can.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\eftorcos_gain.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\eftorcos_led.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\eftorcos_pga.c</name>
+        </file>
+        <file>
+          <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\eftorcos_spi_device.c</name>
+        </file>
+      </group>
+      <group>
         <name>HitexM370</name>
         <excluded>
           <configuration>Debug - M374STK</configuration>
@@ -10295,6 +12417,8 @@
           <configuration>Production - M37Sigma</configuration>
           <configuration>Debug - M375STK</configuration>
           <configuration>Release - M375STK</configuration>
+          <configuration>Debug - EFTORCOS</configuration>
+          <configuration>Release - EFTORCOS</configuration>
         </excluded>
         <group>
           <name>include</name>
@@ -10357,6 +12481,8 @@
           <configuration>Debug - M37Sigma</configuration>
           <configuration>Release - M37Sigma</configuration>
           <configuration>Production - M37Sigma</configuration>
+          <configuration>Debug - EFTORCOS</configuration>
+          <configuration>Release - EFTORCOS</configuration>
         </excluded>
         <group>
           <name>include</name>
@@ -10385,6 +12511,8 @@
           <configuration>Release - M372STK</configuration>
           <configuration>Debug - M375STK</configuration>
           <configuration>Release - M375STK</configuration>
+          <configuration>Debug - EFTORCOS</configuration>
+          <configuration>Release - EFTORCOS</configuration>
         </excluded>
         <group>
           <name>include</name>
@@ -10417,6 +12545,9 @@
     </group>
     <group>
       <name>Powerboard</name>
+      <file>
+        <name>$PROJ_DIR$\..\..\..\Source\Board\CPU_Board\EFTORCOS\include\eftorcos_pwr.h</name>
+      </file>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\Board\Powerboard\hitex_m370_pwr_hv.h</name>
       </file>
@@ -10668,6 +12799,8 @@
             <configuration>Production - M37Sigma</configuration>
             <configuration>Debug - M375STK</configuration>
             <configuration>Release - M375STK</configuration>
+            <configuration>Debug - EFTORCOS</configuration>
+            <configuration>Release - EFTORCOS</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm370_adc.c</name>
@@ -10709,6 +12842,8 @@
             <configuration>Production - M37Sigma</configuration>
             <configuration>Debug - M375STK</configuration>
             <configuration>Release - M375STK</configuration>
+            <configuration>Debug - EFTORCOS</configuration>
+            <configuration>Release - EFTORCOS</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm372_adc.c</name>
@@ -10749,6 +12884,8 @@
             <configuration>Release - M372STK</configuration>
             <configuration>Debug - M375STK</configuration>
             <configuration>Release - M375STK</configuration>
+            <configuration>Debug - EFTORCOS</configuration>
+            <configuration>Release - EFTORCOS</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm373_adc.c</name>
@@ -10831,6 +12968,8 @@
             <configuration>Release - M37Sigma</configuration>
             <configuration>Production - M37Sigma</configuration>
             <configuration>Release - M375STK</configuration>
+            <configuration>Debug - EFTORCOS</configuration>
+            <configuration>Release - EFTORCOS</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm375_adc.c</name>
@@ -10880,6 +13019,8 @@
             <configuration>Production - M37Sigma</configuration>
             <configuration>Debug - M375STK</configuration>
             <configuration>Release - M375STK</configuration>
+            <configuration>Debug - EFTORCOS</configuration>
+            <configuration>Release - EFTORCOS</configuration>
           </excluded>
           <file>
             <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\src\tmpm376_adc.c</name>
@@ -10923,6 +13064,8 @@
         <configuration>Production - M37Sigma</configuration>
         <configuration>Debug - M375STK</configuration>
         <configuration>Release - M375STK</configuration>
+        <configuration>Debug - EFTORCOS</configuration>
+        <configuration>Release - EFTORCOS</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM370.s</name>
@@ -10949,6 +13092,8 @@
         <configuration>Production - M37Sigma</configuration>
         <configuration>Debug - M375STK</configuration>
         <configuration>Release - M375STK</configuration>
+        <configuration>Debug - EFTORCOS</configuration>
+        <configuration>Release - EFTORCOS</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM372.s</name>
@@ -10974,6 +13119,8 @@
         <configuration>Release - M372STK</configuration>
         <configuration>Debug - M375STK</configuration>
         <configuration>Release - M375STK</configuration>
+        <configuration>Debug - EFTORCOS</configuration>
+        <configuration>Release - EFTORCOS</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM373.s</name>
@@ -11026,6 +13173,8 @@
         <configuration>Release - M37Sigma</configuration>
         <configuration>Production - M37Sigma</configuration>
         <configuration>Release - M375STK</configuration>
+        <configuration>Debug - EFTORCOS</configuration>
+        <configuration>Release - EFTORCOS</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM375.s</name>
@@ -11054,6 +13203,8 @@
         <configuration>Production - M37Sigma</configuration>
         <configuration>Debug - M375STK</configuration>
         <configuration>Release - M375STK</configuration>
+        <configuration>Debug - EFTORCOS</configuration>
+        <configuration>Release - EFTORCOS</configuration>
       </excluded>
       <file>
         <name>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS\startup\iar\startup_TMPM376.s</name>
@@ -11185,6 +13336,8 @@
         <configuration>Production - M37Sigma</configuration>
         <configuration>Debug - M375STK</configuration>
         <configuration>Release - M375STK</configuration>
+        <configuration>Debug - EFTORCOS</configuration>
+        <configuration>Release - EFTORCOS</configuration>
       </excluded>
     </file>
     <file>
@@ -11254,6 +13407,9 @@
         <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include\protocol.h</name>
       </file>
       <file>
+        <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include\sigma_self_test.h</name>
+      </file>
+      <file>
         <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include\stall_detect.h</name>
       </file>
       <file>
@@ -11309,6 +13465,9 @@
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\protocol.c</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\sigma_self_test.c</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\stall_detect.c</name>
     </file>
     <file>
@@ -11322,258 +13481,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\turn_control.c</name>
-      <configuration>
-        <name>Debug - M374STK</name>
-        <settings>
-          <name>ICCARM</name>
-          <data>
-            <version>28</version>
-            <wantNonLocal>0</wantNonLocal>
-            <debug>1</debug>
-            <option>
-              <name>CCOptimizationNoSizeConstraints</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCDefines</name>
-              <state>BOARD_M374STK</state>
-              <state>__TMPM_374__</state>
-              <state>DEBUG</state>
-              <state>_IARCMSIS_</state>
-            </option>
-            <option>
-              <name>CCPreprocFile</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCPreprocComments</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCPreprocLine</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCListCFile</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCListCMnemonics</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCListCMessages</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCListAssFile</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCListAssSource</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCEnableRemarks</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCDiagSuppress</name>
-              <state>Pa050,Pa082</state>
-            </option>
-            <option>
-              <name>CCDiagRemark</name>
-              <state></state>
-            </option>
-            <option>
-              <name>CCDiagWarning</name>
-              <state></state>
-            </option>
-            <option>
-              <name>CCDiagError</name>
-              <state></state>
-            </option>
-            <option>
-              <name>CCObjPrefix</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>CCAllowList</name>
-              <version>1</version>
-              <state>0000000</state>
-            </option>
-            <option>
-              <name>CCDebugInfo</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IEndianMode</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IProcessor</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IExtraOptionsCheck</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IExtraOptions</name>
-              <state></state>
-            </option>
-            <option>
-              <name>CCLangConformance</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCSignedPlainChar</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>CCRequirePrototypes</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCMultibyteSupport</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCDiagWarnAreErr</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCCompilerRuntimeInfo</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IFpuProcessor</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>OutputFile</name>
-              <state>$FILE_BNAME$.o</state>
-            </option>
-            <option>
-              <name>CCLibConfigHeader</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>PreInclude</name>
-              <state></state>
-            </option>
-            <option>
-              <name>CompilerMisraOverride</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCIncludePath2</name>
-              <state>$PROJ_DIR$\</state>
-              <state>$PROJ_DIR$\..</state>
-              <state>$PROJ_DIR$\..\..\..\Source\Motors</state>
-              <state>$PROJ_DIR$\..\..\..\Source\Board\Baseboard\M374Baseboard\include</state>
-              <state>$PROJ_DIR$\..\..\..\Source\Board\Powerboard</state>
-              <state>$PROJ_DIR$\..\..\..\Source\M37xHWGeneric\include</state>
-              <state>$PROJ_DIR$\..\..\..\Source\M37xSWModules\include</state>
-              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\include</state>
-              <state>$PROJ_DIR$\..\..\..\Source\FreeRTOS\Source\portable\IAR\ARM_CM3</state>
-              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_CMSIS</state>
-              <state>$PROJ_DIR$\..\..\..\Source\CMSIS\TX03_Periph_Driver\inc</state>
-            </option>
-            <option>
-              <name>CCStdIncCheck</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCCodeSection</name>
-              <state>.text</state>
-            </option>
-            <option>
-              <name>IInterwork2</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IProcessorMode2</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>CCOptLevel</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCOptStrategy</name>
-              <version>0</version>
-              <state>1</state>
-            </option>
-            <option>
-              <name>CCOptLevelSlave</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CompilerMisraRules98</name>
-              <version>0</version>
-              <state>1000111110110101101110011100111111101110011011000101110111101101100111111111111100110011111001110111001111111111111111111111111</state>
-            </option>
-            <option>
-              <name>CompilerMisraRules04</name>
-              <version>0</version>
-              <state>111101110010111111111000110111111111111111111111111110010111101111010101111111111111111111111111101111111011111001111011111011111111111111111</state>
-            </option>
-            <option>
-              <name>CCPosIndRopi</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCPosIndRwpi</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>CCPosIndNoDynInit</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IccLang</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IccCDialect</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IccAllowVLA</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IccCppDialect</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IccExceptions</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IccRTTI</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IccStaticDestr</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IccCppInlineSemantics</name>
-              <state>0</state>
-            </option>
-            <option>
-              <name>IccCmsis</name>
-              <state>1</state>
-            </option>
-            <option>
-              <name>IccFloatSemantics</name>
-              <state>0</state>
-            </option>
-          </data>
-        </settings>
-      </configuration>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\M37xSWModules\user_callbacks.c</name>
@@ -11582,7 +13489,16 @@
   <group>
     <name>Motors</name>
     <file>
+      <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Dematec_BL4220B.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Dematec_BL5040B.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Dunker_BG_42x15.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_EMAX_CF2805.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Gefeg_ECs-7140_HV.h</name>
@@ -11592,6 +13508,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Maxxon_EC.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_MIS.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\..\..\Source\Motors\motor_define_Nanotec_DB42S01@24V.h</name>

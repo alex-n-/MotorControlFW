@@ -24,6 +24,10 @@
 /* Shall between 1kHz and 10kHz     */
 #define VE_CONTROL_LOOP_FREQUENCY    1                                          /* [kHz] Frequency of MAIN control */
 
+/* Security Features */
+//#define USE_WDT                                                                 /*!< Make use of Watchdog */
+//#define USE_OFD                                                                 /*!< Make use of Oscillation Frequency Detector */
+
 /* FW configuration */
 #define USE_INTERNAL_MOTOR_PARAMS                                               /*!< Use compiled in motor parameters */
 #define USE_LED                                                                 /*!< Activate LED signaling */
@@ -40,6 +44,7 @@
 //#define USE_SW_OVER_UNDER_VOLTAGE_DETECTION                                     /*!< Activate software based under- and over-voltage detection */
 //#define USE_MOTOR_DISCONNECT_DETECTION                                          /*!< Activate automatic motor disconnected */
 //#define USE_LOAD_DEPENDANT_SPEED_REDUCTION                                      /*!< Activate load dependant speed reduction */
+//#define USE_SW_OVERCURRENT_DETECTION                                            /*!< Activate over current detection by software */
 //#define USE_CAN                                                                 /*!< Enable CAN communication */
 //#define USE_TURN_CONTROL                                                        /*!< Activate Turn control for position reaching */
 //#define USE_USER_CALLBACKS                                                      /*!< Make use of VE Clallback Hooks */
@@ -61,13 +66,15 @@
 /*************/
 
 /* Motor defines */
-#define MOTOR_CHANNEL_1 "motor_define_Nanotec_DB42S03.h"                        /*!< Motor to be used */
+#define MOTOR_CHANNEL_1 "motor_define_MIS.h"                                    /*!< Motor to be used */
+//#define MOTOR_CHANNEL_1 "motor_define_Nanotec_DB42S03.h"                        /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Shinano_DR38312.h"                        /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Scorpion_3014-830KV.h"                    /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Nanotec_DB42S01@24V.h"                    /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Maxxon_EC.h"                              /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_Shinano_PMBA-200FK_HV.h"                  /*!< Motor to be used */
 //#define MOTOR_CHANNEL_1 "motor_define_EMAX_CF2805.h"                            /*!< Motor to be used */
+//#define MOTOR_CHANNEL_1 "motor_define_Dematec_BL4220B.h"                            /*!< Motor to be used */
 
 /* Default Power Board override */
 //#define BOARD_PWR_HEADER_FILE_1       "m374pwr_lv.h"                            /*! Powerboard to be used */

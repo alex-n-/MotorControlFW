@@ -39,8 +39,7 @@ void SetupInternalMotorParams(void)
   MotorParameterValues[0].PolePairs      = MOTOR_POLE_PAIRS;
   MotorParameterValues[0].Direction      = MOTOR_DIRECTION;
   MotorParameterValues[0].Encoder        = MOTOR_ENCODER_TYPE;
-  MotorParameterValues[0].EncRes         = MOTOR_ENCODER_RESOLUTION;
-  MotorParameterValues[0].EncMult        = MOTOR_RESOLUTION_MULT;
+  MotorParameterValues[0].IncRotEncCnt   = MOTOR_ENCODER_COUNT;
   MotorParameterValues[0].MaxAngAcc      = MOTOR_ANGULAR_ACC_MAX;
   MotorParameterValues[0].TorqueFactor   = MOTOR_TORQUE_MAX;
   MotorParameterValues[0].Resistance     = MOTOR_RESISTANCE;
@@ -65,12 +64,15 @@ void SetupInternalMotorParams(void)
 
   SystemValues[0].PWMFrequency           = SYSTEM_PWM_FREQUENCY;
   SystemValues[0].ShutdownMode           = SYSTEM_SHUTDOWN_MODE;
+  SystemValues[0].BrakeTime              = SYSTEM_BRAKE_TIME;
   SystemValues[0].RestartMode            = SYSTEM_RESTART_MODE;
   SystemValues[0].StallDetectValue       = SYSTEM_STALL_VALUE;
   SystemValues[0].Overtemperature        = SYSTEM_OVERTEMP_VALUE;
   SystemValues[0].ExternalSpeedCtrl      = SYSTEM_SPEED_CONTROL_MODE;
   SystemValues[0].SW_Overvoltage         = SYSTEM_SW_OVERVOLTAGE;
   SystemValues[0].SW_Undervoltage        = SYSTEM_SW_UNDERVOLTAGE;
+  SystemValues[0].SW_Overcurrent         = SYSTEM_SW_OVERCURRENT;
+  SystemValues[0].SpeedReductionPercent  = SYSTEM_SPEED_RED_PERCENT;
 
   /* A little bit tricky - undef all defines to be able to load the same
     define again, or ause an other define, but having the same naming */
@@ -84,8 +86,7 @@ void SetupInternalMotorParams(void)
   MotorParameterValues[1].PolePairs      = MOTOR_POLE_PAIRS;
   MotorParameterValues[1].Direction      = MOTOR_DIRECTION;
   MotorParameterValues[1].Encoder        = MOTOR_ENCODER_TYPE;
-  MotorParameterValues[1].EncRes         = MOTOR_ENCODER_RESOLUTION;
-  MotorParameterValues[1].EncMult        = MOTOR_RESOLUTION_MULT;
+  MotorParameterValues[1].IncRotEncCnt   = MOTOR_ENCODER_COUNT;
   MotorParameterValues[1].MaxAngAcc      = MOTOR_ANGULAR_ACC_MAX;
   MotorParameterValues[1].TorqueFactor   = MOTOR_TORQUE_MAX;
   MotorParameterValues[1].Resistance     = MOTOR_RESISTANCE;
@@ -110,12 +111,15 @@ void SetupInternalMotorParams(void)
 
   SystemValues[1].PWMFrequency           = SYSTEM_PWM_FREQUENCY;
   SystemValues[1].ShutdownMode           = SYSTEM_SHUTDOWN_MODE;
+  SystemValues[1].BrakeTime              = SYSTEM_BRAKE_TIME;
   SystemValues[1].RestartMode            = SYSTEM_RESTART_MODE;
   SystemValues[1].StallDetectValue       = SYSTEM_STALL_VALUE;
   SystemValues[1].Overtemperature        = SYSTEM_OVERTEMP_VALUE;
   SystemValues[1].ExternalSpeedCtrl      = SYSTEM_SPEED_CONTROL_MODE;
   SystemValues[1].SW_Overvoltage         = SYSTEM_SW_OVERVOLTAGE;
   SystemValues[1].SW_Undervoltage        = SYSTEM_SW_UNDERVOLTAGE;
+  SystemValues[1].SW_Overcurrent         = SYSTEM_SW_OVERCURRENT;
+  SystemValues[1].SpeedReductionPercent  = SYSTEM_SPEED_RED_PERCENT;
 
 #include "motor_undefine.h"
 #endif

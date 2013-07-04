@@ -99,11 +99,15 @@ void StallTask(void* pvParameters)
             || (    (vqi[i]<SystemValues[i].StallDetectValue)
                  && (MotorParameterValues[i].Encoder  == MOTOR_NO_ENCODER)))
             stall_detected[i]=1;                                                /* make filed as stalled - Worker Task will take action */
+
         if (VE_Omega[i].part.reg<0)
           if ((old_vqi[i]*JUMP_STALL_DETECT_PERCENTAGE/100<vqi[i])
             || (    (vqi[i] > -SystemValues[i].StallDetectValue)
                  && (MotorParameterValues[i].Encoder  == MOTOR_NO_ENCODER)))
             stall_detected[i]=1;                                                /* make filed as stalled - Worker Task will take action */
+        
+        if (stall_detected[i] == 0)
+          MotorErrorField[i].Error &= ~VE_STALLDETECTED;
       }
       old_vqi[i]=vqi[i];
       
@@ -116,6 +120,7 @@ void StallTask(void* pvParameters)
         vTaskDelay( 100 / portTICK_RATE_MS );                                   /* wait a moment to complete shutdown */
         SystemValues[i].ShutdownMode  = shutdown_mode ;                         /* restore original shutdown mode */
         stall_detected[i]=0;                                                    /* reset stall flag */
+       
         if (SystemValues[i].RestartMode == RESTART_MOTOR)                       /* system restart mode ? */
         {
           init_delay  = MotorParameterValues[i].PositionDelay;                  /* remember original init delay */
@@ -124,6 +129,7 @@ void StallTask(void* pvParameters)
           MotorSetValues[i].TargetSpeed     = target_speed;                     /* restore the original target speed */
           MotorParameterValues[i].PositionDelay = init_delay;                   /* restore the original init delay */
         }
+        MotorErrorField[i].Error |= VE_STALLDETECTED;                           /* mark stall detection */
       }
     }
     vTaskDelay( 100 / portTICK_RATE_MS );                                       /* sleep a while */

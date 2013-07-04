@@ -40,7 +40,7 @@
 #define WDCR_Val    (0x000000B1UL)
 
 /* Clock Generator (CG) Configuration */
-#define CLOCK_SETUP 1
+#define CLOCK_SETUP 0
 #define SYSCR_Val   (0x00010000UL)
 #define OSCCR_Val   (0x1F4E0104UL)   /* OSCCR<WUPODR13:0> = 2000, warm-up time is 200us @ XTALH = 10MHz */
 #define STBYCR_Val  (0x00000103UL)

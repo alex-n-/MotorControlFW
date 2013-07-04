@@ -105,7 +105,7 @@ extern "C" {
     void WDT_SetDetectTime(uint32_t DetectTime);
     void WDT_SetIdleMode(FunctionalState NewState);
     void WDT_SetOverflowOutput(uint32_t OverflowOutput);
-    void WDT_Init(WDT_InitTypeDef * InitStruct);
+    void WDT_Init(const WDT_InitTypeDef * InitStruct);
     void WDT_Enable(void);
     void WDT_Disable(void);
     void WDT_WriteClearCode(void);

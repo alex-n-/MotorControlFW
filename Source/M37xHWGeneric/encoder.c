@@ -29,8 +29,10 @@
 #include "encoder.h"
 #include "motorctrl.h"
 #include "ve.h"
+#include "board.h"
 
-EncoderValues                 EncoderData[MAX_CHANNEL];                         /*<! generic encoder result data */
+extern EncoderValues  EncoderData[MAX_CHANNEL];                                 /*<! generic encoder result data */
+static uint8_t        input_nr[MAX_CHANNEL] = {2,2};
 
 static const GPIO_InitTypeDef portConfigENC =
 {
@@ -40,22 +42,38 @@ static const GPIO_InitTypeDef portConfigENC =
   GPIO_PULLDOWN_DISABLE,
 };
 
-static void ENC_IOInit(unsigned char channel_number)
+static const uint16_t HallSectorTable[6][2] =
 {
-  GPIO_Port     ENCPort=GPIO_PF;
-  unsigned char ENCMask=0;
+  {0x4, 30},
+  {0x6, 90},
+  {0x2,150},
+  {0x3,210},
+  {0x1,270},
+  {0x5,330},
+};
+
+static void ENC_IOInit(uint8_t channel_number)
+{
+  GPIO_Port ENCPort=GPIO_PF;
+  uint8_t   ENCMask=0;
   
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
   case 0:
     ENCPort = GPIO_PD;
-    ENCMask = GPIO_BIT_0 | GPIO_BIT_1 | GPIO_BIT_2;
+    if (input_nr[channel_number] >= 2)
+      ENCMask |= GPIO_BIT_0 | GPIO_BIT_1;
+    if ((input_nr[channel_number] == 1) || (input_nr[channel_number] == 3))
+      ENCMask |= GPIO_BIT_2;
     break;
-#endif    
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
   case 1:
     ENCPort = GPIO_PF;
-    ENCMask = GPIO_BIT_2 | GPIO_BIT_3 | GPIO_BIT_4;
+    if (input_nr[channel_number] >= 2)
+      ENCMask |= GPIO_BIT_2 | GPIO_BIT_3;
+    if ((input_nr[channel_number] == 1) || (input_nr[channel_number] == 3))
+      ENCMask |= GPIO_BIT_4;
     break;
   default:
     assert_param(0);
@@ -69,19 +87,71 @@ static void ENC_IOInit(unsigned char channel_number)
   GPIO_DisableFuncReg   (ENCPort, GPIO_FUNC_REG_2, ENCMask);
 }
 
-static void IRQ_Common(unsigned char channel_number)
+/*! \brief  Get the Theta value from Encoder
+  *
+  * @param  channel_number:  channel to measure
+  * @retval None  
+*/
+void ENC_GetTheta(unsigned char channel_number)
 {
-  TSB_EN_TypeDef*       pENCx = NULL;
-  int32_t               ticks;
-  int                   delta;
+  GPIO_Port ENCPort=GPIO_PF;
+  uint8_t   i=0;
+  uint8_t   ENCStatus=0;
+  
+  switch (MotorParameterValues[channel_number].Encoder)
+  {
+  case MOTOR_HALL_UVW_SPEED:
+  case MOTOR_HALL_UVW_EVENT:
+  case MOTOR_HALL_UV_SPEED:
+  case MOTOR_HALL_UV_EVENT:
+    break;
+  default:
+    return;
+    break;
+  }
     
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
+  case 0:
+    ENCPort = GPIO_PD;
+    break;
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
+  case 1:
+    ENCPort = GPIO_PF;
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+
+  ENCStatus = GPIO_ReadData(ENCPort);
+  
+  if (channel_number == 1)                                                      /* Shift U Signal to bit 0 */
+    ENCStatus = ENCStatus>>2;
+
+  for(i=0;i<sizeof(HallSectorTable)/2* sizeof(uint16_t);i++)
+    if (HallSectorTable[i][0] == ENCStatus)
+      break;
+  
+//  VE_Theta[channel_number]. = HallSectorTable[i][1];
+  
+  printf("%x\n",ENCStatus);
+  return;
+}
+
+static void IRQ_Common(unsigned char channel_number)
+{
+  TSB_EN_TypeDef* pENCx   = NULL;
+  static uint8_t  hall_nr = 0;
+    
+  switch (channel_number)
+  {
+#if defined __TMPM_370__  || defined __TMPM_376__
   case 0:
     pENCx = TSB_EN0;
     break;
-#endif    
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
   case 1:
     pENCx = TSB_EN1;
     break;
@@ -92,43 +162,81 @@ static void IRQ_Common(unsigned char channel_number)
 
   switch (MotorParameterValues[channel_number].Encoder)
   {
-  case MOTOR_ENCODER_SPEED:
-    EncoderData[channel_number].CW = (pENCx->TNCR & ENC_DIRECTION) >> 13;
-    ticks=pENCx->CNT;
-    
-    delta = ticks - EncoderData[channel_number].ticksBetweenEvents;
-    if ( (abs(delta)<500) && (VE_ActualStage[channel_number].main==Stage_FOC))
-      EncoderData[channel_number].ticksBetweenEvents = ticks;
-    else
-      EncoderData[channel_number].ticksBetweenEvents = ticks;
+  case MOTOR_HALL_UV_SPEED:
+  case MOTOR_HALL_UVW_SPEED:
+    EncoderData[channel_number].ticksBetweenEvents[hall_nr] = pENCx->CNT;
+    EncoderData[channel_number].CW                          = (pENCx->TNCR & ENC_DIRECTION) >> 13;
+    pENCx->TNCR=pENCx->TNCR | ENC_COUNTER_CLEAR;
 
-    if (VE_ActualStage[channel_number].main!=Stage_FOC)
+    if ((hall_nr++)>=input_nr[channel_number]-1)
+      hall_nr=0;
+
+    ENC_GetTheta(channel_number);
+    
+    if (EncoderData[channel_number].CW == 1)
+      EncoderData[channel_number].event_nr++;
+    else
+      EncoderData[channel_number].event_nr++;
+    
+    if (EncoderData[channel_number].event_nr > MotorParameterValues[channel_number].PolePairs * 2 * input_nr[channel_number] - 1)
     {
-      EncoderData[channel_number].Theta0=VE_Theta[channel_number].value;
       EncoderData[channel_number].event_nr=0;
-    }    
-  
-    EncoderData[channel_number].event_nr++;
-    if (EncoderData[channel_number].event_nr>=MotorParameterValues[channel_number].EncRes * MotorParameterValues[channel_number].EncMult)
+      if (VE_ActualStage[channel_number].main != Stage_FOC)
+        EncoderData[channel_number].Theta0 = VE_Theta[channel_number].value;
+      else
+        VE_Theta[channel_number].value = EncoderData[channel_number].Theta0;
+    }      
+    else if (EncoderData[channel_number].event_nr < -MotorParameterValues[channel_number].PolePairs * 2 * input_nr[channel_number] + 1)
+    {
       EncoderData[channel_number].event_nr=0;
+      if (VE_ActualStage[channel_number].main != Stage_FOC)
+        EncoderData[channel_number].Theta0 = VE_Theta[channel_number].value;
+      else
+        VE_Theta[channel_number].value = EncoderData[channel_number].Theta0;
+    }      
+
     break;
-      
-  case MOTOR_ENCODER_EVENT:
+
+  case MOTOR_SINGLE_PULSE_SPEED:
+    EncoderData[channel_number].ticksBetweenEvents[0] = pENCx->CNT;
+    pENCx->TNCR=pENCx->TNCR | ENC_COUNTER_CLEAR;
+
+    if (VE_ActualStage[channel_number].main != Stage_FOC)
+      EncoderData[channel_number].Theta0 = VE_Theta[channel_number].value;
+    else
+      VE_Theta[channel_number].value = EncoderData[channel_number].Theta0;
+    break;
+    
+  case MOTOR_INCENC_AB_SPEED:
+  case MOTOR_INCENC_ABZ_SPEED:
+    break;
+
+  case MOTOR_HALL_UV_EVENT:
+  case MOTOR_HALL_UVW_EVENT:
     EncoderData[channel_number].event_nr=pENCx->CNT;
-    if (EncoderData[channel_number].event_nr > MotorParameterValues[channel_number].EncRes * MotorParameterValues[channel_number].EncMult-1)
+    if (EncoderData[channel_number].event_nr > MotorParameterValues[channel_number].PolePairs * 2 * input_nr[channel_number] - 1)
     {
       EncoderData[channel_number].event_nr=0;
       EncoderData[channel_number].FullTurns++;
       pENCx->TNCR |= ENC_COUNTER_CLEAR;
     }
-    else if (EncoderData[channel_number].event_nr < -MotorParameterValues[channel_number].EncRes * MotorParameterValues[channel_number].EncMult+1)
+    else if (EncoderData[channel_number].event_nr < -MotorParameterValues[channel_number].PolePairs * 2 * input_nr[channel_number] + 1)
     {
       EncoderData[channel_number].event_nr=0;
       EncoderData[channel_number].FullTurns--;
       pENCx->TNCR |= ENC_COUNTER_CLEAR;
     }
-    
     break;
+
+  case MOTOR_INCENC_AB_EVENT:
+  case MOTOR_INCENC_ABZ_EVENT:
+    EncoderData[channel_number].event_nr=pENCx->CNT;
+    break;
+
+
+  case MOTOR_SINGLE_PULSE_EVENT:
+    break;
+    
   default:
     assert_param(0);
     break;
@@ -140,27 +248,55 @@ static void IRQ_Common(unsigned char channel_number)
   * @param  channel_number:  channel to measure
   * @retval None  
 */
-void ENC_Determine_Omega(unsigned char channel_number)
+  uint64_t ENC_OmegaCalc;
+void ENC_Determine_Omega_Theta(unsigned char channel_number)
 {
-  long long calculation = (long long)80000000
-     / EncoderData[channel_number].ticksBetweenEvents
-     / (MotorParameterValues[channel_number].EncRes)
-     * FIXPOINT_15
-     * MotorParameterValues[channel_number].PolePairs
-     / VE_HzMax[channel_number];
 
-  VE_Omega[channel_number].value = ((uint16_t)calculation)<<16;
+  switch (MotorParameterValues[channel_number].Encoder)
+  {
+  case MOTOR_HALL_UV_SPEED:
+  case MOTOR_HALL_UVW_SPEED:
+    ENC_OmegaCalc = ((uint64_t) CPU_CLOCK
+                                * FIXPOINT_15
+                                / ( EncoderData[channel_number].ticksBetweenEvents[0]
+                                   +EncoderData[channel_number].ticksBetweenEvents[1]
+                                   +EncoderData[channel_number].ticksBetweenEvents[2]
+                                  )
+                                / 2
+                                / VE_HzMax[channel_number]       
+                                );
+    if (EncoderData[channel_number].CW==0)
+      ENC_OmegaCalc*=-1;
 
-  if (EncoderData[channel_number].CW==0)
-    VE_Omega[channel_number].value*=-1;
-  
-  VE_Theta[channel_number].value += (int32_t) (VE_Omega[channel_number].part.reg
-                                           * (VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency<<1));
+    VE_Omega[channel_number].value = ((uint16_t)ENC_OmegaCalc)<<16;
+    VE_Theta[channel_number].value += (int32_t) ( VE_Omega[channel_number].part.reg
+                                               *( VE_PreCalc[channel_number].HzMax_normed_to_PWMFrequency<<1));
+    
+    break;
 
-  if (EncoderData[channel_number].event_nr==0)
-    VE_Theta[channel_number].value=EncoderData[channel_number].Theta0;
+  case MOTOR_SINGLE_PULSE_SPEED:
+    ENC_OmegaCalc = ((uint64_t) CPU_CLOCK
+                                * FIXPOINT_15
+                                / ( EncoderData[channel_number].ticksBetweenEvents[0]
+                                   +EncoderData[channel_number].ticksBetweenEvents[1]
+                                   +EncoderData[channel_number].ticksBetweenEvents[2]
+                                  )
+                                / 2
+                                / VE_HzMax[channel_number]       
+                                );
+    
+    if (VE_Omega[channel_number].part.reg<=0)
+      ENC_OmegaCalc*=-1;
+    break;
+    
+  case MOTOR_INCENC_AB_SPEED:
+  case MOTOR_INCENC_ABZ_SPEED:
+    break;
+  default:
+    break;
+  }
 }
-
+                 
 /*! \brief  Interrupt handler of Encoder Channel 0
   *
   * @param  None
@@ -188,21 +324,18 @@ void INTENC1_IRQHandler(void)
 */
 void ENC_Init(unsigned char channel_number)
 {
-  TSB_EN_TypeDef*   pENCx = NULL;
+  TSB_EN_TypeDef* pENCx    = NULL;
+  uint32_t        tncr     = 0;
 
-  /*! sanity check */
-  if((MotorParameterValues[channel_number].Encoder  == MOTOR_NO_ENCODER)
-   ||(MotorParameterValues[channel_number].EncRes   == 0)
-   ||(MotorParameterValues[channel_number].EncMult  == 0))
+  if(MotorParameterValues[channel_number].Encoder  == MOTOR_NO_ENCODER)
   {
-    MotorParameterValues[channel_number].Encoder = MOTOR_NO_ENCODER;            /* Disable Encoder usage */
     switch (channel_number)
     {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
     case 0:
       NVIC_DisableIRQ(INTENC0_IRQn);
       break;
-#endif
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
     case 1:
       NVIC_DisableIRQ(INTENC1_IRQn);
       break;
@@ -215,11 +348,11 @@ void ENC_Init(unsigned char channel_number)
   
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
   case 0:
     pENCx = TSB_EN0;
     break;
-#endif
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
   case 1:
     pENCx = TSB_EN1;
     break;
@@ -228,40 +361,73 @@ void ENC_Init(unsigned char channel_number)
     break;
   }
 
-  ENC_IOInit(channel_number);                                                   /*! setup IO */
+  tncr = ENC_IRQ_ENABLE
+       | ENC_NOISEFILTER_31
+       | ENC_RUN_ENABLE;
 
   switch (MotorParameterValues[channel_number].Encoder)
   {
-  case MOTOR_ENCODER_SPEED:
-    pENCx->TNCR = ENC_IRQ_ENABLE
-                | ENC_NOISEFILTER_31
-                | ENC_MODE_SENSOR_TIME         
-                | ENC_RUN_ENABLE
-                | ENC_3PHASE_ENABLE;
+  case MOTOR_HALL_UVW_SPEED:
+  case MOTOR_HALL_UVW_EVENT:
+  case MOTOR_INCENC_ABZ_SPEED:
+  case MOTOR_INCENC_ABZ_EVENT:
+    tncr    |= ENC_3PHASE_ENABLE;
+    input_nr[channel_number] = 3;
     break;
-  case MOTOR_ENCODER_EVENT:
-    pENCx->TNCR = ENC_IRQ_ENABLE
-                | ENC_NOISEFILTER_31
-                | ENC_MODE_SENSOR_EVENT         
-                | ENC_RUN_ENABLE
-                | ENC_3PHASE_ENABLE;
+  case MOTOR_HALL_UV_SPEED:
+  case MOTOR_HALL_UV_EVENT:
+  case MOTOR_INCENC_AB_SPEED:
+  case MOTOR_INCENC_AB_EVENT:
+    input_nr[channel_number] = 2;
     break;
-    
+  case MOTOR_SINGLE_PULSE_SPEED:
+  case MOTOR_SINGLE_PULSE_EVENT:
+    input_nr[channel_number] = 1;
+    break;
   default:
     assert_param(0);
     break;
   }
   
+  switch (MotorParameterValues[channel_number].Encoder)
+  {
+  case MOTOR_HALL_UV_SPEED:
+  case MOTOR_HALL_UVW_SPEED:
+  case MOTOR_SINGLE_PULSE_SPEED:
+    tncr |= ENC_MODE_SENSOR_TIME;
+    break;
+  case MOTOR_HALL_UV_EVENT:
+  case MOTOR_HALL_UVW_EVENT:
+    tncr |= ENC_MODE_SENSOR_EVENT;
+    break;
+  case MOTOR_INCENC_ABZ_SPEED:
+  case MOTOR_INCENC_ABZ_EVENT:
+    tncr |= ENC_ZPHASE_DETECTED;
+  case MOTOR_INCENC_AB_SPEED:
+  case MOTOR_INCENC_AB_EVENT:
+    pENCx->RELOAD = MotorParameterValues[channel_number].IncRotEncCnt-1;
+  case MOTOR_SINGLE_PULSE_EVENT:
+    tncr |= ENC_MODE_ENCODE;
+    break;
+  default:
+    assert_param(0);
+    break;
+  }
+    
+  pENCx->TNCR = tncr;
+    
+  ENC_IOInit(channel_number);                                                   /*! setup IO */
+  
   __DSB();                                                                      /* ! flush the pipeline */
 
   switch (channel_number)
   {
-#ifdef __TMPM_370__
+#if defined __TMPM_370__  || defined __TMPM_376__
   case 0:
     NVIC_SetPriority(INTENC0_IRQn, INTERRUPT_PRIORITY_ENCODER);                 /*! set the encoder interrupt priority */
     NVIC_EnableIRQ(INTENC0_IRQn);                                               /*! enable the interrupt */
     break;
-#endif
+#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
   case 1:
     NVIC_SetPriority(INTENC1_IRQn, INTERRUPT_PRIORITY_ENCODER);                 /*! set the encoder interrupt priority */
     NVIC_EnableIRQ(INTENC1_IRQn);                                               /*! enable the interrupt */

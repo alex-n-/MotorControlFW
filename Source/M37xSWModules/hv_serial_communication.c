@@ -20,6 +20,7 @@
 #include <stdio.h>
 
 #include "config.h"
+#include "board.h"
 
 #ifdef BOARD_PWR_HEADER_FILE_0
 #include BOARD_PWR_HEADER_FILE_0
@@ -50,7 +51,6 @@
 #define BAUD_RATE     9600
 #define NR_OF_BITS    8
 #define BUFFER_SIZE   6
-#define TIMER_COUNTER 40000000/BAUD_RATE/3
 
 #define SYNC_BYTE0 0xa5
 #define SYNC_BYTE1 0x5a
@@ -71,9 +71,9 @@ static TMRB_InitTypeDef timerTMBRConfig =
 {
   TMRB_INTERVAL_TIMER,
   TMRB_CLK_DIV_2,
-  TIMER_COUNTER,
+  0,
   TMRB_AUTO_CLEAR,
-  TIMER_COUNTER,
+  0,
 };
 
 static const GPIO_InitTypeDef portConfigHV_RX =
@@ -283,6 +283,10 @@ void HV_SerialCommunicationInit( void )
   GPIO_Init(GPIO_PK,
             GPIO_BIT_1,
             &portConfigHV_RX);
+
+  timerTMBRConfig.Cycle = PERIPHERIAL_CLOCK/2/BAUD_RATE/3;                      /* /2 due to TMRB_CLK_DIV_2 */
+  
+  timerTMBRConfig.Duty  = timerTMBRConfig.Cycle;
 
   TMRB_Enable(TSB_TB0);
   TMRB_Init(TSB_TB0, &timerTMBRConfig);

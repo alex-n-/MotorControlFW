@@ -410,7 +410,7 @@ static void PMD_HandleParameterChangeSystem(uint8_t channel_number)
     break;
   }
 
-  pPMD->MDPRD = (T0/SystemValues[channel_number].PWMFrequency);
+  pPMD->MDPRD = PERIPHERIAL_CLOCK/2/SystemValues[channel_number].PWMFrequency;  /* Triangular Wave */
 }
 
 /*! \brief  Normal output for the PMD Signals
@@ -439,22 +439,25 @@ void PMD_NormalOutput(unsigned char channel_number)
     break;
   }
 
-  pPMDx->MDOUT= PMD_MDOUT_PWM_U
-              | PMD_MDOUT_PWM_V
-              | PMD_MDOUT_PWM_W
-              | PMD_MDOUT_OC_U3
-              | PMD_MDOUT_OC_V3
-              | PMD_MDOUT_OC_W3; 
+  pPMDx->PORTMD   = PMD_OUT_ALL_PMD;                                            /* Port Output Mode Register */
+  pPMDx->MODESEL  = PMD_MODE_VE;                                                /* Mode Select Register */
+  
+  pPMDx->MDOUT    = PMD_MDOUT_PWM_U
+                  | PMD_MDOUT_PWM_V
+                  | PMD_MDOUT_PWM_W
+                  | PMD_MDOUT_OC_U3
+                  | PMD_MDOUT_OC_V3
+                  | PMD_MDOUT_OC_W3; 
 }  
 
-/*! \brief  Short the motor lines
+/*! \brief  PMD Signals for Bootstrapping
   *
-  * Short the motor lines to spin down the motor as fast as possible
+  * Preload MosFETs
   *
-  * @param  channel_number: channel to be shorten
+  * @param  channel_number: channel to use
   * @retval None  
 */
-void PMD_ShortBrake(unsigned char channel_number)
+void PMD_Bootstrap(unsigned char channel_number)
 {
   TSB_PMD_TypeDef*    pPMDx   = NULL;
   
@@ -472,40 +475,14 @@ void PMD_ShortBrake(unsigned char channel_number)
     assert_param(0);
     break;
   }
- 
-  pPMDx->MDOUT= 0;                                                              /* put the motor driver offline */
-}  
 
-/*! \brief  Switch off the PMD Signals to the Motor
-  *
-  * Switch off the signals to let the motor run out
-  *
-  * @param  channel_number: channel to be switched off
-  * @retval None  
-*/
-void PMD_SwitchOff(unsigned char channel_number)
-{
-  TSB_PMD_TypeDef*    pPMDx   = NULL;
-  
-  switch (channel_number)
-  {
-#if defined __TMPM_370__ || defined __TMPM_376__
-  case 0:
-    pPMDx   = TSB_PMD0;
-    break;
-#endif /* defined __TMPM_370__ || defined __TMPM_376__ */
-  case 1:
-    pPMDx   = TSB_PMD1;
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
-  
-  pPMDx->MDOUT= 0;                                                              /* put the motor driver offline */
-
+  pPMDx->PORTMD   = PMD_OUT_LOW_PMD;                                            /* Port Output Mode Register */
+  pPMDx->MODESEL  = PMD_MODE_BUS;                                               /* Mode Select Register */
+  pPMDx->MDOUT    = PMD_MDOUT_OC_U1                                             /* PMD Output Control Register */
+                  | PMD_MDOUT_OC_V1
+                  | PMD_MDOUT_OC_W1;
 }
-
+  
 /*! \brief  Interrupt handler of PMD Channel 0
   *
   * @param  None
@@ -686,27 +663,19 @@ void PMD_Init (uint8_t channel_number)
     assert_param(0);
     break;
   }
+
+  PMD_HandleParameterChangeSystem(channel_number);
+  PMD_HandleParameterChangeBoard(channel_number);
   
   PMD_IOInit(channel_number);
   
-  pPMD->PORTMD   = PMD_OUT_ALL_PMD;                                             /* Port Output Mode Register */
-
   pPMD->MDCR     = PMD_CR_CARRIER_TRIANG |
                    PMD_CR_IRQ_PERIODE_1 |
                    PMD_CR_IRQ_COUNT_MDPRD |
                    PMD_CR_DUTY_INDEPEND |
                    PMD_CR_SYNTMD_LOW |
                    PMD_CR_PWM_EXPER_0;
-
-  /* PMD Control Register */
-  PMD_HandleParameterChangeSystem(channel_number);
-                                                                                /* PWM Period Register */
-  pPMD->MODESEL  = PMD_MODE_VE;                                                 /* Mode Select Register */
-  pPMD->MDOUT    = 0;                                                           /* PMD Output Control Register */
-
-  PMD_HandleParameterChangeBoard(channel_number);
   
   vTaskDelay( 10 / portTICK_RATE_MS );
   normal_operation=1;
-
 }

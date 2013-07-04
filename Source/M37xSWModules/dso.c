@@ -50,7 +50,7 @@ static int16_t*             wrap_position         = NULL;                       
 static unsigned long        log_times             = 0;                          /* numer of times the logging has been done (can not compare first log with nothing) */
 static int16_t              spread                = 0;                          /* actual spread state */
 static unsigned char        spread_factor         = 0;                          /* factor of which the logging is spread */
-
+static uint8_t              invert_current        = 0;                          /* Invert values for currents when current sensors are used with normal orientationm */
 static int                  user_dummy            = 0;
 
 /*********************************************************************
@@ -64,12 +64,12 @@ static int                  user_dummy            = 0;
         if ( x <= storage_position )\
         x = wrap_position;
 
-#define LOG_IF_SELECTED(reg,check,shift)        \
+#define LOG_IF_SELECTED(reg,check,shift,invert)       \
         if ((selected_values & (unsigned long)check)) \
-        {                                       \
-          *pos = reg>>shift;                    \
-          pos++;                                \
-        }
+          if (invert)                                 \
+            *pos++ = (-1*reg)>>shift;                 \
+          else                                        \
+            *pos++ = reg>>shift;                      \
   
 /*! \brief  Get Number of Bits in a long
   *
@@ -123,11 +123,11 @@ static signed char get_trigger_offset(unsigned long trigger_value)
 */
 static int16_t* DSO_Fill_up_dataPMD(int16_t* pos)
 {
-  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Va,         17);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Vb,         17);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Vc,         17);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Valpha,     16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Vbeta,      16);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Va,         17, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Vb,         17, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Vc,         17, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Valpha,     16, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Vbeta,      16, 0             );
  
   return pos;
 }
@@ -141,33 +141,33 @@ static int16_t* DSO_Fill_up_dataPMD(int16_t* pos)
 */
 static int16_t* DSO_Fill_up_dataVE(int16_t* pos, TEE_VE_TypeDef* pVEx)
 {
-  LOG_IF_SELECTED(pVEx->ID,                     Id,         16);
-  LOG_IF_SELECTED(pVEx->IDREF,                  Id_Ref,      0);
-  LOG_IF_SELECTED(pVEx->IQ,                     Iq,         16);
-  LOG_IF_SELECTED(pVEx->IQREF,                  Iq_Ref,      0);
-  LOG_IF_SELECTED(pVEx->VD,                     Vd,         16);
-  LOG_IF_SELECTED(pVEx->VQ,                     Vq,         16);
-  LOG_IF_SELECTED(pVEx->VDIH,                   Vdi,        16);
-  LOG_IF_SELECTED(pVEx->VQIH,                   Vqi,        16);
-  LOG_IF_SELECTED(pVEx->THETA,                  Theta,       1);
-  LOG_IF_SELECTED(VE_Omega[channel].part.reg,   Omega,       0);
-  LOG_IF_SELECTED(VE_OmegaCalc[channel],        OmegaCalc,   0);
-  LOG_IF_SELECTED(pVEx->SIN,                    SIN_Theta,   0);
-  LOG_IF_SELECTED(pVEx->COS,                    COS_Theta,   0);
-  LOG_IF_SELECTED(pVEx->SECTOR,                 Sector,      0);
-  LOG_IF_SELECTED(pVEx->VDC,                    VDC,         0);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Ia,         16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Ib,         16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Ic,         16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Ialpha,     16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Ibeta,      16);
-  LOG_IF_SELECTED(VE_ActualStage[channel].main, VE_Stage,    0);
-  LOG_IF_SELECTED(user_dummy,                   User_1,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_2,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_3,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_4,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_5,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_6,      0);
+  LOG_IF_SELECTED(pVEx->ID,                     Id,         16, invert_current);
+  LOG_IF_SELECTED(pVEx->IDREF,                  Id_Ref,      0, invert_current);
+  LOG_IF_SELECTED(pVEx->IQ,                     Iq,         16, invert_current);
+  LOG_IF_SELECTED(pVEx->IQREF,                  Iq_Ref,      0, invert_current);
+  LOG_IF_SELECTED(pVEx->VD,                     Vd,         16, 0             );
+  LOG_IF_SELECTED(pVEx->VQ,                     Vq,         16, 0             );
+  LOG_IF_SELECTED(pVEx->VDIH,                   Vdi,        16, 0             );
+  LOG_IF_SELECTED(pVEx->VQIH,                   Vqi,        16, 0             );
+  LOG_IF_SELECTED(pVEx->THETA,                  Theta,       1, 0             );
+  LOG_IF_SELECTED(VE_Omega[channel].part.reg,   Omega,       0, 0             );
+  LOG_IF_SELECTED(VE_OmegaCalc[channel],        OmegaCalc,   0, 0             );
+  LOG_IF_SELECTED(pVEx->SIN,                    SIN_Theta,   0, 0             );
+  LOG_IF_SELECTED(pVEx->COS,                    COS_Theta,   0, 0             );
+  LOG_IF_SELECTED(pVEx->SECTOR,                 Sector,      0, 0             );
+  LOG_IF_SELECTED(pVEx->VDC,                    VDC,         0, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Ia,         16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Ib,         16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Ic,         16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Ialpha,     16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Ibeta,      16, invert_current);
+  LOG_IF_SELECTED(VE_ActualStage[channel].main, VE_Stage,    0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_1,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_2,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_3,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_4,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_5,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_6,      0, 0             );
 
   return pos;
 }
@@ -191,6 +191,10 @@ uint16_t DSO_Configure_Continuous_Mode(uint8_t  channel_number,
                                        uint16_t level,
                                        uint8_t  spread_selection)
 {
+                                                                                /* In case of current sensors with normal orientation the measured currents are inverted */
+  invert_current = (  (ChannelValues[channel_number].measurement_type==CURRENT_SENSOR_2)
+                    &&(ChannelValues[channel_number].sensor_direction==CURRENT_SENSOR_NORMAL));
+  
   nr_log_data = get_nr_of_bits_set(selected_signals);                           /* get the number of different signals to be logged */
   
   if (nr_log_data>MAX_DSO_VALUE)                                                /* check for overflow */

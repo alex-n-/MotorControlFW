@@ -505,7 +505,13 @@ int GetBoardInfo        (struct GetBoardInfo_q* q,        struct GetBoardInfo_a*
 #ifdef USE_MOTOR_DISCONNECT_DETECTION
   features |= (1<<8);
 #endif /* USE_MOTOR_DISCONNECT_DETECTION */
- 
+#ifdef USE_SW_OVERCURRENT_DETECTION
+  features |= (1<<9);
+#endif /* USE_SW_OVERCURRENT_DETECTION */
+#ifdef USE_LOAD_DEPENDANT_SPEED_REDUCTION
+  features |= (1<<10);
+#endif /* USE_LOAD_DEPENDANT_SPEED_REDUCTION */
+  
   memset(a,   0, sizeof(*a));
 
   a->values.channels        = BOARD_AVAILABLE_CHANNELS;
@@ -669,30 +675,9 @@ int GetErrorState       (struct GetErrorState_q* q,       struct GetErrorState_a
 */
 int GetDCLinkVoltage    (struct GetDCLinkVoltage_q* q,    struct GetDCLinkVoltage_a* a)
 {
-  TEE_VE_TypeDef*     pVEx    = NULL;
-
-  memset(a, 0, sizeof(*a));
-
-  switch (q->motor_nr)
-  {
-#if defined __TMPM_370__  || defined __TMPM_376__
-  case 0:
-    pVEx    = TEE_VE0;
-    break;
-#endif /* defined __TMPM_370__  || defined __TMPM_376__ */
-  case 1:
-    pVEx    = TEE_VE1;
-    break;
-  default:
-    assert_param(0);
-    break;
-  }
-  
-  a->Voltage = 10 * (pVEx->VDC) * VE_v_max[q->motor_nr] / (0xfff<<3);
-
 #ifdef USE_HV_COMMUNICATION
-  a->Voltage = 10 * HV_Communication_GetValue(0)*VE_v_max[q->motor_nr] / 0x3ff;
-#elif defined USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+  a->Voltage = 10 * HV_Communication_GetValue(0) * 5000 / ChannelValues[q->motor_nr].sensitivity_voltage_measure / 0x3ff;
+#else
   a->Voltage = 10 * ADC_GetVDC(q->motor_nr) * 5000 / ChannelValues[q->motor_nr].sensitivity_voltage_measure / 0xfff;
 #endif  
   
@@ -708,3 +693,18 @@ int GetDCLinkVoltage    (struct GetDCLinkVoltage_q* q,    struct GetDCLinkVoltag
   
   return 0;
 }
+
+/*! \brief  Get Motor Stage
+  *
+  * Read out the actual stage of the motor
+  *
+  * @param  q: Question from Serial Protocol
+  * @param  a: Answer   for  Serial Protocol
+  * @retval Success
+*/
+int GetMotorStage       (struct GetMotorStage_q* q,       struct GetMotorStage_a* a)
+{
+  a->Stage = VE_ActualStage[q->motor_nr].main;
+  return 0;
+}
+

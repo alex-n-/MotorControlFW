@@ -20,6 +20,16 @@
 #ifndef _BOARD_M37SIGMA_H_
 #define _BOARD_M37SIGMA_H_
 
+/* Clock setup */
+#define BOARD_USE_EXTERNAL_OSCILLATOR           1
+#define BOARD_EXTERNAL_OSCILLATOR_FREQUENCY     10000000                        /* Oscillator Frequency in MHz */
+#define BOARD_USE_PLL                           1                               /* Usage of PLL - 0:OFF 1:ON */
+#define BOARD_CLOCK_GEAR_DIVIDER                CG_DIVIDE_1                     /* Clock gear divider: 1/2/4/8/16 */
+#define BOARD_PERIPHERIAL_CLOCK_SOURCE          CG_PHIT0_SRC_FGEAR              /* Clock peripherial source */
+#define BOARD_PERIPHERIAL_CLOCK_DIVIDER         CG_DIVIDE_1                     /* Clock peripherial divider: 1/2/4/8/16 */
+
+/* Gain settings for the different channels */
+
 /* Gain settings */
 #define BOARD_GAIN_CURRENT_MEASURE              GAIN_1
 

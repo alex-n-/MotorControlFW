@@ -20,6 +20,8 @@
 #include "config.h"
 #ifdef USE_LOAD_STATISTICS
 
+#include TMPM_WDT_HEADER_FILE
+
 #include "FreeRTOS.h"
 #include "task.h"
 #include "board.h"
@@ -50,6 +52,9 @@ static unsigned char system_load;
 void vApplicationIdleHook( void )
 {
   idle_counter++;                                                               /* increase the idle counter by 1 */
+#ifdef USE_WDT
+  WDT_WriteClearCode();
+#endif /* USE_WDT */  
 }
 
 /*! \brief  Calculate the system load

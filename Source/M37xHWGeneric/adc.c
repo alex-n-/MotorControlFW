@@ -111,6 +111,11 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
     else
       NVIC_DisableIRQ(INTADACPB_IRQn);
 
+#ifndef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+    UndervoltageA.CmpValue = 0x0;
+    OvervoltageA.CmpValue  = 0xfff;
+#endif
+    
     ADC_SetConstantTrg(TSB_ADA,VDC_MEASURE0_REG,TRG_ENABLE(AIN_VDC0));
     ADC_Start(TSB_ADA,ADC_TRG_CONSTANT);
    break;
@@ -134,6 +139,11 @@ void ADC_OverUndervoltageDetect(uint8_t channel_number)
     else
       NVIC_DisableIRQ(INTADBCPB_IRQn);
 
+#ifndef USE_SW_OVER_UNDER_VOLTAGE_DETECTION
+    UndervoltageB.CmpValue = 0x0;
+    OvervoltageB.CmpValue  = 0xfff;
+#endif
+
     ADC_SetConstantTrg(TSB_ADB,VDC_MEASURE1_REG,TRG_ENABLE(AIN_VDC1));
     ADC_Start(TSB_ADB,ADC_TRG_CONSTANT);
     break;
@@ -152,7 +162,7 @@ uint16_t ADC_GetVDC(uint8_t channel_number)
 {
   ADC_Result         result;
 	
-	memset(&result,0,sizeof(result));
+  memset(&result,0,sizeof(result));
   
   switch (channel_number)
   {

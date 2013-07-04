@@ -39,7 +39,7 @@
 #define WDCR_Val                (0x000000B1UL)
 
 /* Clock Generator (CG) Configuration */
-#define CLOCK_SETUP             1
+#define CLOCK_SETUP             0
 #define SYSCR_Val               (0x00010000UL)
 #define OSCCR_Val               (0x000E0104UL) /* OSCCR<OSCSEL> = 1, OSCCR<XEN2> = 0, OSCCR<XEN1> = 1, OSCCR<PLLON> = 1, <HOSCON> = 1, <WUPSEL2> = 1*/
 

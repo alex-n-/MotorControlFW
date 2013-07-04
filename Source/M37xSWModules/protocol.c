@@ -34,6 +34,10 @@
 #include BOARD_RGB_LED_HEADER_FILE
 #endif /* USE_RGB_LED */    
 
+#ifdef SIGMA_PRODUCTION
+#include "sigma_self_test.h"
+#endif /* SIGMA_PRODUCTION */
+
 #include "FreeRTOS.h"
 #include "semphr.h"
 #include "task.h"
@@ -58,6 +62,7 @@ __packed struct footer
 
 static uint8_t          g_q[MAX_SIZE_Q];
 static uint8_t          g_a[sizeof(struct header) + MAX_SIZE_A + sizeof(struct footer)];
+static uint8_t          protocol_normal_operation = 1;
 
 enum rx_state { rx_idle = 0, rx_cmd, rx_rcv, rx_checksum, rx_eot, };
 
@@ -129,6 +134,7 @@ static const struct rpc functions[] = { MAKE_FUNC(StartMotor),
                                   MAKE_FUNC(GetErrorState),
                                   MAKE_FUNC(SetChannelDependand),
                                   MAKE_FUNC(GetDCLinkVoltage),
+                                  MAKE_FUNC(GetMotorStage),
                                 };
 
 
@@ -234,9 +240,34 @@ static void rx_state_machine(void)
       rx->state = rx_cmd;
       break;
     }
+#ifdef SIGMA_PRODUCTION
+    if (b ==  '$') {
+      rx->state  = rx_cmd;
+      protocol_normal_operation = 0;
+      break;
+    }
+#endif /* SIGMA_PRODUCTION */ 
     rprintf("rx bot\n");
     break;
   case rx_cmd:
+#ifdef SIGMA_PRODUCTION
+    if (protocol_normal_operation == 0)
+    {
+      if (b ==  '$')
+      {
+        protocol_normal_operation = 0;
+        rx->state  = rx_idle;
+        break;
+      }
+      else
+      {
+        protocol_normal_operation = 1;
+        rx->state  = rx_idle;
+        break;
+      }
+    }
+#endif /* SIGMA_PRODUCTION */ 
+    
     if (b >= NUM_RPC_FUNCTIONS) {
       rx->state = rx_idle;
       rprintf("rx cmd out of bounds\n");
@@ -375,6 +406,9 @@ static int protocol_init (void)
   * @param  None
   * @retval Success
 */
+
+    char answer[20];
+
 static int protocol_handle_one_q_a (void)
 {
   struct rx_machine *rx = &g_rx_machine;
@@ -387,28 +421,55 @@ static int protocol_handle_one_q_a (void)
   /* enable to be sure */  
   NVIC_EnableIRQ(SERIAL_COMMUNICATION_RX_IRQ);
 
-  ret = xSemaphoreTake(rx->s, 1000 / portTICK_RATE_MS);
-  if(ret == pdFALSE) {
-    rprintf("timeout @ xSemaphoreTake() @ RX\n");
-    return -1;
-  }
-  
-  checksum = crc_update(rx->cmd, rx->buf, rx->cnt);
-  if (checksum != rx->checksum) {
-        dprintf("rx cs mismatch\n");
-        send_error(ret);
-        return -1;
-  }
-
-  f = rx->f;
-
-  ret = f->f(rx->buf, &g_a[0]);
-  if(ret)
+  if (protocol_normal_operation == 1)
   {
-    dprintf("function %d failed @ error %d\n", rx->cmd, ret);
-    send_error(ret);
-    return -1;
+    ret = xSemaphoreTake(rx->s, 1000 / portTICK_RATE_MS);
+    if(ret == pdFALSE) {
+      rprintf("timeout @ xSemaphoreTake() @ RX\n");
+      return -1;
+    }
+  
+    checksum = crc_update(rx->cmd, rx->buf, rx->cnt);
+    if (checksum != rx->checksum) {
+      dprintf("rx cs mismatch\n");
+      send_error(ret);
+      return -1;
+    }
+
+    f = rx->f;
+    ret = f->f(rx->buf, &g_a[0]);
+
+    if(ret)
+    {
+      dprintf("function %d failed @ error %d\n", rx->cmd, ret);
+      send_error(ret);
+      return -1;
+    }
   }
+#ifdef SIGMA_PRODUCTION
+  else
+  {
+    uint8_t     length,i;
+    RGB_LED_SetValue(0);
+    while ((length=SigmaSelfTest(&answer[0])) != 0)
+    {
+      for (i=0;i<length;i++)
+      {
+        /* wait until tx buffer is empty */
+        while(!(SERIAL_COMMUNICATION_CHANNEL->MOD2 & 0x80));
+        UART_SetTxData(SERIAL_COMMUNICATION_CHANNEL, (uint32_t)answer[i]);
+      }
+      /* wait until tx buffer is empty */
+      while(!(SERIAL_COMMUNICATION_CHANNEL->MOD2 & 0x80));
+      UART_SetTxData(SERIAL_COMMUNICATION_CHANNEL, 0xd);
+    }
+
+    protocol_normal_operation = 1;
+    vTaskDelay( 10000 / portTICK_RATE_MS );
+
+    return 0;
+  }
+#endif /* SIGMA_PRODUCTION */
 
   /* send the regular answer */
   ret = send_generic(rx->cmd, &g_a[0], f->size_a);

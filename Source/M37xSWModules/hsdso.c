@@ -41,15 +41,16 @@ static int user_dummy = 0;
 #define MAX_NUM_ENTRIES 32
 #define NUM_SIZE_HEADER 5 /* Start-Byte, Checksum, Event, Timestamp */
 #define SIZE_XFER_ARRAY (NUM_SIZE_HEADER+(MAX_NUM_ENTRIES*2))
-static uint8_t g_xfer_buf[SIZE_XFER_ARRAY];
-static uint8_t g_capture_buf[(MAX_NUM_ENTRIES*2)];
-static int g_xfer_offset;
-static int16_t *g_log_ptr;
-static uint32_t g_selected_values = 0;
-static int g_count = 0;
-static int g_missed = 0;
-static uint16_t g_timestamp;
-static int g_PWMFrequency;
+static uint8_t   g_xfer_buf[SIZE_XFER_ARRAY];
+static uint8_t   g_capture_buf[(MAX_NUM_ENTRIES*2)];
+static int       g_xfer_offset;
+static int16_t   *g_log_ptr;
+static uint32_t  g_selected_values = 0;
+static int       g_count = 0;
+static int       g_missed = 0;
+static uint16_t  g_timestamp;
+static int       g_PWMFrequency;
+static uint8_t   invert_current        = 0;                          /* Invert values for currents when current sensors are used with normal orientationm */
 
 static const GPIO_InitTypeDef portConfigTX =
 {
@@ -145,6 +146,9 @@ int HsDSO_Disable(int motor_nr)
 int HsDSO_Enable(int motor_nr, uint32_t selected_values, uint8_t spread_factor)
 {
   uint32_t cnt;
+                                                                                /* In case of current sensors with normal orientation the measured currents are inverted */
+  invert_current = (  (ChannelValues[motor_nr].measurement_type==CURRENT_SENSOR_2)
+                    &&(ChannelValues[motor_nr].sensor_direction==CURRENT_SENSOR_NORMAL));
   
   if (!is_configured) {
     is_configured = 1;
@@ -179,9 +183,12 @@ int HsDSO_Enable(int motor_nr, uint32_t selected_values, uint8_t spread_factor)
   return 0;
 }
 
-#define LOG_IF_SELECTED(reg, check, shift) \
-        if (g_selected_values & (uint32_t)check) \
-          *pos++ = reg >> shift;
+#define LOG_IF_SELECTED(reg,check,shift,invert)    \
+        if ((g_selected_values & (uint32_t)check)) \
+          if (invert)                              \
+            *pos++ = (-1*reg)>>shift;              \
+          else                                     \
+            *pos++ = reg>>shift;
 
 void HsDSO_Log_PMD(int offset)
 {
@@ -191,11 +198,12 @@ void HsDSO_Log_PMD(int offset)
     return;
 
   pos = (int16_t *)&g_capture_buf[0];
-  LOG_IF_SELECTED(TEE_VEC->TMPREG0, Va,     17);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG1, Vb,     17);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG2, Vc,     17);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG3, Valpha, 16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG4, Vbeta,  16);
+
+  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Va,         17, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Vb,         17, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Vc,         17, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Valpha,     16, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Vbeta,      16, 0             );
   g_log_ptr = pos;
 }
 
@@ -223,33 +231,33 @@ void HsDSO_Log_VE(int offset)
   pos = g_log_ptr;
   g_log_ptr = NULL;
 
-  LOG_IF_SELECTED(pVEx->ID,                     Id,         16);
-  LOG_IF_SELECTED(pVEx->IDREF,                  Id_Ref,      0);
-  LOG_IF_SELECTED(pVEx->IQ,                     Iq,         16);
-  LOG_IF_SELECTED(pVEx->IQREF,                  Iq_Ref,      0);
-  LOG_IF_SELECTED(pVEx->VD,                     Vd,         16);
-  LOG_IF_SELECTED(pVEx->VQ,                     Vq,         16);
-  LOG_IF_SELECTED(pVEx->VDIH,                   Vdi,        16);
-  LOG_IF_SELECTED(pVEx->VQIH,                   Vqi,        16);
-  LOG_IF_SELECTED(pVEx->THETA,                  Theta,       1);
-  LOG_IF_SELECTED(VE_Omega[offset].part.reg,    Omega,       0);
-  LOG_IF_SELECTED(VE_OmegaCalc[offset],         OmegaCalc,   0);
-  LOG_IF_SELECTED(pVEx->SIN,                    SIN_Theta,   0);
-  LOG_IF_SELECTED(pVEx->COS,                    COS_Theta,   0);
-  LOG_IF_SELECTED(pVEx->SECTOR,                 Sector,      0);
-  LOG_IF_SELECTED(pVEx->VDC,                    VDC,         0);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Ia,         16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Ib,         16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Ic,         16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Ialpha,     16);
-  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Ibeta,      16);
-  LOG_IF_SELECTED(VE_ActualStage[offset].main,  VE_Stage,    0);
-  LOG_IF_SELECTED(user_dummy,                   User_1,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_2,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_3,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_4,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_5,      0);
-  LOG_IF_SELECTED(user_dummy,                   User_6,      0);
+  LOG_IF_SELECTED(pVEx->ID,                     Id,         16, invert_current);
+  LOG_IF_SELECTED(pVEx->IDREF,                  Id_Ref,      0, invert_current);
+  LOG_IF_SELECTED(pVEx->IQ,                     Iq,         16, invert_current);
+  LOG_IF_SELECTED(pVEx->IQREF,                  Iq_Ref,      0, invert_current);
+  LOG_IF_SELECTED(pVEx->VD,                     Vd,         16, 0             );
+  LOG_IF_SELECTED(pVEx->VQ,                     Vq,         16, 0             );
+  LOG_IF_SELECTED(pVEx->VDIH,                   Vdi,        16, 0             );
+  LOG_IF_SELECTED(pVEx->VQIH,                   Vqi,        16, 0             );
+  LOG_IF_SELECTED(pVEx->THETA,                  Theta,       1, 0             );
+  LOG_IF_SELECTED(VE_Omega[offset].part.reg,    Omega,       0, 0             );
+  LOG_IF_SELECTED(VE_OmegaCalc[offset],         OmegaCalc,   0, 0             );
+  LOG_IF_SELECTED(pVEx->SIN,                    SIN_Theta,   0, 0             );
+  LOG_IF_SELECTED(pVEx->COS,                    COS_Theta,   0, 0             );
+  LOG_IF_SELECTED(pVEx->SECTOR,                 Sector,      0, 0             );
+  LOG_IF_SELECTED(pVEx->VDC,                    VDC,         0, 0             );
+  LOG_IF_SELECTED(TEE_VEC->TMPREG0,             Ia,         16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG1,             Ib,         16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG2,             Ic,         16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG3,             Ialpha,     16, invert_current);
+  LOG_IF_SELECTED(TEE_VEC->TMPREG4,             Ibeta,      16, invert_current);
+  LOG_IF_SELECTED(VE_ActualStage[offset].main,  VE_Stage,    0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_1,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_2,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_3,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_4,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_5,      0, 0             );
+  LOG_IF_SELECTED(user_dummy,                   User_6,      0, 0             );
 
   g_xfer_buf[0] = 0x11;
   g_xfer_buf[2] = g_missed & 0xff;

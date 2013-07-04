@@ -366,6 +366,7 @@ typedef struct
 {
   uint16_t WaitTime_Position;
   uint16_t WaitTime_Bootstrap;
+  uint16_t WaitTime_Brake;
   uint32_t R_mult_amax_div_vmax;                                                /* fixpoint15 calculation R*I/U */
   uint32_t InductanceDropoutFactor;                                             /* fixpoint15 calculation 2*PI*I*Speed*1000/U */
   uint32_t PositionKiPreCalculation;                                            /* fixpoint15 calculation Ki*Tt*U/f */
@@ -378,6 +379,7 @@ typedef struct
   uint32_t SpeedUpLimit;
   uint16_t IdCurrentForInitposition;
   uint16_t IqCurrentForInitposition;  
+  uint32_t SWOvercurrentSquare;
 } PreCalc;                                                                      /* set of pre-calculations for control loop */
 
 /*! \brief Shutdown mode
